@@ -40,6 +40,7 @@
 
 \newcommand{\cdr}{\mathtt{tl}}
 \newcommand{\lemp}{\mathit{lemp}}
+\newcommand{\nil}{\mathtt{nil}}
 
 \newcommand{\ls}{\mathtt{ls}}
 \newcommand{\dll}{\mathtt{dll}}
@@ -71,7 +72,6 @@
 \author{Mihaela Sighireanu\inst{1} \and David R. Cok\inst{2} \and ??TBD?? }
 %%
 %by institution
-%%David Cok
 %%Nikos Gorogiannis, Middlesex University London
 %%Juan Navarro Perez, University College London
 %%Adam Rogalewicz, Ondrej Lengal, Tomas Vojnar, FIT, Brno University of Technology, IT4Innovations Centre of Excellence, Czech Republic
@@ -80,7 +80,7 @@
 %%Andrey Rybalchenko, Microsoft Research
 %%Constantin Enea, Mihaela Sighireanu, University Paris Diderot and CNRS
 
-\institute{University Paris Diderot and CNRS \and GrammaTech, Inc.}
+\institute{University Paris Diderot \& CNRS \and GrammaTech, Inc.}
 \date{\today}
 
 \begin{document}
@@ -200,6 +200,8 @@ P(\vec{E}) \mid
 A,B\ \triangleq\ \exists \vec{X}\sep \Pi\land\Sigma \hfill \mbox{formulas} %
 \end{array}
 $$
+The program variable $\nil\in\vars$ has a fixed meaning representing an undefined (not allocated) reference.
+
 The fragment is parameterized by a set $\preds$ of
 \emph{recursive definitions} defined using the following syntax:
 
@@ -216,25 +218,39 @@ corresponds to acyclic list segments.
 
 \begin{table}
 \begin{eqnarray}
-% singly linked lists 
-\ls(E,F) & \triangleq & \mathit{lemp}(E,F)\lor (E\neq F \land
-\exists X_\cdr\sep E\points\{(f,X_\cdr)\}\posep \ls(X_\cdr,F))
+%
+\lefteqn{\textit{singly linked lists}} \nonumber \\
+\ls(E,F) & \triangleq & (E=F\land\mathit{emp}) \lor (E\neq F \land 
+\exists X\sep E\points\{(f,X)\}\posep \ls(X,F)) 
 \\[1mm]
-% nested linked lists 
-\nll(E,F,B) & \triangleq & \lemp(E,F)\lor (E\neq \{F,B\}
-\land \exists X_\cdr,Z\sep E\points\{(s,X_\cdr),(h,Z)\}\posep\\ 
-&& \ls(Z,B) \posep\nll(X_\cdr,F,B)) \nonumber
+%  
+\lefteqn{\textit{nested linked lists}} \nonumber \\ 
+\nll(E,F,B) & \triangleq & (E=F\land\mathit{emp}) \lor (E\neq \{F,B\} \land \\
+&& \exists X,Z\sep E\points\{(s,X),(h,Z)\}\posep \ls(Z,B) \posep\nll(X,F,B)) \nonumber
 \\[1mm]
-% doubly linked lists
+%  
+\lefteqn{\textit{doubly linked lists}} \nonumber \\ 
 \dll(E, L, P, F) & \triangleq & (E=F\land L=P\land \mathit{emp}) \lor \big( E\neq F \land L\neq P \land \\
-&& \exists X_\cdr\sep E\points \{(n,X_\cdr),(p,P)\} \posep\ \dll(X_\cdr,L,E,F)\ \big)\nonumber
+&& \exists X\sep E\points \{(n,X),(p,P)\} \posep\ \dll(X,L,E,F)\ \big)\nonumber
 \\[1mm]
-\fbox{more defs from benchmarks}
+%  
+\lefteqn{\textit{binary tree}} \nonumber \\ 
+\mathtt{btree}(E) & \triangleq & (E=\nil\land \mathit{emp}) \lor \big( E\neq \nil \land 
+\\
+&& \exists X,Y\sep E\points \{(r,X),(l,Y)\} \posep \mathtt{btree}(X) \posep \mathtt{btree}(X)\big)
+\nonumber 
+\\[1mm]
+%  
+\lefteqn{\textit{tree with linked leaves}} \nonumber \\ 
+\mathtt{tll}(R,P,E,F) & \triangleq & (R=E \land R\points \{(l,\nil),(r,\nil),(p,P),(n,F)\}) \\
+&& \lor~\big( R\neq E \land \exists X,Y,Z\sep 
+\begin{array}[t]{l}
+R\points \{(l,X),(r,Y),(p,P),(n,Z)\} \ \posep \\
+\mathtt{tll}(X,R,E,Z) \posep \mathtt{tll}(Y,R,Z,F)\big)
+\end{array} \nonumber  
 \end{eqnarray}
 
-\caption{Examples of recursive definitions used in the benchmark %
-\fbox{($\mathit{lemp}(E,F)\triangleq E=F\land\mathit{emp}$)}%
-}
+\caption{Examples of recursive definitions used in the benchmark}
 \label{tab:RD}
 
 \end{table}
@@ -328,26 +344,33 @@ Note that although one person is listed as ``submitter'' for a solver on the web
 there is generally a team of contributors behind each tool; the identified person is simply the communication contact.
 
 The participants in this first edition were the following:
-\fbox{Please put the details for your solver in this file and the bibliography.}
+
+\fbox{Check the details for your solver.}
+
 \fbox{You could propose/use a different format than the one I've used for \SPEN.}
 %%The formats shall be aligned in the final version
 \begin{itemize}
-\item \ASTERIX~\cite{} 
-% - submitted by Juan Navarro Perez and Andrey Rybalchenko, TUM and MPI, Germany and UCL, UK
+\item \ASTERIX~\cite{PerezR13} 
+implements a model-based approach to decide satisfiability and entailment queries in the SLL fragment.
+The procedure, relies on SMT solving technology (Z3 solver is used) to untangle potential aliasing between program variables. 
+It has at its core a matching function that checks whether a concrete valuation is a model of the input formula and, if so, generalizes it to a larger class of models where the formula is also valid.  
 
-\item \CYCLIST~\cite{}
+% - submitted by Juan Navarro Perez and 
+%Andrey Rybalchenko, TUM and MPI, Germany and UCL, UK
+
+\item \CYCLIST~\cite{BrotherstonGP12}
 % - submitted by Nikos Gorogiannis, UCL UK
 %J. Brotherston, N. Gorogiannis, and R. L. Petersen 
 
-\item \SLEEK~\cite{} 
+\item \SLEEK~\cite{ChinDNQ12} 
 %- submitted by Q.L. Le, NUS, Singapore
 %Q.L. Le  and W.N. Chin
 
-\item \SLIDE~\cite{} 
+\item \SLIDE~\cite{IosifRV14} 
 %- submitted by Adam Rogalewicz, VeriFIT, Czech Rep.
 %A. Rogalewicz, R. Iosif, and T. Vojnar
 
-\item \SLSAT~\cite{} 
+\item \SLSAT~\cite{BrotherstonFPG14} 
 %- submitted by Nikos Gorogiannis, UCL UK 
 %J. Brotherston, C. Fuhs, N. Gorogiannis, and J. Navarro Perez
 
@@ -355,22 +378,17 @@ The participants in this first edition were the following:
 (i) the recursive definitions correspond to some class of (nested) lists
 and (ii) the right-hand side of the entailment problem does not have existential quantifiers.
 The class of recursive definitions allowed is included in the decidable fragment defined by~\cite{IosifRS13}, but is restricted to list segments in order to obtain an efficient decision procedure.
-The decision procedure for checking the validity of the entailment $\varphi_1\limp\varphi_2$ is model-based.
-It first computes a boolean abstraction for each formula ($\varphi_1,\varphi_2$). 
-A SAT solver is called to check the satisfiability of the boolean abstraction and to infer the (dis)equalities implicit from the semantics of SL that are used to ``normalize'' the SL formula.
-Then, a graph is built for each normalized formula and is used to obtain a graph homomorphism that implies the entailment.
-The construction of the graph isomorphism is based on recognizing in $\varphi_1$ unfoldings of the recursive definitions used in $\varphi_2$. 
-This step is done by testing that a tree built from the graph representing a sub-formula selected in $\varphi_1$ belongs to the language recognized by the tree automaton built for a recursive definition used in $\varphi_2$.
-%- submitted by Mihaela Sighireanu U. Paris Diderot, France
-%C. Enea, O. Lengal, M. Sighireanu, and T. Vojnar
+The decision procedures uses a boolean abstraction of SL formula to check their satisfiability and to ``normalize'' the formulas by inferring its implicit (dis)equalities. % implicit from the semantics of SL.
+The core of the algorithm checking if $\varphi\limp\psi$ is valid searches a matching between the atoms of $\psi$ to sub-formulas of $\varphi$.
+This search uses the membership test in tree automata to recognize in sub-formulas of $\varphi$ unfoldings of recursive definitions used in $\psi$.
+
 \end{itemize}
 
 A notable fact about this set of participants is the diversity of techniques used by each solver:
 \begin{itemize}
-\item translation to Horn clauses (\ASTERIX),
-\item model-based translation to SAT problems (\SLSAT, \SPEN),
+\item reduction to SAT or SMT problems (\ASTERIX, \SLSAT, \SPEN),
 \item (incomplete) proof/resolution based (\CYCLIST, \SLEEK),
-\item model-based translation to graph homomorphism (\SPEN),
+\item reduction to finding graph homomorphism (\SPEN),
 \item reduction of the entailment problem to a tree automata membership test (\SPEN) or to tree automata inclusion test (\SLIDE).
 \end{itemize}
 
@@ -429,7 +447,7 @@ The problems were proposed by the team of \SPEN.
  
 \begin{table}
 \begin{center}
-\begin{tabular}{p{7cm}r}\hline
+\begin{tabular}{p{6cm}r}\hline
 \multicolumn{2}{c}{Total number of problems: 678} \\
 \hline
 Satisfiability & 25\% \\
@@ -446,9 +464,11 @@ Randomly generated & 59\% \\
 \hline
 \multicolumn{2}{c}{Divisions} \\
 \hline
-\texttt{sll}(*) & 59\% \\
-\FDBent & 6\% \\
-\texttt{UDB}(*) & 35\% \\
+\sllsat & 110 \\ %& 59\% \\
+\sllent & 292 \\ %
+\FDBent &  43 \\ %& 6\% \\ 
+\UDBsat &  61 \\ %& 35\% \\
+\UDBent & 172 \\
 \hline
 \end{tabular}
 \end{center}
@@ -456,7 +476,7 @@ Randomly generated & 59\% \\
 \label{tab:bench}
 \end{table}
 
-\fbox{Give a table of actual numbers of benchmarks in each division. }
+%\fbox{Give a table of actual numbers of benchmarks in each division. }
 
 
 %%%%%%%%%%
@@ -501,58 +521,59 @@ We make a special mention of the \SLEEK\ solver for competing in all divisions.
 
 \begin{table}
 \begin{center}
-\begin{tabular}{p{2cm}p{2cm}p{2cm}p{2cm}p{2cm}p{1cm}}\hline
+\begin{tabular}{p{2cm}p{2cm}p{2cm}p{2cm}p{2cm}p{2cm}}\hline
 & \sllsat & \sllent & \FDBent
 & \UDBsat & \UDBent \\\hline
 \ASTERIX &
-1 &
-1 &
+\textbf{110/1.06} &  %1
+\textbf{292/2.98} &  %1
 -- &
 -- &
 --
 \\\hline
 \CYCLIST &
 -- &
-4 &
-2 &
+55/11.78 & %4
+19/141.78 & %2
 -- &
-1 
+\textbf{120/145.33} %1
 \\\hline
 \SLEEK &
-3 &
-3 &
-3 &
-1 &
-3
+110/4.99 & %3
+292/14.13 & %3
+31/43.65 & %3
+\textbf{61/30.84} & %1
+131/80.60 %3
 \\\hline
 \SLIDE &
 -- &
 -- &
 -- &
 -- &
-2
+36/195.61 %2
 \\\hline
 \SLSAT &
-4  &
+55/0.55 & %4
 --  &
 --  &
-2  &
+37/2620.52 & %2
 --
 \\\hline
 \SPEN &
-2 &
-2 &
-1 &
+110/3.27 & %2
+292/7.58 & %2
+\textbf{43/0.61} & %1
 -- &
 --
 \\\hline
 \end{tabular}
 \end{center}
-\caption{Overall results (1=first place, 2 = second place, etc.)}
+\caption{Overall results of Number of solved problems/CPU Time on solved instances %
+%(1=first place, 2 = second place, etc.)
+}
 \label{tab:overall}
 \end{table}
 
-\fbox{Would it be better to show the numbers of benchmarks completed? }
 
 \paragraph{Detailed results:}
 Here we provide different statistics that highlights some characteristics of the benchmark. \fbox{Please propose ideas for such statistics.}
@@ -607,13 +628,14 @@ A good cadence may be, for example, alternating a competition year with a year o
 %% when solvers may be tested on the collected benchmarks and benchmarks may be fixed/annotated/studied.
 
 In the intervening time to the next edition of the competition, several tasks are intended to be accomplished.
-\begin{itemize}
-\item First, the input format has to be standardized, based on the experience of the inaugural. 
-\fbox{Is there a need for change?}
+\begin{enumerate}
+%\item The input format has to be standardized, based on the experience of the inaugural. 
+%Several constructs are
+%\fbox{Is there a need for change?}
 
-\item Second, the relationship of the SL theory to SMTLIB must be understood. This may require alterations to
+\item The relationship of the SL theory to SMTLIB must be understood. This may require alterations to
 the basic SL theory or designing an embedding of SL as an SMTLIB theory.
-A discussion group has been opened for working out this relationship. \fbox{Add a link to the discussion group.}
+The discussion group \url{sl2smtlib@googlegroups.com} has been opened for working out this relationship. 
 The use of the SMT-LIB format for SL-COMP is convenient because some SL solvers already deal with a combination of SL with theories currently available in SMT-LIB, e.g., 
 integer arithmetics theory~\cite{PerezR11}, array theory~\cite{BouajjaniDES12-vmcai}, set theory~\cite{PiskacWZ13}, etc.
 
@@ -638,7 +660,7 @@ and supporting abduction and (bi-)abduction.
 
 \item Finally, we should ease the task of entrants in this competition by providing, well in advance, clear rules, guidelines for solver preparation, pre-processors for the their input language, etc. Many of these aspects were worked out in this first competition as participants were making their preparations.
 
-\end{itemize}
+\end{enumerate}
 
 \fbox{Announce the next competition?}
 

@@ -347,39 +347,61 @@ The participants in this first edition were the following:
 
 \fbox{Check the details for your solver.}
 
-\fbox{You could propose/use a different format than the one I've used for \SPEN.}
+%%You could propose/use a different format than the one proposed, but
 %%The formats shall be aligned in the final version
 \begin{itemize}
 \item \ASTERIX~\cite{PerezR13} 
-implements a model-based approach to decide satisfiability and entailment queries in the SLL fragment.
+% - submitted by Juan Navarro Perez and 
+%Andrey Rybalchenko, TUM and MPI, Germany and UCL, UK
+deals with the satisfiability and entailment checking in the SLL fragment.
+For this, it implements a model-based approach.
 The procedure, relies on SMT solving technology (Z3 solver is used) to untangle potential aliasing between program variables. 
 It has at its core a matching function that checks whether a concrete valuation is a model of the input formula and, if so, generalizes it to a larger class of models where the formula is also valid.  
 
-% - submitted by Juan Navarro Perez and 
-%Andrey Rybalchenko, TUM and MPI, Germany and UCL, UK
 
 \item \CYCLIST~\cite{BrotherstonGP12}
 % - submitted by Nikos Gorogiannis, UCL UK
 %J. Brotherston, N. Gorogiannis, and R. L. Petersen 
+deals with the entailment checking for the SLRD+ fragment.
+It is an instantiation of the theorem prover \textsc{Cyclist} for the case of Separation Logic with inductive definitions. 
+The theorem prover builds derivation trees with ``back-links'' from leaves to nodes of the tree that obey some soundness condition. 
+For the Separation Logic, the \CYCLIST\ prover replaces the rule of weakening used in first-order theorem provers with the frame rule of SL.
+
 
 \item \SLEEK~\cite{ChinDNQ12} 
 %- submitted by Q.L. Le, NUS, Singapore
 %Q.L. Le  and W.N. Chin
+deals with the satisfiability and entailment checking for SLRD+ formulas.
+It is an (incomplete but) automatic prover, that builds a proof tree for the input formulas by using the classical inference rules and the frame rule of SL.
+%
+\SLEEK\ discharges the spatial proof obligations, the remaining pure obligations are discharged by external provers like CVC4, Mona, or Z3.
+
 
 \item \SLIDE~\cite{IosifRV14} 
 %- submitted by Adam Rogalewicz, VeriFIT, Czech Rep.
 %A. Rogalewicz, R. Iosif, and T. Vojnar
+deals with the entailment problem in the fragment of SLRD+ defined in~\cite{IosifRS13}.
+The proof method for checking $\varphi\limp\psi$ relies on converting $\varphi$ and $\psi$ into two tree automata $A_\varphi$ resp. $A_\psi$, and checking
+the tree language inclusion of the automaton $A_\varphi$ in the automaton $A_\psi$.
+
 
 \item \SLSAT~\cite{BrotherstonFPG14} 
 %- submitted by Nikos Gorogiannis, UCL UK 
 %J. Brotherston, C. Fuhs, N. Gorogiannis, and J. Navarro Perez
+deals with the satisfiability problem for the SLRD+ fragment with general inductively defined predicates.
+The decision procedure is based on a fixed point computation of a constraint, called the ``base'' of an inductive predicate definition. This constraint is a conjunction of equalities and dis-equalities between a set of free variables built also by the fixed point computation from the set of inductive definitions.
 
-\item \SPEN~\cite{EneaLSV14,SPENsite} deals with satisfiability and entailment problems for the fragment SLRD+ where 
+
+
+\item \SPEN~\cite{EneaLSV14,SPENsite} 
+%- submitted by Mihaela Sighireanu, UPD France
+%C. Enea, O. Lengal, M. Sighireanu, and T. Vojnar
+deals with satisfiability and entailment problems for the fragment SLRD+ where 
 (i) the recursive definitions correspond to some class of (nested) lists
 and (ii) the right-hand side of the entailment problem does not have existential quantifiers.
-The class of recursive definitions allowed is included in the decidable fragment defined by~\cite{IosifRS13}, but is restricted to list segments in order to obtain an efficient decision procedure.
+%The class of recursive definitions allowed is included in the decidable fragment defined by~\cite{IosifRS13}, but is restricted to list segments in order to obtain an efficient decision procedure.
 The decision procedures uses a boolean abstraction of SL formula to check their satisfiability and to ``normalize'' the formulas by inferring its implicit (dis)equalities. % implicit from the semantics of SL.
-The core of the algorithm checking if $\varphi\limp\psi$ is valid searches a matching between the atoms of $\psi$ to sub-formulas of $\varphi$.
+The core of the algorithm checking if $\varphi\limp\psi$ is valid searches a mapping from the atoms of $\psi$ to sub-formulas of $\varphi$.
 This search uses the membership test in tree automata to recognize in sub-formulas of $\varphi$ unfoldings of recursive definitions used in $\psi$.
 
 \end{itemize}
@@ -387,9 +409,9 @@ This search uses the membership test in tree automata to recognize in sub-formul
 A notable fact about this set of participants is the diversity of techniques used by each solver:
 \begin{itemize}
 \item reduction to SAT or SMT problems (\ASTERIX, \SLSAT, \SPEN),
-\item (incomplete) proof/resolution based (\CYCLIST, \SLEEK),
+\item resolution based (\CYCLIST, \SLEEK),
 \item reduction to finding graph homomorphism (\SPEN),
-\item reduction of the entailment problem to a tree automata membership test (\SPEN) or to tree automata inclusion test (\SLIDE).
+\item reduction to tree automata membership test (\SPEN) or to tree automata inclusion test (\SLIDE).
 \end{itemize}
 
 Some of the above solvers deal with other problems than the ones considered for this competition, e.g., the computation of an unsat core or a (bi-)abduction.

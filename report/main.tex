@@ -162,9 +162,9 @@ to make available the binaries of these tools on a common platform, i.e., StarEx
 
 The SL-COMP 2014 has been possible due to the support of the SMT-COMP organizing committee, 
 although SL is not a theory of the SMTLIB format.
-The competition has been held as an ``off'' (unofficial)\footnote{That is, the competition was executed in conjunction with the games by the SMT-COMP organizing committee, SMT-COMP being an official participant in the games; the results of SL-COMP 2014 were reported at the SMT-2014 workshop at FLoC; however, SL-COMP 2014 was organized too late and was too experimental to be an official part of the FLoC Olympic Games.}
+The competition has been held as an ``off'' (unofficial) event \footnote{That is, the competition was executed in conjunction with the games by the SMT-COMP organizing committee, SMT-COMP being an official participant in the games; the results of SL-COMP 2014 were reported at the SMT-2014 workshop at FLoC; however, SL-COMP 2014 was organized too late and was too experimental to be an official part of the FLoC Olympic Games.}
 %% trial section?
-of the SMTCOMP 2014 competition\footnote{\url{smtcomp.sourceforge.org}}, at the FLOC Olympic Games.
+associated with the SMT-COMP 2014 competition\footnote{\url{smtcomp.sourceforge.org}}, at the FLoC Olympic Games.
 %% The results of the competition have been presented in the SMTCOMP workshop.
 %%Informations about the participants and the final results are also available online at \url{www.liafa.univ-paris-diderot.fr/~sighirea/slcomp14/}.
 
@@ -299,7 +299,7 @@ We summarize below the theoretical results obtained on the decidability of this 
 The various benchmark and competition divisions introduced in SL-COMP stem from these results.
 \begin{description}
 \item[SLRD+:]
-The satisfiability problem for this fragment\footnote{The result obtained concern a fragment with more general recursive definitions.} is decidable~\cite{BrotherstonFGNP13},
+The satisfiability problem for this fragment\footnote{The results obtained concern a fragment with more general recursive definitions.} is decidable~\cite{BrotherstonFGNP13},
 but the validity of an entailment is not~\cite{AntonopoulosGHKO14}.
 %
 %% Does they have disjunctions?
@@ -447,14 +447,14 @@ Some of the above solvers deal with other problems than the ones considered for 
 %%%%%%%%%%
 \subsection{Benchmarks and their input format}
 The benchmarks were collected in the input format submitted by the participants.
-This set of problems was translated into a common format designed like a theory of the SMTLIB format\footnote{\url{www.smtlib.org}}. That is, they used the syntax of SMT-LIBv2, although the SL theory underlying the syntax is not an official SMT-LIB theory or, at this point, even compatible with the theory underlying SMT-LIB.
+This set of problems was translated into a common format designed like a theory of the SMT-LIB format\footnote{\url{www.smtlib.org}}. That is, they used the syntax of SMT-LIBv2, although the SL theory underlying the syntax is not an official SMT-LIB theory or, at this point, even compatible with the theory underlying SMT-LIB.
 The rationale for this choice of common input format is 
-that SL is combined with or translated into first-order theories that are or will be supported by the SMTLIB format.
+that SL is combined with or translated into first-order theories that are or will be supported by the SMT-LIB format.
 Also, we needed a typed input format and some support for processing this format\footnote{In particular, we used the parser for the SMTLIBv2 available at \url{www.smtlib.org/utilities.html}.}.
  
 More precisely, each benchmark file is organized as follows:
 \begin{itemize}
-\item Preamble information required by the SMTLIB format: the theory, the source, the kind (crafted, application, etc) and status of the problem.  Here the theory was designated as \textbf{SL}, even though that is not at this point an official SMT-LIB theory. %% TODO - correct the name of the theory
+\item Preamble information required by the SMT-LIB format: the theory, the source, the kind (crafted, application, etc) and status of the problem.  Here the theory was designated as \textbf{SL}, even though that is not at this point an official SMT-LIB theory. %% TODO - correct the name of the theory
 \item The set of sorts, fields, and recursive definitions used in the problem. Notice that the input format is strongly typed, i.e., each program variable has a unique type (reference to some sort) and 
 fields are typed as function symbols from their declaration type to their definition type. 
 \item One resp. two assertions for each satisfiability resp. entailment problem. 
@@ -462,7 +462,7 @@ fields are typed as function symbols from their declaration type to their defini
 \end{itemize}
 
 The syntax and semantics of this format were discussed and agreed in the public mailing group. 
-The exact definition of the theory used as well as the full set of benchmarks is available on-line as a GITHUB archive\footnote{\url{github.com/mihasighi/smtcomp14-sl}}.
+The exact definition of the theory used and the full set of benchmarks is available on-line as a GITHUB archive\footnote{\url{github.com/mihasighi/smtcomp14-sl}}.
 The existing version of these benchmarks is the result of several iterations on the initial set of problems:
 \begin{itemize}
 \item We ensured that the semantics used in the input format of solvers matched the one used in the common format. 
@@ -546,7 +546,8 @@ StarExec imposes a time and space limit on each attempt of a solver to solve a g
 The computation of the scores obtained for each division followed the rules fixed for SMT-COMP'14.
 The best score is the one with, in order, (a) the least number of incorrect answers, (b) the largest number of correctly solved problems, and (c) the smallest time taken in solving the correctly solved problems.
 Note that solvers are allowed to respond ``unknown" or to time-out on a given benchmark without penalty (other than not being able to count that benchmark as a success).
-Note also that a single wrong answer, even accompanied by many correct answers, places a competitor behind one that has just one right answer. This choice is intended to emphasize the need for sound, bug-free solvers that can be relied upon by an application-focused user community. Giving the number of correctly problems priority over the time taken to solve them is a more debatable choice. To date the emphasis in these competitions has been on raw logical capability of a solver; however, many applications are more concerned with fast solutions of most problems rather than eventual solution of more problems. Thus the scoring metric may be reconsidered for future competitions.
+Note also that a single wrong answer, even accompanied by many correct answers, places a competitor behind one that has just one right answer. This choice is intended to emphasize the need for sound, bug-free solvers that can be relied upon by an application-focused user community. Giving the number of correctly
+solved problems priority over the time taken to solve them is a more debatable choice. To date the emphasis in these competitions has been on raw logical capability of a solver; however, many applications are more concerned with fast solutions of most problems rather than eventual solution of more problems. Thus the scoring metric may be reconsidered for future competitions.
 
 
 
@@ -691,8 +692,8 @@ integer arithmetics theory~\cite{PerezR11}, array theory~\cite{BouajjaniDES12-vm
 
 \item With the experience of the current competition, the set of benchmarks has to be improved in the following directions:
 \begin{itemize}
-\item More benchmarks has to be added in the existing divisions, especially the ones with smallest sizes. 
-We are searching benchmarks from software verification problems.
+\item More benchmarks must be added in the existing divisions, especially the ones with smallest sizes. 
+We are searching for benchmarks from software verification problems.
 
 \item Some new divisions will be introduced to take into account the needs of the software verification tools. For example, the combination of SL with integer arithmetics is used in tools that reason about the heap consumption.
 

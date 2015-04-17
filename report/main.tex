@@ -61,6 +61,8 @@
 \newcommand{\skl}{\mathtt{skl}}
 
 
+\newcommand{\SLRD}{\textsc{SLRD}}
+\newcommand{\SLL}{\textsc{SLL}}
 \newcommand{\sllsat}{\texttt{sll}($\models$)}
 \newcommand{\sllent}{\texttt{sll}($\limp$)}
 \newcommand{\FDBent}{\texttt{FDB}($\limp$)}
@@ -74,6 +76,11 @@
 \newcommand{\SLSAT}{\textsc{SlSat}}
 \newcommand{\SPEN}{\textsc{Spen}}
 
+\newcommand{\smtlib}{\textsc{SMTlib}}
+\newcommand{\smtcomp}{\textsc{SMTcomp}}
+\newcommand{\slcomp}{\textsc{SLcomp}}
+\newcommand{\starexec}{\textsc{StarExec}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Header
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -85,7 +92,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Title
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Report on SL-COMP 2014}
+\title{Report on \slcomp\ 2014}
 \author{\name Mihaela Sighireanu \email sighirea@liafa.univ-paris-diderot.fr \\
         \addr LIAFA, University Paris Diderot \& CNRS \\
         \AND
@@ -100,8 +107,6 @@
 %%Radu Iosif, VERIMAG, CNRS, France
 %%Andrey Rybalchenko, Microsoft Research
 %%Constantin Enea, Mihaela Sighireanu, University Paris Diderot and CNRS
-
-%\institute{University Paris Diderot \& CNRS \and GrammaTech, Inc.}
 \date{\today}
 
 
@@ -121,11 +126,11 @@ A competition of solvers for Separation Logic
 was held in May 2014, 
 as an unofficial satellite event of the FLoC Olympic Games.
 %% like the OFF of a festival, i.e., un-official event
-%% with the logistic support of SMTCOMP. 
+%% with the logistic support of \smtcomp. 
 Six solvers participated in the competition; the success and performance
 of each solver was measured over an appropriate subset of a library of benchmarks
 accumulated for the purpose.
-Three of these solvers are calling external SAT or SMT solvers to fulfill  their job.
+%Three of these solvers are calling external SAT or SMT solvers to fulfill  their job.
 The benchmarks consisted of satisfiability and entailment problems
 over formulas in the fragment of symbolic heaps with recursive definitions, 
 which is the fragment of Separation Logic that is most used in program analysis and verification tools.
@@ -136,9 +141,9 @@ the future of this event.
 \end{abstract}
 
 
-\keywords{Separation Logic, SMTLIB, SAT Modulo Theory}
+\keywords{Separation Logic, \smtlib, SAT Modulo Theory}
 
-\published{December 12th, 2014}{}{}
+\published{December 12th, 2014}{\today}{}
 
 
 
@@ -151,7 +156,7 @@ introduced nearly fifteen years ago by Reynolds~\cite{Reynolds99,OHearnRY01,Reyn
 %
 Its high expressivity, its ability to generate compact proofs, and 
 its support for local reasoning 
-motivated the development of tools for automatic reasoning about programs using SL.
+has motivated the development of tools for automatic reasoning about programs using SL.
 For a rather exhaustive list of the past and present tools, see the web site~\cite{OHearn-SLsite}.
 
 These tools seek to establish memory safety properties and/or infer shape properties of the heap at a scale of millions of lines of code.
@@ -161,13 +166,13 @@ In the last five years, several papers reported on the design and implementation
 
 The organization of a public competition of SL solvers has been an opportunity 
 to collect the existing benchmarks and  
-to make available the binaries of these tools on a common platform, i.e., StarExec~\cite{StarExecsite}.
-The SL-COMP 2014 has been possible due to the support of the SMT-COMP organizing committee, 
-although SL is not a theory of the SMTLIB format.
-The competition has been held as an ``off'' (unofficial) event \footnote{That is, the competition was executed in conjunction with the games by the SMT-COMP organizing committee, SMT-COMP being an official participant in the games; the results of SL-COMP 2014 were reported at the SMT-2014 workshop at FLoC; however, SL-COMP 2014 was organized too late and was too experimental to be an official part of the FLoC Olympic Games.}
+to make available the binaries of these tools on a common platform, i.e., \starexec~\cite{StarExecsite}.
+The \slcomp\ 2014 has been possible due to the support of the \smtcomp\ organizing committee, 
+although SL is not a theory of the \smtlib\ format.
+The competition has been held as an ``off'' (unofficial) event \footnote{That is, the competition was executed in conjunction with the games by the \smtcomp\ organizing committee, \smtcomp\ being an official participant in the games; the results of \slcomp\ 2014 were reported at the SMT-2014 workshop at FLoC; however, \slcomp\ 2014 was organized too late and was too experimental to be an official part of the FLoC Olympic Games.}
 %% trial section?
-associated with the SMT-COMP 2014 competition~\cite{SMTCOMPsite}, at the FLoC Olympic Games.
-%% The results of the competition have been presented in the SMTCOMP workshop.
+associated with the \smtcomp\ 2014 competition~\cite{SMTCOMPsite}, at the FLoC Olympic Games.
+%% The results of the competition have been presented in the SMT workshop.
 %%Informations about the participants and the final results are also available online at \url{www.liafa.univ-paris-diderot.fr/~sighirea/slcomp14/}.
 
 
@@ -177,7 +182,7 @@ associated with the SMT-COMP 2014 competition~\cite{SMTCOMPsite}, at the FLoC Ol
 The competition focused on a fragment of SL that has been found to be the kernel of most tools, known 
 as
 the \emph{symbolic heaps} fragment
-or Separation Logic with Recursive Definitions (SLRD)~\cite{IosifRS13} or
+or Separation Logic with Recursive Definitions (\SLRD)~\cite{IosifRS13} or
 the positive flat SL fragment~\cite{AntonopoulosGHKO14}. 
 
 This fragment specifies the configurations of programs manipulating variables that are references to some record types; the records are defined by the user as a set of reference fields.
@@ -188,7 +193,7 @@ Such configurations are modeled by
 The logic includes three kinds of atomic propositions describing the heap:
 (i) the empty heap, 
 (ii) a heap consisting of one allocated record cell, and
-(iii) an unbounded heap segment corresponding to a data structure whose shape is defined inductively using a \emph{recursive definition}. 
+(iii) an unbounded heap segment corresponding to a data structure whose shape is defined inductively using \emph{recursive definitions}. 
 Examples of such recursive definitions are provided in Table~\ref{tab:RD}.
 These atoms are connected via a separating conjunction primitive. 
 Only existential quantification is allowed and 
@@ -198,7 +203,11 @@ disjunction appears only on recursive definitions.
 
 %%%%%%%%%%
 \paragraph{Syntax:}
-More formally, the syntax of formulas in the symbolic heaps fragment of Separation Logic
+Let $\pfields$ be a finite set of \emph{field names} used in the definition of records.
+The set of \emph{program variables} is denoted by $\vars$ and we use lower-case letters $x, y, z$ for them.
+The \emph{logical variables} are denoted by capital letters in an alphabet $\lvars$.
+Inductive definitions use names in a finite set $\preds$.
+The syntax of formulas in the symbolic heaps fragment of Separation Logic
 is given by the following grammar:
 $$
 \begin{array}{c}
@@ -312,7 +321,7 @@ The set of models of a formula $\varphi$ is denoted by $\model{\varphi}$. Given 
 formulas $\varphi_1$ and $\varphi_2$, we say that $\varphi_1$ entails
 $\varphi_2$, denoted by $\varphi_1\limp\varphi_2$, iff
 $\model{\varphi_1}\subseteq \model{\varphi_2}$. 
-
+%
 Notice that this semantics is a \emph{precise} semantics. It was chosen because it is the most used in tools and in the verification of concurrent programs.
 %%give more details on difference between intuitionistic/precise, 
 %%why precise? needed for concurrent program analysis
@@ -361,15 +370,15 @@ due to its expressiveness, does not have very nice decidability properties~\cite
 For this reason, most program verification tools use incomplete heuristics to solve the satisfiability and entailment problems.
 
 We summarize below the theoretical results obtained on the decidability of this fragment.
-The various benchmark and competition divisions introduced in SL-COMP stem from these results.
+The various benchmark and competition divisions introduced in \slcomp\ stem from these results.
 \begin{description}
-\item[SLRD+:]
+\item[\SLRD+:]
 This fragment considers any kind of recursive definitions.
 Its satisfiability problem is decidable~\cite{BrotherstonFGNP13},
 but the validity of an entailment is not~\cite{AntonopoulosGHKO14}.
 %
 %% Does they have disjunctions?
-A sub-fragment of SLRD+ that has a decidable entailment problem has been identified in~\cite{IosifRS13}. It includes \emph{bounded tree width} recursive definitions.
+A sub-fragment of \SLRD+ that has a decidable entailment problem has been identified in~\cite{IosifRS13}. It includes \emph{bounded tree width} recursive definitions.
 These definitions are general enough to define (doubly-) linked lists, trees,
 and structures more general than trees, such as trees whose leaves are chained in
 a list. 
@@ -378,28 +387,31 @@ In particular, they require that there is exactly one points-to predicate in any
 %% a stratification of the call graph of recursive definitions,
 The entailment problem in this fragment is EXPTIME-hard~\cite{AntonopoulosGHKO14}.
 
-\item[SLL+:]
+\item[\SLL+:]
 This fragment is obtained when $\preds$ is the singleton set $\{\ls\}$. 
 The entailment problem is $\Pi^P_2$-complete~\cite{AntonopoulosGHKO14}.
 
-\item[SLL:]
-This is a sub-fragment of SLL+ obtained by requiring that
+\item[\SLL:]
+This is a sub-fragment of \SLL+ obtained by requiring that
 (i) both formulas of the entailment problem do not contain disjunctions and 
 (ii) the right-hand side formula has no existential quantification\footnote{This is the case for the verification conditions generated for checking safety properties of programs.}. 
 This sub-fragment has a PTIME decision procedure for the entailment problem~\cite{CookHOPW11}.
 \end{description}
 
-The benchmark problems used in the competition were split into five divisions that correspond to the three classes of problems above and the two decision problems considered.
-Because very few tools were tuned for satisfiability in the SLL+ fragment, this division was not opened.
+%% MS: changed as suggested by the Reviewer 3:
+%The benchmark problems used in the competition were split into five divisions that correspond to the three classes of problems above and the two decision problems considered.
+%Because very few tools were tuned for satisfiability in the \SLL+ fragment, this division was not opened.
 
+Out of the 6 possible divisions (three classes of problems above and the two decision problems considered), 
+only five were opened because very few tools were tuned for satisfiability in the \SLL+ fragment.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Competition Organization}
 
-The first edition focused on two goals:
-(i) bring together a large set of SL solvers and
-(ii) build a common but not trivial benchmark suite. 
+The first edition of \slcomp\ focused on %two goals:
+bringing together a large set of SL solvers and
+building a common but not trivial benchmark suite. 
 
 %%%%%%%%%%
 \subsection{Launching procedure and support}
@@ -409,11 +421,11 @@ to several research groups
 %%
 that are actively developing solvers for SL.
 The researchers that positively replied and some other researchers known for their work on tools for SL were invited to discuss the organization details on a public mailing list \url{smtcomp14-sl@googlegroups.com}.
-We solicited the support of the chair of the SMT-COMP'14 organizing committee, David Cok, to benefit from his experience in the organization of such competitions.
-A message describing the competition was sent on the SMT-COMP and SMT-LIB discussion lists. Following this message, some members of the SMT-COMP steering committee were added to the SL-COMP discussion list. 
+We solicited the support of the chair of the \smtcomp\ 2014 organizing committee, David Cok, to benefit from his experience in the organization of such competitions.
+A message describing the competition was sent on the \smtcomp\ and \smtlib\ discussion lists. Following this message, some members of the \smtcomp\ steering committee were added to the \slcomp\ discussion list. 
 This inaugural edition of the competition was jointly organized by Mihaela Sighireanu and David Cok:
 Mihaela Sighireanu enlisted participation, moderated the discussion on competition rules, and organized the 
-collection and categorization of benchmarks; David Cok advised on the competition organization and rules based on experience with other competitions, and he executed and reported the results of the competition using the Star-Exec framework.
+collection and categorization of benchmarks; David Cok advised on the competition organization and rules based on experience with other competitions, and he executed and reported the results of the competition using the \starexec\ framework.
 
 
 %%%%%%%%%%
@@ -431,11 +443,11 @@ These teams provided:
 Because the time given for preparing the binary was very short (2 weeks), one solver~\cite{HasseIOP13}
 %give details
 retired from the competition. The problem faced by this solver will be discussed further in the concluding remarks.
-
+%
 Note that although one person is listed as ``submitter'' for a solver on the web site,
 %give here generic web site or \url{www.smtcomp.org}, 
 there is generally a team of contributors behind each tool; the identified person is simply the communication contact.
-
+%
 The participants in this first edition were the following:
 
 %\fbox{Check the details for your solver.}
@@ -447,7 +459,7 @@ The participants in this first edition were the following:
 solver has been submitted by 
 Juan Navarro Perez (UCL, UK) and 
 Andrey Rybalchenko (Microsoft Research Cambridge, UK).
-The solver deals with the satisfiability and entailment checking in the SLL fragment.
+The solver deals with the satisfiability and entailment checking in the \SLL\ fragment.
 For this, it implements a model-based approach.
 The procedure relies on SMT solving technology (Z3 solver is used) to untangle potential aliasing between program variables. 
 It has at its core a matching function that checks whether a concrete valuation is a model of the input formula and, if so, generalizes it to a larger class of models where the formula is also valid.  
@@ -457,7 +469,7 @@ It has at its core a matching function that checks whether a concrete valuation 
 solver has been submitted by 
 Nikos Gorogiannis (Middlesex University London, UK).
 %J. Brotherston, N. Gorogiannis, and R. L. Petersen 
-The solver deals with the entailment checking for the SLRD+ fragment.
+The solver deals with the entailment checking for the \SLRD+ fragment.
 It is an instantiation of the theorem prover \textsc{Cyclist} for the case of Separation Logic with inductive definitions. 
 The theorem prover builds derivation trees with ``back-links'' from leaves to nodes of the tree that obey some soundness condition. 
 For the Separation Logic, the \CYCLIST\ prover replaces the rule of weakening used in first-order theorem provers with the frame rule of SL.
@@ -466,7 +478,7 @@ For the Separation Logic, the \CYCLIST\ prover replaces the rule of weakening us
 \item \SLEEK~\cite{ChinDNQ12,SLEEKsite} 
 solver has been submitted by 
 Quang Loc Le and Wei Ngan Chin (NUS, Singapore).
-The solver deals with the satisfiability and entailment checking for SLRD+ formulas.
+The solver deals with the satisfiability and entailment checking for \SLRD+ formulas.
 It is an (incomplete but) automatic prover, that builds a proof tree for the input formulas by using the classical inference rules and the frame rule of SL.
 %
 \SLEEK\ discharges the spatial proof obligations, the remaining pure obligations are discharged by external provers like CVC4, Mona, or Z3.
@@ -476,7 +488,7 @@ It is an (incomplete but) automatic prover, that builds a proof tree for the inp
 solver has been submitted by 
 Adam Rogalewicz and Tomas Vojnar (VeriFIT, Czech Rep) and
 Radu Iosif (Verimag, France).
-The solver deals with the entailment problem in the decidable sub-fragment of SLRD+ defined in~\cite{IosifRS13}.
+The solver deals with the entailment problem in the decidable sub-fragment of \SLRD+ defined in~\cite{IosifRS13}.
 The proof method for checking $\varphi\limp\psi$ relies on converting $\varphi$ and $\psi$ into two tree automata $A_\varphi$ resp. $A_\psi$, and checking
 the tree language inclusion of the automaton $A_\varphi$ in the automaton $A_\psi$.
 
@@ -486,7 +498,7 @@ solver has been submitted by
 Nikos Gorogiannis (Middlesex University London, UK) 
 and  Juan Navarro Perez (UCL, UK).
 %J. Brotherston, C. Fuhs, N. Gorogiannis, and J. Navarro Perez
-The solver deals with the satisfiability problem for the SLRD+ fragment with general inductively defined predicates.
+The solver deals with the satisfiability problem for the \SLRD+ fragment with general inductively defined predicates.
 The decision procedure is based on a fixed point computation of a constraint, called the ``base'' of an inductive predicate definition. This constraint is a conjunction of equalities and dis-equalities between a set of free variables built also by the fixed point computation from the set of inductive definitions.
 
 
@@ -495,7 +507,7 @@ The decision procedure is based on a fixed point computation of a constraint, ca
 solver has been submitted by 
 Mihaela Sighireanu (UPD \& CNRS, France).
 %C. Enea, O. Lengal, M. Sighireanu, and T. Vojnar
-The solver deals with satisfiability and entailment problems for the fragment SLRD+ where 
+The solver deals with satisfiability and entailment problems for the fragment \SLRD+ where 
 (i) the recursive definitions correspond to some class of (nested) lists
 and (ii) the right-hand side of the entailment problem does not have existential quantifiers.
 %The class of recursive definitions allowed is included in the decidable fragment defined by~\cite{IosifRS13}, but is restricted to list segments in order to obtain an efficient decision procedure.
@@ -509,7 +521,7 @@ A notable fact about this set of participants is the diversity of techniques use
 \begin{itemize}
 \item reduction to SAT or SMT problems (\ASTERIX, \SLSAT, \SPEN),
 \item resolution based (\CYCLIST, \SLEEK),
-\item reduction to finding graph homomorphism (\SPEN),
+\item reduction to finding graph homomorphism (\SPEN), and
 \item reduction to tree automata membership test (\SPEN) or to tree automata inclusion test (\SLIDE).
 \end{itemize}
 
@@ -519,14 +531,14 @@ Some of the above solvers deal with other problems than the ones considered for 
 %%%%%%%%%%
 \subsection{Benchmarks and their input format}
 The benchmarks were collected in the input format submitted by the participants.
-This set of problems was translated into a common format designed like a theory of the SMT-LIB format\footnote{\url{www.smtlib.org}}. That is, they used the syntax of SMT-LIBv2, although the SL theory underlying the syntax is not an official SMT-LIB theory or, at this point, even compatible with the theory underlying SMT-LIB.
+This set of problems was translated into a common format designed like a theory of the \smtlib\ format\footnote{\url{www.smtlib.org}}. That is, they used the syntax of \smtlib v2, although the SL theory underlying the syntax is not an official \smtlib\ theory or, at this point, even compatible with the theory underlying \smtlib.
 The rationale for this choice of common input format is 
-that SL is combined with or translated into first-order theories that are or will be supported by the SMT-LIB format.
-Also, we needed a typed input format and some support for processing this format\footnote{In particular, we used the parser for the SMTLIBv2 available at \url{www.smtlib.org/utilities.html}.}.
+that SL is combined with or translated into first-order theories that are or will be supported by the \smtlib\ format.
+Also, we needed a typed input format and some support for processing this format\footnote{In particular, we used the parser for the \smtlib v2 available at \url{www.smtlib.org/utilities.html}.}.
  
 More precisely, each benchmark file is organized as follows:
 \begin{itemize}
-\item Preamble information required by the SMT-LIB format: the theory, the source, the kind (crafted, application, etc) and status of the problem.  Here the theory was designated as \textbf{SL}, even though that is not at this point an official SMT-LIB theory. %% TODO - correct the name of the theory
+\item Preamble information required by the \smtlib\ format: the theory, the source, the kind (crafted, application, etc) and status of the problem.  Here the theory was designated as \textbf{SL}, even though that is not at this point an official \smtlib\ theory. %% TODO - correct the name of the theory
 \item The set of sorts, fields, and recursive definitions used in the problem. Notice that the input format is strongly typed, i.e., each program variable has a unique type (reference to some sort) and 
 fields are typed as function symbols from their declaration type to their definition type. 
 \item One resp. two assertions for each satisfiability resp. entailment problem. 
@@ -539,25 +551,25 @@ The existing version of these benchmarks is the result of several iterations on 
 \begin{itemize}
 \item We ensured that the semantics used in the input format of solvers matched the one used in the common format. 
 %%For example, \SLEEK\ consider that variables with different types are distinct, and moreover it does not allow $\ne$ operator to be applied on variables of different types.
-\item The status (expected result), the source, and the kind of each problem were supplied as SMT-LIB meta-information. ``Kind" is an SMT-LIB characterization: a \textit{crafted} problem demonstrates a particular aspect of a solver or problem domain, a \textit{random} problem in an instance of a problem template parameterized on some dimension (e.g., a size), a \textit{check} problem is a simple problem used to check that a solver is configured correctly, and an \textit{industrial} problem is one that represents a problem produced in an actual application domain.
+\item The status (expected result), the source, and the kind of each problem were supplied as \smtlib\ meta-information. ``Kind'' is an \smtlib\ characterization: a \textit{crafted} problem demonstrates a particular aspect of a solver or problem domain, a \textit{random} problem in an instance of a problem template parameterized on some dimension (e.g., a size), a \textit{check} problem is a simple problem used to check that a solver is configured correctly, and an \textit{industrial} problem is one that represents a problem produced in an actual application domain.
 \item The benchmark curation process identified some problems that had an incorrect expected result computed by their source solver, which required fixing the problem in the solver and in the benchmark.
 \end{itemize}
 
 The final benchmarks have the characteristics presented in Table~\ref{tab:bench}.
 The benchmark set was split into five divisions, using the kind of problems solved and the kind of recursive definitions used, as follows:
 \begin{description}
-\item[\sllsat:] includes satisfiability problems for the SLL fragment.
+\item[\sllsat:] includes satisfiability problems for the \SLL\ fragment.
 % defining possibly empty, acyclic singly liked lists. 
 %%As mentioned before, this fragment has been identified to have a polynomial complexity for the satisfiability problem.
 Most of problems in this division were provided by the team of the \ASTERIX\ solver in~\cite{PerezR11}.
 
-\item[\sllent:] includes entailment problems for the SLL fragment and has the same source. The problems were either randomly generated to prove the capabilities of the solver or they are verification conditions generated by the \textsc{SmallFoot} tool~\cite{SmallFootsite}.
+\item[\sllent:] includes entailment problems for the \SLL\ fragment and has the same source. The problems were either randomly generated to prove the capabilities of the solver or they are verification conditions generated by the \textsc{SmallFoot} tool~\cite{SmallFootsite}.
 
-\item[\UDBsat:] includes satisfiability problems for the SLRD+ fragment, i.e., formulas using any fixed, user-defined set of recursive definitions satisfying the syntax given in equation (\ref{eq:RD}).
+\item[\UDBsat:] includes satisfiability problems for the \SLRD+ fragment, i.e., formulas using any fixed, user-defined set of recursive definitions satisfying the syntax given in equation (\ref{eq:RD}).
 Recall that this problem is decidable. 
 The problems were proposed by the teams of \SLSAT\ and \SLEEK\ solvers.
 
-\item[\UDBent:] includes entailment problems for formulas in the SLRD+ fragment.
+\item[\UDBent:] includes entailment problems for formulas in the \SLRD+ fragment.
 Recall that this problem is undecidable. 
 The problems were proposed by the teams of \CYCLIST, \SLEEK, \SLIDE, and \SPEN.
 
@@ -603,19 +615,22 @@ Randomly generated & 59\% \\
 %%%%%%%%%%
 \subsection{Competition infrastructure}
 
-SL-COMP used the StarExec platform~\cite{StarExecsite} under the control of David Cok. 
+%% MS: I've put together the paragraphs below, as suggested by Reviewer 2; 
+%%     the main idea being "details on competition parameters".
+\slcomp\ used the \starexec\ platform~\cite{StarExecsite} under the control of David Cok 
 %% more on the benefits of this platform
-
-The pre-processing feature of StarExec was used for 5 of the 6 solvers in order to translate the problems from the common format to the internal format of each solver. The code of these pre-processors is available on the competition GitHub repository.
-
+and required several features provided by this platform.
+%
+The pre-processing was used for 5 of the 6 solvers in order to translate the problems from the common format to the internal format of each solver. The code of these pre-processors is available on the competition GitHub repository.
+%
 The competition did not use the scrambling of benchmarks because the names used for recursive definitions defined in the files of some divisions (mainly, \sllsat, \sllent, and \FDBent\ divisions) are important for the solvers.
-
+%
 Each benchmark file included only one problem. 
 The incremental feature was not used and is not supported by most of the competing solvers.
-
+%
 StarExec imposes a time and space limit on each attempt of a solver to solve a given benchmark. For this competition, the limits were 2400 seconds and 100GB. However, no benchmark problem was complex enough to even approach these limits.
 
-The computation of the scores obtained for each division followed the rules fixed for SMT-COMP'14.
+The computation of the scores obtained for each division followed the rules fixed for \smtcomp'14.
 The best score is the one with, in order, (a) the least number of incorrect answers, (b) the largest number of correctly solved problems, and (c) the smallest time taken in solving the correctly solved problems.
 Note that solvers are allowed to respond ``unknown" or to time-out on a given benchmark without penalty (other than not being able to count that benchmark as a success).
 Note also that a single wrong answer, even accompanied by many correct answers, places a competitor behind one that has just one right answer. This choice is intended to emphasize the need for sound, bug-free solvers that can be relied upon by an application-focused user community. Giving the number of correctly
@@ -628,7 +643,7 @@ solved problems priority over the time taken to solve them is a more debatable c
 \section{Results}
 
 \paragraph{New benchmarks:}
-One of the goals of SL-COMP was to build an interesting set of benchmark problems. 
+One of the goals of \slcomp\ was to build an interesting set of benchmark problems. 
 Aside from its use in the competition, the current set provides a reference of the kind of problems handled efficiently by the existing solvers.
 Moreover, researchers can use the collected benchmarks for the evaluation of competing solvers and for the testing of their own solver quite apart from any competition. 
 In particular, it was important to obtain benchmarks relevant to the actual application area, i.e., software verification.
@@ -636,7 +651,7 @@ In particular, it was important to obtain benchmarks relevant to the actual appl
 \paragraph{Publicly available solvers:} StarExec requires that a public version of a solver be made available on StarExec as a condition of participating in a competition. This allows users of StarExec to rerun a competition if so desired. More importantly, it allows users to upload a new set of benchmarks of interest in their application domain and to try the various solvers against those benchmarks.
 
 \paragraph{Overall results:}
-Table~\ref{tab:overall} provides an overall view of the competition dashboard for all divisions. This information was presented in a live web-site that was updated every minute throughout the course of the competition. This first competition only took several hours to run (as compared, for example, to SMT-COMP, which consumed a week of computation over 150 nodes of the Star-Exec cluster).
+Table~\ref{tab:overall} provides an overall view of the competition dashboard for all divisions. This information was presented in a live web-site that was updated every minute throughout the course of the competition. This first competition only took several hours to run (as compared, for example, to \smtcomp, which consumed a week of computation over 150 nodes of the \starexec\ cluster).
  
 We make a special mention of the \SLEEK\ solver for competing in all divisions.
 
@@ -719,7 +734,7 @@ We make a special mention of the \SLEEK\ solver for competing in all divisions.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusions and Perspectives}
 
-SL-COMP fulfilled its goals:
+\slcomp\ fulfilled its goals:
 an interesting suite of SL problems is publicly available in a common format and
 the maturity of solvers submitted for this competition has been proven.
 
@@ -736,10 +751,10 @@ exists for first-time competitors in other StarExec-hosted competitions as well.
 
 \item A community interested in such tools has been identified and informed about the status of the existing solvers. This community could benefit from improving the tools built on the top of decision procedures for SL.
 
-\item The SMT-LIB community discovered the status of the solvers for SL and became interested in this theory.
+\item The \smtlib\ community discovered the status of the solvers for SL and became interested in this theory.
 
-\item A interesting problem has been submitted to the StarExec platform by one solver, \textsc{SeLoger}~\cite{HasseIOP13}, initially submitted to SL-COMP. This solver needs to have a batch execution in order to avoid the loading of the interpreter executing its binary (the solver needs a Windows platform).
-This feature is different from the incremental mode provided by the StarExec platform. It may measure only the score obtained on a bunch of problems, without measuring the details on each problem. 
+\item A interesting problem has been submitted to the StarExec platform by one solver, \textsc{SeLoger}~\cite{HasseIOP13}, initially submitted to \slcomp. This solver needs to have a batch execution in order to avoid the loading of the interpreter executing its binary (the solver needs a Windows platform).
+This feature is different from the incremental mode provided by the \starexec\ platform. It may measure only the score obtained on a bunch of problems, without measuring the details on each problem. 
  
 \end{itemize}
 
@@ -755,16 +770,16 @@ In the intervening time to the next edition of the competition, several tasks ar
 %Several constructs are
 %\fbox{Is there a need for change?}
 
-\item The relationship of the SL theory to SMTLIB must be understood. This may require alterations to
-the basic SL theory or designing an embedding of SL as an SMTLIB theory.
+\item The relationship of the SL theory to \smtlib\ must be understood. This may require alterations to
+the basic SL theory or designing an embedding of SL as an \smtlib\ theory.
 The discussion group \url{sl2smtlib@googlegroups.com} has been opened for working out this relationship. 
-The use of the SMT-LIB format for SL-COMP is convenient because some SL solvers already deal with a combination of SL with theories currently available in SMT-LIB, e.g., 
+The use of the \smtlib\ format for \slcomp\ is convenient because some SL solvers already deal with a combination of SL with theories currently available in \smtlib\, e.g., 
 integer arithmetics theory~\cite{PerezR11}, array theory~\cite{BouajjaniDES12-vmcai}, set theory~\cite{PiskacWZ13}, etc.
 
 
 \item With the experience of the current competition, the set of benchmarks has to be improved in the following directions:
 \begin{itemize}
-\item More benchmarks must be added in the existing divisions, especially the ones with smallest sizes. 
+\item More benchmarks must be added in the existing divisions, especially the ones with smallest number of benchmarks. 
 We are searching for benchmarks from software verification problems.
 
 \item Some new divisions will be introduced to take into account the needs of the software verification tools. For example, the combination of SL with integer arithmetics is used in tools that reason about the heap consumption.
@@ -813,7 +828,7 @@ for their interesting comments on the input theory and format used in the compet
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\bibliographystyle{plain}
+\bibliographystyle{plainbv}
 \bibliography{bibliography}
 
 \end{document}

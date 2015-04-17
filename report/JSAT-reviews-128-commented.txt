@@ -1,0 +1,259 @@
+We thank the reviewers for their careful reading and 
+the thoughtful suggestions. We provide below a commented list of 
+changes done to the paper in order to improve the paper.
+
+[MS: Text like this correspond to my comments, not to be published.]
+
+
+> Reviewer 1
+>++++++++++
+> ...
+> Overall, I see two points for improvements:
+
+> The introduction of syntax and semantics is too extensive and
+> not really used in the rest of the paper. The authors try to introduce
+> a complex logic in a compact way and that makes it hard to read
+> and I doubt that in this paper it adds any value to the reader.
+> At least it should be better related to the given examples, but
+> I have the impression that the informal introduction is sufficient.
+
+[MS: The Reviewer 3 is also complaining about this presentations of the SL fragment.]
+[TODO: remove the semantics and add reference to papers presenting it in details.]
+[TODO: comment the examples given for inductive predicates. ]
+ 
+> The results of the competition are not very carefully analysed.
+> Only some accumulated values are given. It would be interesting
+> to see the differences between the different benchmark sets and
+> get a better comparison of the solver’s behavior. For example, cactus
+> plots as in common in the SAT competition could be used.
+
+[MS: We need the detailed results to made these plots. But are they anywhere?]
+
+> Details:
+
+> The abstract emphasizes that 3 solvers are using SAT/SMT. Why is
+> this so important to mention that in the abstract?
+
+We removed this phrase for the abstract.
+
+Comment:
+We wanted to emphasize the relation between this competition and 
+the SAT & SMT competitions. Notice that some solvers use techniques that are
+not classic for SAT/SMT, e.g., the ones based on tree automata.
+Because this fact is largely commented in the text, we took the decision
+to remove it.
+
+> It is good that concrete examples are give (Table 1). But they should
+> be better integrated in the text.
+
+[MS: TODO]
+
+> For the syntax, it would be helpful to have the alphabets introduced.
+
+The presentation of the logic fragment has been changed as suggested by the
+the other reviewers. The alphabets used in the syntax have been introduced.
+
+> There is a sentence „We solicited the support of D. Cock“ As he is
+> one of the co-authors of this paper this reads a little odd, please
+> rephrase this.
+
+[MS: David, do you have any idea about rephrasing this? Maybe remove it?
+     Or: "We solicited the officers of the SMTCOMP 2014 for support in
+          organizing this competition."
+]
+          
+
+> Reviewer 2
+> ++++++++++
+
+> The paper describes the competition of separation logic solvers arranged 
+> as an unofficial satellite event of the FLOC 2014 Olympic Games. 
+> The paper is a carefully written description of the competition, 
+> which seems to have been organized for the first time. 
+> Because of this, much of the content of the paper are on basic things such as 
+> the logic fragments being supported and the practicalities of running the benchmarking, 
+> while the analysis of the competition outcome is left a bit lighter. 
+
+The presentation of the results has been improved as suggested by the reviewers
+(see points below).
+
+> Thankfully the complexity issues and syntax + semantics are covered.
+ 
+> The part about the tool internal techniques is a bit short and could be extended. 
+> Especially analysis on which techniques worked for which benchmark categories 
+> could be insightful. 
+
+[MS: TODO: add a note with the comment of at least sll0a and FDB divisions.
+           For example, sll0a seems to work very well with Horn clauses.
+           Still, the technique based on tree automata is not so bad and
+           the overhead with tree construction not so big.
+           Syntactic techniques are less efficient.
+           For the FDB, knowing the the fragment is decidable helps the
+           winner to solve quicker the problems. The proof techniques
+           seems to search in a larger space.
+           For the UDB fragment, the tree automata techniques does not
+           show its power, maybe only a problem of implementation.]
+
+> Still I think the paper is of interest to the separation logic community, 
+> and thus should be accepted.
+
+> All in all I think the paper is almost ready to be published. Below I list 
+> some minor things the authors could improve on for the next version of the submission.
+
+> - On page 1: Please use "has motivated the development" instead of "motivated the development", 
+> as the development of tools is still ongoing and is not a thing of the past.
+
+Done.
+
+> - On page 2: "using recursive definition" should be "using recursive definitions", 
+> as there are several recursive definitions in place.
+
+Done.
+
+> - Page 3 is a bit empty with lost of free space above and below Table 1, 
+> see if you could fit some more content on that page somehow.
+
+[MS: TODO: fill the page with explanations about the meaning of these definitions.]
+
+> - On page 5 there are several list, some of which use a ":" before the first "(i)" item, 
+> while others do not. Please make the punctuations of lists consistent within the paper. 
+> Also on other pages, like page 7, go through the whole paper.
+
+[MS: Well, I don't see any problem on page 7. 
+     TODO: see all the punctuation problems.]
+     
+> - The bullet point list in the middle of page 7 should have an ", and" 
+> at the end of the second to last bullet.
+
+Done.
+
+> - Page 9 and elsewhere in the paper: There are very short (less than a line) long paragraphs, 
+> please make the paragraphs a couple of lines long at least.
+
+Done.
+
+> - Page 9 discusses the competition scoring, including counting the number of incorrect results. 
+> However, I could not find any discussion of incorrect results elsewhere in the paper. 
+> Were any discrepancies found? What was the procedure to handle those, could solver submitters 
+> resubmit fixed solvers? Should this data be in Table 4? 
+> I guess so, as otherwise I can not interpret the results. 
+> This is my main complaint, all of the (a)-(c) data is not provided to the readers in Table 4, 
+> just (b) and (c)!
+
+[MS: Add this information and a note on incorrect answers, including problem in FDB on dll.]
+
+> - Were any "training runs" run to weed out buggy solvers? How was the final set of benchmarks selected?
+
+[TODO]
+
+> - Page 10: The sentence: "We make a special mention..." could be reworded, it sounds a bit clumsy to my ear.
+
+[TODO]
+
+> - Please make the SMT-LIB spelling consistent, both "SMTLIB" and "SMT-LIB" are used.
+
+Done.
+
+> - Page 12: "with smallest size" -> "with the smallest number of benchmarks"
+
+Done.
+
+> - Question: Is there any automated way to handle discrepancies, how were the buggy solvers 
+> found out when there were inconsistencies between them? Is any further work needed on this side?
+
+[TODO]
+
+
+Reviewer 3
+++++++++++
+
+> Organizing a competition, especially the first one for a community, is
+> a difficult task. Even if the scientific results do not seem to be
+> that interesting, one of the main interest of this article is to set
+> the basis for an independent evaluation of SL solvers.
+
+> My first comment is about the description of the SLRD fragment. For
+> someone who does not know the field, the description of the input
+> theory is quite obscure. It is of course useful to give an exact
+> description of the theory fragment that was used in the competition.
+> Nevertheless, a rather informal description of what can be represented
+> with the theory, and what it allows to prove, would be welcome. I
+> guess that SLRD could be introduced to newbies in about half a page,
+> referring the reader to introduction papers for further details.
+
+> In the syntax description, the definition of "set of field references" is
+> extremely confusing: what does \ro \cups \ro actually mean?
+
+[MS: TODO change presentation of SLRD as suggested here.]
+
+> It would be worth explaining at least one of the recursive definitions
+> of Table 1.
+
+[MS: TODO put more expressive names for fields and add a comment on trees, eg.]
+
+> In table 3, it is quite surprising that no industrial benchmark
+> appears. A comment on this would be welcome.
+
+A the time, there were no industrial tool using SL solvers.
+This explains the lack of this kind of benchmarks and our motivation
+for this work. We hope that the Monoidics tool owned now by FaceBook
+will provide some benchmarks for the next competitions.
+We have introduced a comment in section 3.3, in addition to the
+comment in the 'Future work' paragraph of the Conclusion.
+[MS: TODO]
+
+> Table 4 requires more explanations. Is the CPU time given in seconds?
+> I understand that the time reported is the cumulated time over all
+> solved instance. Several solvers seem to be very fast (for example
+> Asterix, in the SLL => division, solves 292 instances in 2.98 seconds,
+> which is approximately 10 ms per instance). This is quite
+> surprising. Does this mean that most instances are small and very
+> easy? It is also important to recall in this table the total number of
+> instances. In the two SLL divisions, 3 solvers were able to solve
+> every instance. Are the problems too easy? In the UDB => division,
+> sleek solves more instances than cyclist-sl, but does not appear in
+> bold face. Does it mean that it was incorrect on a few instances? If
+> some solvers were unsound in some categories, this should be reported.
+
+[TODO]
+
+> Can we tell from Table 4 if some techniques are more successful or
+> promising than others?
+
+[MS: TODO comment on the engineering work to be done in each solver.]
+
+> How do you plan to assign a measure of difficulty to each instance?
+
+[MS: TODO Maybe give the size of formulas in the number of atoms used.]
+
+> Most instances seem to be quite easy (from Table 4). Don't you need
+> more challenging/industrial instances?
+
+[TODO]
+
+> The sentence "The benchmark problems used in the competition were
+> split into five divisions that correspond to the three classes of
+> problems above and the two decision problems considered." is so
+> surprising (5!=3*2) that I immediately stopped and missed the
+> explanation in the next sentence. I suggest rewriting it (for example
+> : "out of the 6 possible divisions (three classes of problems above
+> and the two decision problems considered), only five were opened
+> because...").
+
+Done.
+
+> The limits (2400 s and 100GB) imposed to a solver are unclear to
+> me. Is it 2400 s CPU time or wall-clock time (BTW, is there any
+> parallel solver?)? Is it 100GB RAM (huge!) or disk space?
+
+[TODO]
+
+> I think it's worth indicating which parts of the format need some
+> readjustments (what are the expected evolutions ?).
+
+[TODO]
+
+> The description of the problem raised by SeLoger (batch mode) is unclear.
+
+[TODO]
+

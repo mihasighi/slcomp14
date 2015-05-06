@@ -1,6 +1,6 @@
 We thank the reviewers for their careful reading and 
 the thoughtful suggestions. We provide below a commented list of 
-changes done to the paper in order to improve the paper.
+changes done to the paper in order to improve it.
 
 [MS: Text like this correspond to my comments, not to be published.]
 
@@ -27,7 +27,7 @@ changes done to the paper in order to improve the paper.
 > get a better comparison of the solver’s behavior. For example, cactus
 > plots as in common in the SAT competition could be used.
 
-[MS: We need the detailed results to made these plots. But are they anywhere?]
+[TODO: David?]
 
 > Details:
 
@@ -38,10 +38,9 @@ We removed this phrase for the abstract.
 
 Comment:
 We wanted to emphasize the relation between this competition and 
-the SAT & SMT competitions. Notice that some solvers use techniques that are
-not classic for SAT/SMT, e.g., the ones based on tree automata.
-Because this fact is largely commented in the text, we took the decision
-to remove it.
+the SAT & SMT competitions. Notice that some solvers are based on techniques 
+that are not classic for SAT/SMT, e.g., tree automata.
+
 
 > It is good that concrete examples are give (Table 1). But they should
 > be better integrated in the text.
@@ -50,8 +49,8 @@ to remove it.
 
 > For the syntax, it would be helpful to have the alphabets introduced.
 
-The presentation of the logic fragment has been changed as suggested by the
-the other reviewers. The alphabets used in the syntax have been introduced.
+The presentation of the logic fragment has been changed as suggested reviewers. 
+The alphabets have been introduced before the syntax.
 
 > There is a sentence „We solicited the support of D. Cock“ As he is
 > one of the co-authors of this paper this reads a little odd, please
@@ -74,7 +73,7 @@ the other reviewers. The alphabets used in the syntax have been introduced.
 > the logic fragments being supported and the practicalities of running the benchmarking, 
 > while the analysis of the competition outcome is left a bit lighter. 
 
-The presentation of the results has been improved as suggested by the reviewers
+The presentation of results has been improved as suggested by the reviewers
 (see points below).
 
 > Thankfully the complexity issues and syntax + semantics are covered.
@@ -113,7 +112,7 @@ Done.
 > - Page 3 is a bit empty with lost of free space above and below Table 1, 
 > see if you could fit some more content on that page somehow.
 
-[MS: TODO: fill the page with explanations about the meaning of these definitions.]
+Done.
 
 > - On page 5 there are several list, some of which use a ":" before the first "(i)" item, 
 > while others do not. Please make the punctuations of lists consistent within the paper. 
@@ -184,21 +183,23 @@ Reviewer 3
 > In the syntax description, the definition of "set of field references" is
 > extremely confusing: what does \ro \cups \ro actually mean?
 
-[MS: TODO change presentation of SLRD as suggested here.]
+We have changed the presentation of the logic as suggested.
+We provide the alphabets, introduce the formulas intuitively and
+provide some examples.
 
 > It would be worth explaining at least one of the recursive definitions
 > of Table 1.
 
-[MS: TODO put more expressive names for fields and add a comment on trees, eg.]
+We have explained all the recursive definitions in Table 1.
 
 > In table 3, it is quite surprising that no industrial benchmark
 > appears. A comment on this would be welcome.
 
-A the time, there were no industrial tool using SL solvers.
-This explains the lack of this kind of benchmarks and our motivation
-for this work. We hope that the Monoidics tool owned now by FaceBook
-will provide some benchmarks for the next competitions.
-We have introduced a comment in section 3.3, in addition to the
+At the time, there were no industrial tool using SL solvers.
+This explains the lack of this category of benchmarks and our motivation
+for this work. We hope that the next competitions will benefit from benchmarks 
+provided by industrial tools like the Monoidics tool (now owned by FaceBook).
+We have introduced a comment in Section 3.3, in addition to the
 comment in the 'Future work' paragraph of the Conclusion.
 [MS: TODO]
 

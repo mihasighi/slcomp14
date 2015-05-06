@@ -61,7 +61,7 @@
 \newcommand{\skl}{\mathtt{skl}}
 
 
-\newcommand{\SLRD}{\textsc{SLRD}}
+\newcommand{\SLRD}{\textsc{SLID}}
 \newcommand{\SLL}{\textsc{SLL}}
 \newcommand{\sllsat}{\texttt{sll}($\models$)}
 \newcommand{\sllent}{\texttt{sll}($\limp$)}
@@ -132,7 +132,7 @@ of each solver was measured over an appropriate subset of a library of benchmark
 accumulated for the purpose.
 %Three of these solvers are calling external SAT or SMT solvers to fulfill  their job.
 The benchmarks consisted of satisfiability and entailment problems
-over formulas in the fragment of symbolic heaps with recursive definitions, 
+over formulas in the fragment of symbolic heaps with inductive definitions, 
 which is the fragment of Separation Logic that is most used in program analysis and verification tools.
 % collected from the participants' benchmarks.
 We report in this paper on 
@@ -182,83 +182,100 @@ associated with the \smtcomp\ 2014 competition~\cite{SMTCOMPsite}, at the FLoC O
 The competition focused on a fragment of SL that has been found to be the kernel of most tools, known 
 as
 the \emph{symbolic heaps} fragment
-or Separation Logic with Recursive Definitions (\SLRD)~\cite{IosifRS13} or
+or Separation Logic with Inductive Definitions (\SLRD)~\cite{IosifRS13} or
 the positive flat SL fragment~\cite{AntonopoulosGHKO14}. 
+We provide here only an informal description of this fragment. 
+The semantics of this fragment chosen in the competition is the \emph{precise} semantics.
 
 This fragment specifies the configurations of programs manipulating variables that are references to some record types; the records are defined by the user as a set of reference fields.
 Such configurations are modeled by
 (i) a heap that is a set of records and
 (ii) a stack that maps program variables into locations that are record addresses.
 
-The logic includes three kinds of atomic propositions describing the heap:
-(i) the empty heap, 
-(ii) a heap consisting of one allocated record cell, and
-(iii) an unbounded heap segment corresponding to a data structure whose shape is defined inductively using \emph{recursive definitions}. 
-Examples of such recursive definitions are provided in Table~\ref{tab:RD}.
-These atoms are connected via a separating conjunction primitive. 
-Only existential quantification is allowed and 
-disjunction appears only on recursive definitions. 
-%%develop by showing that this is enough for tools that deal with disjunction 
-%%in an incomplete manner?
+Let $x,y,z$ denote program variables and $X,Y,Z$ logical variables. Every variable has a fixed type.
+The program variable $\nil$ has a fixed meaning representing an undefined (not allocated) location.
+The logic specifies (non-)aliasing relation between variables (logical or program) using (dis-)equality atoms, e.g., $x = y$ or $x\neq z$. A conjunction of such atoms is called a \emph{pure formula}. 
 
-%%%%%%%%%%
-\paragraph{Syntax:}
-Let $\pfields$ be a finite set of \emph{field names} used in the definition of records.
-The set of \emph{program variables} is denoted by $\vars$ and we use lower-case letters $x, y, z$ for them.
-The \emph{logical variables} are denoted by capital letters in an alphabet $\lvars$.
-Inductive definitions use names in a finite set $\preds$.
-The syntax of formulas in the symbolic heaps fragment of Separation Logic
-is given by the following grammar:
-$$
-\begin{array}{c}
-\begin{array}{ll}
-f \in \pfields \mbox{ field names} ~&~
-P \in \preds \mbox{ recursive definition name}
-\\[0.8mm]
-x,y \in \vars \mbox{ program variables} ~&~
-X,Y \in \lvars \mbox{ logical variables}
-\end{array}
-\\[2mm]
-%
-%
-E,F\ ::=\ x \mid X 
-\hfill \mbox{variables}
-\\[1mm]
-\rho\ ::=\ \{ (f,E) \} \mid \rho\cup\rho 
-\hfill \mbox{set of field references}
-\\[2mm]
-%
-% pure part
-\Pi\ ::=\ E = F \mid E \neq F \mid \Pi \land \Pi \hfill 
-\mbox{pure formulas}\\[1mm]
-%
-% spatial part
-\Sigma\ ::=\
-\mathit{emp} \mid
-E \points \rho \mid 
-P(\vec{E}) \mid 
-\Sigma \posep \Sigma 
-%
-\hspace{1cm}\hfill \mbox{spatial formulas}
-\\[2mm]
-A,B\ \triangleq\ \exists \vec{X}\sep \Pi\land\Sigma \hfill \mbox{formulas} %
-\end{array}
-$$
-The program variable $\nil\in\vars$ has a fixed meaning representing an undefined (not allocated) reference.
+Let $f,n,p,s$ denote field names used in the definition of records.
+The logic includes three kinds of atomic propositions describing the heap, called also \emph{spatial atoms}:
+(i) the empty heap $\mathit{emp}$, 
+(ii) a heap consisting of one allocated record cell, e.g., $x \points \{\ldots\}$,
+and
+(iii) an unbounded heap segment, e.g., $\ls(E,F)$, corresponding to a data structure whose shape is defined by a finite set of \emph{inductive definitions} like the ones provided in Table~\ref{tab:RD}. 
+The spatial atoms are connected via a separating conjunction primitive $\posep$ to form a \emph{spatial formula}. 
+A formula is a conjunction of a pure and a spatial formula.
 
-The fragment is parameterized by a set $\preds$ of
-\emph{recursive definitions} defined using the following syntax:
+For example, the following formula specifies a heap built from two cells of singly linked list
+(pointed by $x$ resp. $y$) and a singly list segment starting from $z$ and ending in $\nil$:
+\begin{align}
+x \points \{(f,y)\} \ \posep\ y \points \{(f,z)\} \ \posep\ \ls(z,\nil)
+\end{align}
+The definition $\ls$ on Table~\ref{tab:RD} specifies acyclic singly linked list segments starting in $E$ and with last element pointing to $F$; the recursive field is $f$.
+The list is acyclic because the non-aliasing pure constraint $E\neq F$ prevents $F$ to be one of the cells inside the list segment.
 
+Table~\ref{tab:RD} provides other examples for inductive definitions.
+%
+The atom $\nll(E,F,B)$ specifies a list segment (of successor field $s$) starting from $E$ where each cell has a reference (in field $h$) to a list segment ($\ls$, of successor field $f$) ending to some common border location $B$. 
+%
+The doubly linked list segment $\dll(E,L,P,F)$ starts in $E$ and has as last element $L$; $P$ denotes the location stored by the ``previous'' field $p$ of $E$ and $F$ denotes the location stored in the ``next'' field $n$ of $L$.
+%
+The definition $\mathtt{btree}(E)$ specifies a binary tree with root $E$:
+the first disjunct specifies the case of an empty tree, i.e., with $\nil$ root, while the second disjunct defines a tree with at least one cell allocated in $E$ separated from the trees rooted in its field for the left $l$ and right $r$ sons.
+%
+The last definition $\mathtt{tll}$ specifies a heap storing a binary tree rooted at $R$ and having at least one cell (required by the first disjunct),
+where the leaves are linked using a doubly linked list (of fields $n$ and $p$)  between $P$ and $F$ (excluded).
+%
+The general syntax of inductive definitions is the following:
 \begin{equation}\label{eq:RD}
 P(\vec{E}) \triangleq \bigvee_i \exists \vec{X}_i\sep \Pi_i \land \Sigma_i
 \end{equation}
+\noindent where $\Pi_i$ (resp. $\Sigma_i$) is a pure (resp. spatial) formula over parameters $\vec{E}$ and variables in $\vec{X}_i$.
+Notice that the existential quantification and disjunction are allowed only on inductive definitions. 
 
-\noindent where the spatial formulas $\Sigma_i$ may call $P$ or other predicates from $\preds$.
-Table~\ref{tab:RD} gives several common examples of recursive data structures definable using the syntax above. Other examples can be found in the competition benchmarks.
-%
-Notice that the recursive definition of heaps with singly linked lists, i.e., the $\ls$ in Table~\ref{tab:RD},
-corresponds to acyclic list segments.
 
+%%%%%%%%%%%
+%\paragraph{Syntax:}
+%Let $\pfields$ be a finite set of \emph{field names} used in the definition of records.
+%The set of \emph{program variables} is denoted by $\vars$ and we use lower-case letters $x, y, z$ for them.
+%The \emph{logical variables} are denoted by capital letters in an alphabet $\lvars$.
+%Inductive definitions use names in a finite set $\preds$.
+%The syntax of formulas in the symbolic heaps fragment of Separation Logic
+%is given by the following grammar:
+%$$
+%\begin{array}{c}
+%\begin{array}{ll}
+%f \in \pfields \mbox{ field names} ~&~
+%P \in \preds \mbox{ inductive definition name}
+%\\[0.8mm]
+%x,y \in \vars \mbox{ program variables} ~&~
+%X,Y \in \lvars \mbox{ logical variables}
+%\end{array}
+%\\[2mm]
+%%
+%%
+%E,F\ ::=\ x \mid X 
+%\hfill \mbox{variables}
+%\\[1mm]
+%\rho\ ::=\ \{ (f,E) \} \mid \rho\cup\rho 
+%\hfill \mbox{set of field references}
+%\\[2mm]
+%%
+%% pure part
+%\Pi\ ::=\ E = F \mid E \neq F \mid \Pi \land \Pi \hfill 
+%\mbox{pure formulas}\\[1mm]
+%%
+%% spatial part
+%\Sigma\ ::=\
+%\mathit{emp} \mid
+%E \points \rho \mid 
+%P(\vec{E}) \mid 
+%\Sigma \posep \Sigma 
+%%
+%\hspace{1cm}\hfill \mbox{spatial formulas}
+%\\[2mm]
+%A,B\ \triangleq\ \exists \vec{X}\sep \Pi\land\Sigma \hfill \mbox{formulas} %
+%\end{array}
+%$$
 
 \begin{table}
 \begin{eqnarray}
@@ -281,7 +298,7 @@ corresponds to acyclic list segments.
 \lefteqn{\textit{binary tree}} \nonumber \\ 
 \mathtt{btree}(E) & \triangleq & (E=\nil\land \mathit{emp}) \lor \big( E\neq \nil \land 
 \\
-&& \exists X,Y\sep E\points \{(r,X),(l,Y)\} \posep \mathtt{btree}(X) \posep \mathtt{btree}(X)\big)
+&& \exists X,Y\sep E\points \{(r,X),(l,Y)\} \posep \mathtt{btree}(X) \posep \mathtt{btree}(Y)\big)
 \nonumber 
 \\[1mm]
 %  
@@ -294,72 +311,72 @@ R\points \{(l,X),(r,Y),(p,P),(n,Z)\} \ \posep \\
 \end{array} \nonumber  
 \end{eqnarray}
 
-\caption{Examples of recursive definitions used in the benchmark}
+\caption{Examples of inductive definitions used in the benchmark}
 \label{tab:RD}
-
 \end{table}
 
-%%%%%%%%%%
-\paragraph{Semantics:}
-Let $\loc$ be a set of locations. 
-A stack $S : \vars\cup\lvars\rightarrow \loc$ maps
-variables to locations. 
-A heap $H:\loc\times\pfields\rightharpoonup\loc$ is a partial
-function that defines values of fields for some of the locations in $\loc$.
+%Notice that this semantics is a \emph{precise} semantics. It was chosen because it is the most used in tools and in the verification of concurrent programs.
+%%%give more details on difference between intuitionistic/precise, 
+%%%why precise? needed for concurrent program analysis
+
+%%%%%%%%%%%
+%\paragraph{Semantics:}
+%Let $\loc$ be a set of locations. 
+%A stack $S : \vars\cup\lvars\rightarrow \loc$ maps
+%variables to locations. 
+%A heap $H:\loc\times\pfields\rightharpoonup\loc$ is a partial
+%function that defines values of fields for some of the locations in $\loc$.
+%%
+%The domain of $H$ is denoted by $\mathit{dom}(H)$ and
+%the set of locations in the domain of $H$ is denoted by $\mathit{ldom}(H)$.  
+%As expected, $\nil$ is interpreted to a location $S(\nil)\not\in \mathit{ldom}(H)$.
 %
-The domain of $H$ is denoted by $\mathit{dom}(H)$ and
-the set of locations in the domain of $H$ is denoted by $\mathit{ldom}(H)$.  
-As expected, $\nil$ is interpreted to a location $S(\nil)\not\in \mathit{ldom}(H)$.
-
-The set of configurations satisfying a formula $\varphi$ is defined by the relation
-$(S,H)\models \varphi$ defined in Table~\ref{tab:sem} ($\uplus$
-denotes the disjoint union of sets and $S[X\gets\ell]$ denotes the function
-$S'$ s.t.  $S'(X)=\ell$ and $S'(Y)=S(Y)$ for any $Y\neq X$).
-Note that a configuration $(S,H)$ satisfies a predicate atom 
-$P(\vec{E})$ if it belongs to the least fixed point of the set of recursive definitions $\preds$ for the actual parameters $\vec{E}$ of $P$.
-The set of models of a formula $\varphi$ is denoted by $\model{\varphi}$. Given two
-formulas $\varphi_1$ and $\varphi_2$, we say that $\varphi_1$ entails
-$\varphi_2$, denoted by $\varphi_1\limp\varphi_2$, iff
-$\model{\varphi_1}\subseteq \model{\varphi_2}$. 
+%The set of configurations satisfying a formula $\varphi$ is defined by the relation
+%$(S,H)\models \varphi$ defined in Table~\ref{tab:sem} ($\uplus$
+%denotes the disjoint union of sets and $S[X\gets\ell]$ denotes the function
+%$S'$ s.t.  $S'(X)=\ell$ and $S'(Y)=S(Y)$ for any $Y\neq X$).
+%Note that a configuration $(S,H)$ satisfies a predicate atom 
+%$P(\vec{E})$ if it belongs to the least fixed point of the set of inductive definitions $\preds$ for the actual parameters $\vec{E}$ of $P$.
+%The set of models of a formula $\varphi$ is denoted by $\model{\varphi}$. Given two
+%formulas $\varphi_1$ and $\varphi_2$, we say that $\varphi_1$ entails
+%$\varphi_2$, denoted by $\varphi_1\limp\varphi_2$, iff
+%$\model{\varphi_1}\subseteq \model{\varphi_2}$. 
+%%
 %
-Notice that this semantics is a \emph{precise} semantics. It was chosen because it is the most used in tools and in the verification of concurrent programs.
-%%give more details on difference between intuitionistic/precise, 
-%%why precise? needed for concurrent program analysis
-
-
-
-\begin{table}
-\begin{center}
-%\begin{footnotesize}
-\begin{tabular}{lcl}
-$(S,H) \models E=F$ & iff &  $S(E)=S(F)$
-%, where $\model{x}_{S,I}= S(x)$ and $\model{X}_{S,I}= I(X)$ for $x \in \vars$,
-% $X \in \lvars$
-\\[.5mm]
-$(S,H) \models E\ne F$ & iff &  $S(E)\neq S(F)$ \\[.5mm]$(S,H) \models \varphi\land\psi$ & iff &  $(S,H) \models \varphi$ and $(S,H) \models \psi$ \\[.5mm]
-$(S,H) \models \mathit{emp}$ & iff & $\mathit{dom}(H)=\emptyset$
-\\[.5mm]
-$(S,H) \models E\points \{\rho\}$ & iff &
-  $\mathit{dom}(H)=\{(S(E),f_i)\mid (f_i,E_i)\in \{ \rho \} \}$ and\\[.5mm]
-  & & for every $(f_i,E_i)\in \{ \rho \}$, $H(S(E),f_i)=S(E_i)$
-\\[.5mm]
-%%MS: per-object separation of formulas
-$(S,H) \models \Sigma_1\posep\Sigma_2$ & iff & $\exists H_1,H_2$ s.t.
-  $\mathit{ldom}(H)=\mathit{ldom}(H_1)\uplus\mathit{ldom}(H_2)$,\\[.5mm]
-  & & $(S,H_1)\models\Sigma_1$, and $(S,H_2)\models\Sigma_2$
-\\[.5mm]
-%preds
-$(S,H) \models P(\vec{E})$ & iff &
-$(S,H)\in \model{\preds}(P(\vec{E}))$
-\\[.5mm]
-$(S,H) \models \exists X\sep\varphi$ & iff & there exists $\ell\in\loc$ s.t. $(S[X\gets\ell],H)\models \varphi$
-\end{tabular}
-%\end{footnotesize}
-\end{center}
-\caption{Semantics of the Separation Logic fragment}
-\label{tab:sem}
-
-\end{table}
+%
+%
+%\begin{table}
+%\begin{center}
+%%\begin{footnotesize}
+%\begin{tabular}{lcl}
+%$(S,H) \models E=F$ & iff &  $S(E)=S(F)$
+%%, where $\model{x}_{S,I}= S(x)$ and $\model{X}_{S,I}= I(X)$ for $x \in \vars$,
+%% $X \in \lvars$
+%\\[.5mm]
+%$(S,H) \models E\ne F$ & iff &  $S(E)\neq S(F)$ \\[.5mm]$(S,H) \models \varphi\land\psi$ & iff &  $(S,H) \models \varphi$ and $(S,H) \models \psi$ \\[.5mm]
+%$(S,H) \models \mathit{emp}$ & iff & $\mathit{dom}(H)=\emptyset$
+%\\[.5mm]
+%$(S,H) \models E\points \{\rho\}$ & iff &
+%  $\mathit{dom}(H)=\{(S(E),f_i)\mid (f_i,E_i)\in \{ \rho \} \}$ and\\[.5mm]
+%  & & for every $(f_i,E_i)\in \{ \rho \}$, $H(S(E),f_i)=S(E_i)$
+%\\[.5mm]
+%%%MS: per-object separation of formulas
+%$(S,H) \models \Sigma_1\posep\Sigma_2$ & iff & $\exists H_1,H_2$ s.t.
+%  $\mathit{ldom}(H)=\mathit{ldom}(H_1)\uplus\mathit{ldom}(H_2)$,\\[.5mm]
+%  & & $(S,H_1)\models\Sigma_1$, and $(S,H_2)\models\Sigma_2$
+%\\[.5mm]
+%%preds
+%$(S,H) \models P(\vec{E})$ & iff &
+%$(S,H)\in \model{\preds}(P(\vec{E}))$
+%\\[.5mm]
+%$(S,H) \models \exists X\sep\varphi$ & iff & there exists $\ell\in\loc$ s.t. $(S[X\gets\ell],H)\models \varphi$
+%\end{tabular}
+%%\end{footnotesize}
+%\end{center}
+%\caption{Semantics of the Separation Logic fragment}
+%\label{tab:sem}
+%
+%\end{table}
 
 
 
@@ -373,22 +390,22 @@ We summarize below the theoretical results obtained on the decidability of this 
 The various benchmark and competition divisions introduced in \slcomp\ stem from these results.
 \begin{description}
 \item[\SLRD+:]
-This fragment considers any kind of recursive definitions.
+This fragment considers inductive definitions of the general form given in equation (\ref{eq:RD}).
 Its satisfiability problem is decidable~\cite{BrotherstonFGNP13},
 but the validity of an entailment is not~\cite{AntonopoulosGHKO14}.
 %
 %% Does they have disjunctions?
-A sub-fragment of \SLRD+ that has a decidable entailment problem has been identified in~\cite{IosifRS13}. It includes \emph{bounded tree width} recursive definitions.
+A sub-fragment of \SLRD+ that has a decidable entailment problem has been identified in~\cite{IosifRS13}. It includes \emph{bounded tree width} inductive definitions.
 These definitions are general enough to define (doubly-) linked lists, trees,
 and structures more general than trees, such as trees whose leaves are chained in
 a list. 
 The restrictions in~\cite{IosifRS13} on the syntax allowed in equation (\ref{eq:RD}) are very technical. They require in substance that all models of such formulas have bounded tree width. 
 In particular, they require that there is exactly one points-to predicate in any $\Sigma_i$ in equation (\ref{eq:RD}).
-%% a stratification of the call graph of recursive definitions,
+%% a stratification of the call graph of inductive definitions,
 The entailment problem in this fragment is EXPTIME-hard~\cite{AntonopoulosGHKO14}.
 
 \item[\SLL+:]
-This fragment is obtained when $\preds$ is the singleton set $\{\ls\}$. 
+This fragment is obtained when only the $\ls$ definition is used.
 The entailment problem is $\Pi^P_2$-complete~\cite{AntonopoulosGHKO14}.
 
 \item[\SLL:]
@@ -508,12 +525,12 @@ solver has been submitted by
 Mihaela Sighireanu (UPD \& CNRS, France).
 %C. Enea, O. Lengal, M. Sighireanu, and T. Vojnar
 The solver deals with satisfiability and entailment problems for the fragment \SLRD+ where 
-(i) the recursive definitions correspond to some class of (nested) lists
+(i) the inductive definitions correspond to some class of (nested) lists
 and (ii) the right-hand side of the entailment problem does not have existential quantifiers.
-%The class of recursive definitions allowed is included in the decidable fragment defined by~\cite{IosifRS13}, but is restricted to list segments in order to obtain an efficient decision procedure.
+%The class of inductive definitions allowed is included in the decidable fragment defined by~\cite{IosifRS13}, but is restricted to list segments in order to obtain an efficient decision procedure.
 The decision procedures calls the MiniSAT solver on a boolean abstraction of the SL formulas to check their satisfiability and to ``normalize'' the formulas by inferring its implicit (dis)equalities. % implicit from the semantics of SL.
 The core of the algorithm checking if $\varphi\limp\psi$ is valid searches a mapping from the atoms of $\psi$ to sub-formulas of $\varphi$.
-This search uses the membership test in tree automata to recognize in sub-formulas of $\varphi$ unfoldings of recursive definitions used in $\psi$.
+This search uses the membership test in tree automata to recognize in sub-formulas of $\varphi$ unfoldings of inductive definitions used in $\psi$.
 
 \end{itemize}
 
@@ -539,7 +556,7 @@ Also, we needed a typed input format and some support for processing this format
 More precisely, each benchmark file is organized as follows:
 \begin{itemize}
 \item Preamble information required by the \smtlib\ format: the theory, the source, the kind (crafted, application, etc) and status of the problem.  Here the theory was designated as \textbf{SL}, even though that is not at this point an official \smtlib\ theory. %% TODO - correct the name of the theory
-\item The set of sorts, fields, and recursive definitions used in the problem. Notice that the input format is strongly typed, i.e., each program variable has a unique type (reference to some sort) and 
+\item The set of sorts, fields, and inductive definitions used in the problem. Notice that the input format is strongly typed, i.e., each program variable has a unique type (reference to some sort) and 
 fields are typed as function symbols from their declaration type to their definition type. 
 \item One resp. two assertions for each satisfiability resp. entailment problem. 
 \item The file ends with a checking satisfiability command\footnote{Checking the validity of the entailment $A\limp B$ is encoded by checking the satisfiability of its negation $A \land \lnot B$.}.
@@ -556,7 +573,7 @@ The existing version of these benchmarks is the result of several iterations on 
 \end{itemize}
 
 The final benchmarks have the characteristics presented in Table~\ref{tab:bench}.
-The benchmark set was split into five divisions, using the kind of problems solved and the kind of recursive definitions used, as follows:
+The benchmark set was split into five divisions, using the kind of problems solved and the kind of inductive definitions used, as follows:
 \begin{description}
 \item[\sllsat:] includes satisfiability problems for the \SLL\ fragment.
 % defining possibly empty, acyclic singly liked lists. 
@@ -565,7 +582,7 @@ Most of problems in this division were provided by the team of the \ASTERIX\ sol
 
 \item[\sllent:] includes entailment problems for the \SLL\ fragment and has the same source. The problems were either randomly generated to prove the capabilities of the solver or they are verification conditions generated by the \textsc{SmallFoot} tool~\cite{SmallFootsite}.
 
-\item[\UDBsat:] includes satisfiability problems for the \SLRD+ fragment, i.e., formulas using any fixed, user-defined set of recursive definitions satisfying the syntax given in equation (\ref{eq:RD}).
+\item[\UDBsat:] includes satisfiability problems for the \SLRD+ fragment, i.e., formulas using any fixed, user-defined set of inductive definitions satisfying the syntax given in equation (\ref{eq:RD}).
 Recall that this problem is decidable. 
 The problems were proposed by the teams of \SLSAT\ and \SLEEK\ solvers.
 
@@ -573,7 +590,7 @@ The problems were proposed by the teams of \SLSAT\ and \SLEEK\ solvers.
 Recall that this problem is undecidable. 
 The problems were proposed by the teams of \CYCLIST, \SLEEK, \SLIDE, and \SPEN.
 
-\item[\FDBent:] includes entailment problems for formulas using a fixed set of recursive definitions, mainly defining several kinds of nested, singly or doubly linked lists. This fragment has been shown decidable in~\cite{AntonopoulosGHKO14,EneaLSV14}.
+\item[\FDBent:] includes entailment problems for formulas using a fixed set of inductive definitions, mainly defining several kinds of nested, singly or doubly linked lists. This fragment has been shown decidable in~\cite{AntonopoulosGHKO14,EneaLSV14}.
 Moreover, some solvers have very efficient procedures for such definitions.
 The problems were proposed by the team of \SPEN.
 \end{description} 
@@ -623,7 +640,7 @@ and required several features provided by this platform.
 %
 The pre-processing was used for 5 of the 6 solvers in order to translate the problems from the common format to the internal format of each solver. The code of these pre-processors is available on the competition GitHub repository.
 %
-The competition did not use the scrambling of benchmarks because the names used for recursive definitions defined in the files of some divisions (mainly, \sllsat, \sllent, and \FDBent\ divisions) are important for the solvers.
+The competition did not use the scrambling of benchmarks because the names used for inductive definitions defined in the files of some divisions (mainly, \sllsat, \sllent, and \FDBent\ divisions) are important for the solvers.
 %
 Each benchmark file included only one problem. 
 The incremental feature was not used and is not supported by most of the competing solvers.
@@ -742,7 +759,7 @@ the maturity of solvers submitted for this competition has been proven.
 The following additional goals were also reached:
 \begin{itemize}
 \item We achieved a first step in establishing a common format for the SL. 
-This format, although not final and needing some readjustments, revealed the features required by the existing solvers, e.g., the strong typing of formulas, the kind of recursive definitions handled, etc.
+This format, although not final and needing some readjustments, revealed the features required by the existing solvers, e.g., the strong typing of formulas, the kind of inductive definitions handled, etc.
 
 \item Some of the competing solvers have been improved (extensions, bugs fixed) during the preparation of this competition. They also gained experience with the preparation of a distribution for the StarExec platform. Note that the preparation of an version of a solver for StarExec was non-trivial. To avoid system-dependencies and to treat every participant in a competition equally, StarExec requires a 
 statically-linked instance of a solver runnable in StarExec's Linux environment. Preparing such a version

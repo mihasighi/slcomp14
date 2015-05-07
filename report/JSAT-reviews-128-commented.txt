@@ -82,16 +82,8 @@ The presentation of results has been improved as suggested by the reviewers
 > Especially analysis on which techniques worked for which benchmark categories 
 > could be insightful. 
 
-[MS: TODO: add a note with the comment of at least sll0a and FDB divisions.
-           For example, sll0a seems to work very well with Horn clauses.
-           Still, the technique based on tree automata is not so bad and
-           the overhead with tree construction not so big.
-           Syntactic techniques are less efficient.
-           For the FDB, knowing the the fragment is decidable helps the
-           winner to solve quicker the problems. The proof techniques
-           seems to search in a larger space.
-           For the UDB fragment, the tree automata techniques does not
-           show its power, maybe only a problem of implementation.]
+We added an analysis of the results obtained with each technique in
+Section 4 (Results).
 
 > Still I think the paper is of interest to the separation logic community, 
 > and thus should be accepted.
@@ -128,18 +120,18 @@ We changed some punctuations in the paper in order to obtain uniformity.
 > - Were any "training runs" run to weed out buggy solvers? How was the final set of benchmarks selected?
 
 We added in Section 4 more information about the incorrect results obtained during 
-the competition. Also, we indicated the number of training runs. Because these runs were 
+the competition. Also, we indicated the number of training runs (1). Because these runs were 
 unofficial, we did not have any data about the number of bugs fixed.
 
 The selection of the final set of benchmarks is commented in a paragraph of Section 3.3.
 We have added more explanations concerning the computation of the status (expected result) 
-of each problem.
- 
-[MS: Add this information and a note on incorrect answers, including problem in FDB on dll.]
+of each problem. 
+
+The table presenting the overall results includes now the point (a).
 
 > - Page 10: The sentence: "We make a special mention..." could be reworded, it sounds a bit clumsy to my ear.
 
-[TODO]
+We removed this sentence and added comments on each participating solver.
 
 > - Please make the SMT-LIB spelling consistent, both "SMTLIB" and "SMT-LIB" are used.
 > - Page 12: "with smallest size" -> "with the smallest number of benchmarks"
@@ -149,7 +141,12 @@ Done.
 > - Question: Is there any automated way to handle discrepancies, how were the buggy solvers 
 > found out when there were inconsistencies between them? Is any further work needed on this side?
 
-[TODO]
+No, we don't have an automatic way to handle discrepancies.
+When inconsistent results were signaled by one solver, we check it with the other 
+solvers. Notice that some solvers (CYCLIST, SLSAT) produce a proof tree,
+which can also be used to check the result when the problem could be checked by 
+these solvers.
+As discussed in the future works, a diagnosis output would be interesting for this task.
 
 
 Reviewer 3
@@ -184,42 +181,64 @@ We have explained all the recursive definitions in Table 1.
 > In table 3, it is quite surprising that no industrial benchmark
 > appears. A comment on this would be welcome.
 
-At the time, there were no industrial tool using SL solvers.
-This explains the lack of this category of benchmarks and our motivation
-for this work. We hope that the next competitions will benefit from benchmarks 
-provided by industrial tools like the Monoidics tool (now owned by FaceBook).
-We have introduced a comment in Section 3.3, in addition to the
-comment in the 'Future work' paragraph of the Conclusion.
-[MS: TODO]
+At the time, we were not aware about any industrial tool using SL solver.
+In the future, we hope to obtain such benchmarks from new industrial tools 
+like the Monoidics tool (now owned by FaceBook).
+These comments have been introduced in Section 3.3 and in the 'Future work' 
+paragraph of the Conclusion.
 
 > Table 4 requires more explanations. Is the CPU time given in seconds?
 > I understand that the time reported is the cumulated time over all
-> solved instance. Several solvers seem to be very fast (for example
+> solved instance. It is also important to recall in this table the total number of
+> instances.
+
+We improved the presentation in Table 3 (Overall results).
+
+> Several solvers seem to be very fast (for example
 > Asterix, in the SLL => division, solves 292 instances in 2.98 seconds,
 > which is approximately 10 ms per instance). This is quite
 > surprising. Does this mean that most instances are small and very
-> easy? It is also important to recall in this table the total number of
-> instances. In the two SLL divisions, 3 solvers were able to solve
-> every instance. Are the problems too easy? In the UDB => division,
+> easy?  In the two SLL divisions, 3 solvers were able to solve
+> every instance. Are the problems too easy? 
+
+We discussed in Section 2 that for the SLL divisions, the logic fragment has
+decidable satisfiability and entailment problems and very efficient (NPTIME)
+decision procedures have been proposed.
+This explains in part the very good results obtained.
+We added a comment on "Future work" paragraph about including more difficult 
+problems (in size of the problem) in this division.
+
+> In the UDB => division,
 > sleek solves more instances than cyclist-sl, but does not appear in
 > bold face. Does it mean that it was incorrect on a few instances? If
 > some solvers were unsound in some categories, this should be reported.
 
-[TODO]
+We added the incorrect answers in Table 3 (Overall results).
 
 > Can we tell from Table 4 if some techniques are more successful or
 > promising than others?
 
-[MS: TODO comment on the engineering work to be done in each solver.]
+We added an analysis of the results obtained with each technique in
+Section 4 (Results).
 
 > How do you plan to assign a measure of difficulty to each instance?
 
-[MS: TODO Maybe give the size of formulas in the number of atoms used.]
+For the divisions where the problems are decidable (SLL* and FDB), the
+difficulty could be measured in the size of the formulas and the
+inductive definitions used.
+In addition to the size information, the difficulty for the UDB problems
+could be computed from the features used in the inductive definitions, e.g.,
+the number of fields in the data structures their ``regularity''.
+For example, the btree definition is less difficult than the tll definition
+(see Table 1).
 
 > Most instances seem to be quite easy (from Table 4). Don't you need
 > more challenging/industrial instances?
 
-[TODO]
+In addition to the above comment on the SLL divisions, please notice that
+the problems in the FDB and UDB divisions could not be solved by all solvers
+(they timeout or exhausted the memory). The solved instances show the efficiency 
+of some decision procedure/heuristics on these instances.
 
 > The sentence "The benchmark problems used in the competition were
 > split into five divisions that correspond to the three classes of
@@ -236,14 +255,18 @@ We rephrased the sentence like suggested.
 > me. Is it 2400 s CPU time or wall-clock time (BTW, is there any
 > parallel solver?)? Is it 100GB RAM (huge!) or disk space?
 
-[TODO]
+Both CPU and wall-clock times were set to the limit and no parallel solver
+participated to this edition. Some of jobs (i.e., solver on problem) exceed 
+these limits and its result considered then as unknown.
+The memory limit is indeed in RAM.
+We added these particular details in Section 3.4.
 
 > I think it's worth indicating which parts of the format need some
 > readjustments (what are the expected evolutions ?).
 
-[TODO]
+We included some explanations for this item.
 
 > The description of the problem raised by SeLoger (batch mode) is unclear.
 
-[TODO]
+We rephrased the description.
 

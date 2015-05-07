@@ -539,7 +539,9 @@ Some of the above solvers deal with other problems than the ones considered for 
 %%%%%%%%%%
 \subsection{Benchmarks and their input format}
 
-The benchmarks were collected in the input format submitted by the participants.
+The main source for the benchmarks were the test suits of participants.
+No industrial benchmark was included because we don't receive such a were not aware about any industrial tool using an SL solver. 
+The benchmarks were collected in the input format submitted by the participants. 
 This set of problems was translated into a common format designed like a theory of the \smtlib\ format~\cite{BarST-SMTLIB}.
 That is, they used the syntax of \smtlib v2, although the SL theory underlying the syntax is not an official \smtlib\ theory or, at this point, even compatible with the theory underlying \smtlib.
 The rationale for this choice of common input format is 
@@ -548,7 +550,7 @@ Also, we needed a typed input format and some support for processing this format
  
 \paragraph{Input format:} Each benchmark file is organized as follows:
 \begin{itemize}
-\item Preamble information required by the \smtlib\ format: the theory, the source, the kind (crafted, application, etc) and status of the problem.  Here the theory was designated as \textbf{SL}, even though that is not at this point an official \smtlib\ theory. %% TODO - correct the name of the theory
+\item Preamble information required by the \smtlib\ format: the theory, the source, the kind (crafted, application, etc) and status of the problem.  Here the theory was designated as \textbf{QF\_S}, even though that is not at this point an official \smtlib\ theory. 
 \item The set of sorts (records), fields, and inductive definitions used in the problem. Notice that the input format is strongly typed, i.e., each program variable has a unique type (reference to some sort) and 
 fields are typed as function symbols from their declaration type to their definition type. 
 \item One resp. two assertions for each satisfiability resp. entailment problem. 
@@ -644,12 +646,23 @@ The competition did not use the scrambling of benchmarks because the names used 
 Each benchmark file included only one problem. 
 The incremental feature was not used and is not supported by most of the competing solvers.
 %
-\starexec\ imposes a time and space limit on each attempt of a solver to solve a given benchmark. For this competition, the limits were 2400 seconds and 100GB. However, no benchmark problem was complex enough to even approach these limits.
+\starexec\ imposes a time and space limit on each attempt of a solver to solve a given benchmark. For this competition, the CPU time\footnote{None of the participating solvers was parallel.} was limited to 2400 seconds and
+the memory (RAM) limit was 100GB. 
+Some jobs did have CPU timeout or reached the memory limit.
+%However, no benchmark problem was complex enough to even approach these limits.
+The participants trained their solvers on the platform and provide feedback where the expected result of a problem did not match their result. Several benchmarks and solvers were fixed during this period.
+One training run were executed before the official run to provide insights about the global results and to do a final check of the benchmark.
 
 The computation of the scores obtained for each division followed the rules fixed for \smtcomp'14.
-The best score is the one with, in order, (a) the least number of incorrect answers, (b) the largest number of correctly solved problems, and (c) the smallest time taken in solving the correctly solved problems.
+The best score is the one with, in order:
+(a) the least number of incorrect answers, 
+(b) the largest number of correctly solved problems, and 
+(c) the smallest time taken in solving the correctly solved problems.
+%
 Note that solvers are allowed to respond ``unknown" or to time-out on a given benchmark without penalty (other than not being able to count that benchmark as a success).
-Note also that a single wrong answer, even accompanied by many correct answers, places a competitor behind one that has just one right answer. This choice is intended to emphasize the need for sound, bug-free solvers that can be relied upon by an application-focused user community. Giving the number of correctly
+Note also that a single wrong answer, even accompanied by many correct answers, places a competitor behind one that has just one right answer. This choice is intended to emphasize the need for sound, bug-free solvers that can be relied upon by an application-focused user community. 
+%
+Giving the number of correctly
 solved problems priority over the time taken to solve them is a more debatable choice. To date the emphasis in these competitions has been on raw logical capability of a solver; however, many applications are more concerned with fast solutions of most problems rather than eventual solution of more problems. Thus the scoring metric may be reconsidered for future competitions.
 
 
@@ -660,23 +673,39 @@ solved problems priority over the time taken to solve them is a more debatable c
 
 \paragraph{New benchmarks:}
 One of the goals of \slcomp\ was to build an interesting set of benchmark problems. 
-Aside from its use in the competition, the current set provides a reference of the kind of problems handled efficiently by the existing solvers.
+Aside from its use in the competition, the current set provides a reference of the kind of problems handled efficiently by the existing solvers and technique.
 Moreover, researchers can use the collected benchmarks for the evaluation of competing solvers and for the testing of their own solver quite apart from any competition. 
 In particular, it was important to obtain benchmarks relevant to the actual application area, i.e., software verification.
+
 
 \paragraph{Publicly available solvers:} \starexec\ requires that a public version of a solver be made available on \starexec\ as a condition of participating in a competition. This allows users of \starexec\ to rerun a competition if so desired. More importantly, it allows users to upload a new set of benchmarks of interest in their application domain and to try the various solvers against those benchmarks.
 
 \paragraph{Overall results:}
 Table~\ref{tab:overall} provides an overall view of the competition dashboard for all divisions. This information was presented in a live web-site that was updated every minute throughout the course of the competition. This first competition only took several hours to run (as compared, for example, to \smtcomp, which consumed a week of computation over 150 nodes of the \starexec\ cluster).
  
-We make a special mention of the \SLEEK\ solver for competing in all divisions.
+%We make a special mention of the \SLEEK\ solver for competing in all divisions.
+%% TODO: Especially analysis on which techniques worked for which benchmark categories could be insightful
+%[MS: TODO: add a note with the comment of at least sll0a and FDB divisions.
+%           For example, sll0a seems to work very well with Horn clauses.
+%           Still, the technique based on tree automata is not so bad and
+%           the overhead with tree construction not so big.
+%           Syntactic techniques are less efficient.
+%           For the FDB, knowing the the fragment is decidable helps the
+%           winner to solve quicker the problems. The proof techniques
+%           seems to search in a larger space.
+%           For the UDB fragment, the tree automata techniques does not
+%           show its power, maybe only a problem of implementation.]
+%[MS: TODO comment on the engineering work to be done in each solver.]
 
 
 \begin{table}
 \begin{center}
-\begin{tabular}{p{2cm}p{2cm}p{2cm}p{2cm}p{2cm}p{2cm}}\hline
+%\begin{tabular}{p{2.5cm}p{2cm}p{2cm}p{2cm}p{2cm}p{2.5cm}}\hline
+\begin{tabular}{lccccc}\hline
 & \sllsat & \sllent & \FDBent
-& \UDBsat & \UDBent \\\hline
+& \UDBsat & \UDBent \\
+& 110 & 292 & 43 & 61 & 172 \\
+\hline
 \ASTERIX &
 \textbf{110/1.06} &  %1
 \textbf{292/2.98} &  %1
@@ -694,9 +723,9 @@ We make a special mention of the \SLEEK\ solver for competing in all divisions.
 \SLEEK &
 110/4.99 & %3
 292/14.13 & %3
-31/43.65 & %3
+31/43.65 [\emph{1}] & %3
 \textbf{61/30.84} & %1
-131/80.60 %3
+131/80.60 [\emph{4}] %3
 \\\hline
 \SLIDE &
 -- &
@@ -706,7 +735,7 @@ We make a special mention of the \SLEEK\ solver for competing in all divisions.
 36/195.61 %2
 \\\hline
 \SLSAT &
-55/0.55 & %4
+55/0.55 [\emph{55}] & %4
 --  &
 --  &
 37/2620.52 & %2
@@ -721,7 +750,8 @@ We make a special mention of the \SLEEK\ solver for competing in all divisions.
 \\\hline
 \end{tabular}
 \end{center}
-\caption{Overall results of Number of solved problems/CPU Time on solved instances %
+\caption{Overall results of Number of solved problems/cumulated CPU time in seconds on solved instances;
+incorrect answers in brackets %
 %(1=first place, 2 = second place, etc.)
 }
 \label{tab:overall}
@@ -759,6 +789,9 @@ The following additional goals were also reached:
 \begin{itemize}
 \item We achieved a first step in establishing a common format for the SL. 
 This format, although not final and needing some readjustments, revealed the features required by the existing solvers, e.g., the strong typing of formulas, the kind of inductive definitions handled, etc.
+%% TODO: say parts needs adjustement
+%which parts of the format need some
+% readjustments (what are the expected evolutions ?).
 
 \item Some of the competing solvers have been improved (extensions, bugs fixed) during the preparation of this competition. They also gained experience with the preparation of a distribution for the \starexec\ platform. Note that the preparation of an version of a solver for \starexec\ was non-trivial. To avoid system-dependencies and to treat every participant in a competition equally, \starexec\ requires a 
 statically-linked instance of a solver runnable in \starexec's Linux environment. Preparing such a version
@@ -771,7 +804,8 @@ exists for first-time competitors in other \starexec-hosted competitions as well
 
 \item A interesting problem has been submitted to the \starexec\ platform by one solver, \textsc{SeLoger}~\cite{HasseIOP13}, initially submitted to \slcomp. This solver needs to have a batch execution in order to avoid the loading of the interpreter executing its binary (the solver needs a Windows platform).
 This feature is different from the incremental mode provided by the \starexec\ platform. It may measure only the score obtained on a bunch of problems, without measuring the details on each problem. 
- 
+%% TODO: rephrase (reviewer 3)
+
 \end{itemize}
 
 
@@ -797,10 +831,21 @@ integer arithmetics theory~\cite{PerezR11}, array theory~\cite{BouajjaniDES12-vm
 \begin{itemize}
 \item More benchmarks must be added in the existing divisions, especially the ones with smallest number of benchmarks. 
 We are searching for benchmarks from software verification problems.
+%% TODO: industrial benchmarks
+%% TODO: We added a comment on "Future work" paragraph about including more difficult 
+%problems (in size of the problem) in this division.
 
 \item Some new divisions will be introduced to take into account the needs of the software verification tools. For example, the combination of SL with integer arithmetics is used in tools that reason about the heap consumption.
 
 \item A measure of difficulty will be assigned to each benchmark problem to obtain a better evaluation of each solver.
+%
+%% TODO: For the divisions where the problems are decidable (SLL* and FDB), the
+%difficulty could be measured in the size of the formulas and the
+%inductive definitions used.
+%In addition to the size information, the difficulty for the UDB problems
+%could be computed from the features used in the inductive definitions, e.g.,
+%the number of fields in the data structures their ``regularity''.
+%For example, the btree definition is less difficult than the tll definition.
 \end{itemize}
 
 \item The use of solvers in software verification tools requires improving solver capabilities such as

@@ -184,53 +184,53 @@ as
 the \emph{symbolic heaps} fragment
 or Separation Logic with Inductive Definitions (\SLRD)~\cite{IosifRS13} or
 the positive flat SL fragment~\cite{AntonopoulosGHKO14}. 
-We provide here only an informal description of this fragment. 
-The semantics of this fragment chosen in the competition is the \emph{precise} semantics.
+We provide here only an informal description of this fragment, its detailed presentation could be found in, e.g., \cite{Reynolds02,IosifRS13,AntonopoulosGHKO14}.  
 
 This fragment specifies the configurations of programs manipulating variables that are references to some record types; the records are defined by the user as a set of reference fields.
 Such configurations are modeled by
 (i) a heap that is a set of records and
 (ii) a stack that maps program variables into locations that are record addresses.
+%
+In the following, we denote by lower case letters $x,y,z$ the program variables and by upper case letters $X,Y,Z$ logical variables. The program variable $\nil$ has a fixed meaning representing an undefined (not allocated) location.
+%
+Variables and formulas are typed based on the user-defined records. Record values are denoted by mappings of record fields to values stored in variables. For example, $\{(\texttt{lson},y), (\texttt{rson},z)\}$ denotes a value for a record defining a binary tree node.
 
-Let $x,y,z$ denote program variables and $X,Y,Z$ logical variables. Every variable has a fixed type.
-The program variable $\nil$ has a fixed meaning representing an undefined (not allocated) location.
-The logic specifies (non-)aliasing relation between variables (logical or program) using (dis-)equality atoms, e.g., $x = y$ or $x\neq z$. A conjunction of such atoms is called a \emph{pure formula}. 
-
-Let $f,n,p,s$ denote field names used in the definition of records.
-The logic includes three kinds of atomic propositions describing the heap, called also \emph{spatial atoms}:
+The (non-)aliasing relation between variables are specified using (dis-)equality atoms, e.g., $x = y$ or $x\neq z$. A conjunction of such atoms is called a \emph{pure formula}. 
+%
+The heap is specified using three kinds of atomic propositions, called also \emph{spatial atoms}:
 (i) the empty heap $\mathit{emp}$, 
-(ii) a heap consisting of one allocated record cell, e.g., $x \points \{\ldots\}$,
+(ii) a heap consisting of one allocated record, e.g., $x \points \{(\texttt{lson},y), (\texttt{rson},z)\}$,
 and
-(iii) an unbounded heap segment, e.g., $\ls(E,F)$, corresponding to a data structure whose shape is defined by a finite set of \emph{inductive definitions} like the ones provided in Table~\ref{tab:RD}. 
-The spatial atoms are connected via a separating conjunction primitive $\posep$ to form a \emph{spatial formula}. 
+(iii) an unbounded heap segment, e.g., $\ls(x,y)$, corresponding to a data structure whose shape is defined by a finite set of \emph{inductive definitions} like the ones provided in Table~\ref{tab:RD}. 
+The spatial atoms are connected via a separating conjunction operator $\posep$ to form a \emph{spatial formula}. 
 A formula is a conjunction of a pure and a spatial formula.
 
-For example, the following formula specifies a heap built from two cells of singly linked list
-(pointed by $x$ resp. $y$) and a singly list segment starting from $z$ and ending in $\nil$:
+For example, the following formula specifies a heap built from two cells of a singly linked list
+(pointed by $x$ resp. $y$) and a list segment (starting from $z$ and ending in $y$):
 \begin{align}
-x \points \{(f,y)\} \ \posep\ y \points \{(f,z)\} \ \posep\ \ls(z,\nil)
+x \points \{(\texttt{nxt},y)\} \ \posep\ y \points \{(\texttt{nxt},\nil)\} \ \posep\ \ls(z,y)
 \end{align}
-The definition $\ls$ on Table~\ref{tab:RD} specifies acyclic singly linked list segments starting in $E$ and with last element pointing to $F$; the recursive field is $f$.
-The list is acyclic because the non-aliasing pure constraint $E\neq F$ prevents $F$ to be one of the cells inside the list segment.
-
+The definition of $\ls$ on Table~\ref{tab:RD} specifies acyclic and possibly empty singly linked list segments starting in $E$ and with last element pointing to $F$.
+The list is acyclic due to the non-aliasing pure constraint $E\neq F$ which prevents $F$ to be one of the cells inside the list segment.
+%
 Table~\ref{tab:RD} provides other examples for inductive definitions.
 %
-The atom $\nll(E,F,B)$ specifies a list segment (of successor field $s$) starting from $E$ where each cell has a reference (in field $h$) to a list segment ($\ls$, of successor field $f$) ending to some common border location $B$. 
+The atom $\nll(E,F,B)$ specifies a list segment (of successor field \texttt{nxtup}) starting from $E$ where each cell has a reference (in field \texttt{inner}) to a list segment ending to some common border location $B$. 
 %
-The doubly linked list segment $\dll(E,L,P,F)$ starts in $E$ and has as last element $L$; $P$ denotes the location stored by the ``previous'' field $p$ of $E$ and $F$ denotes the location stored in the ``next'' field $n$ of $L$.
+The definition $\dll(E,L,P,F)$ specifies a doubly linked list segment rooted at $E$ and ending in $L$; $P$ denotes the previous location of $E$ (stored in field \texttt{prv}) and $F$ denotes the next location of $L$  (stored in field \texttt{nxt}).
 %
 The definition $\mathtt{btree}(E)$ specifies a binary tree with root $E$:
-the first disjunct specifies the case of an empty tree, i.e., with $\nil$ root, while the second disjunct defines a tree with at least one cell allocated in $E$ separated from the trees rooted in its field for the left $l$ and right $r$ sons.
+the first disjunct defines the case of an empty tree, i.e., with $\nil$ root, while the second disjunct defines a tree with at least one cell allocated at $E$ separated from the trees rooted in its locations pointed by the fields \texttt{lson} and \texttt{rson}.
 %
-The last definition $\mathtt{tll}$ specifies a heap storing a binary tree rooted at $R$ and having at least one cell (required by the first disjunct),
-where the leaves are linked using a doubly linked list (of fields $n$ and $p$)  between $P$ and $F$ (excluded).
+This simple definition of binary trees is extended in $\mathtt{tll}$ to keep track of the parent node in each cell and to link the leaves into a singly linked list using the \texttt{nxt} field (between $E$ and $F$).
 %
-The general syntax of inductive definitions is the following:
+In general, the inductive definitions have the following syntax:
 \begin{equation}\label{eq:RD}
 P(\vec{E}) \triangleq \bigvee_i \exists \vec{X}_i\sep \Pi_i \land \Sigma_i
 \end{equation}
 \noindent where $\Pi_i$ (resp. $\Sigma_i$) is a pure (resp. spatial) formula over parameters $\vec{E}$ and variables in $\vec{X}_i$.
 Notice that the existential quantification and disjunction are allowed only on inductive definitions. 
+Also, the semantics chosen in the competition is the \emph{precise} semantics.
 
 
 %%%%%%%%%%%
@@ -282,31 +282,31 @@ Notice that the existential quantification and disjunction are allowed only on i
 %
 \lefteqn{\textit{singly linked lists}} \nonumber \\
 \ls(E,F) & \triangleq & (E=F\land\mathit{emp}) \lor (E\neq F \land 
-\exists X\sep E\points\{(f,X)\}\posep \ls(X,F)) 
+\exists X\sep E\points\{(\texttt{nxt},X)\}\posep \ls(X,F)) 
 \\[1mm]
 %  
 \lefteqn{\textit{nested linked lists}} \nonumber \\ 
-\nll(E,F,B) & \triangleq & (E=F\land\mathit{emp}) \lor (E\neq \{F,B\} \land \\
-&& \exists X,Z\sep E\points\{(s,X),(h,Z)\}\posep \ls(Z,B) \posep\nll(X,F,B)) \nonumber
+\nll(E,F,B) & \triangleq & (E=F\land\mathit{emp}) \lor (E\neq F \land E\neq B \land \\
+&& \exists X,Z\sep E\points\{(\texttt{nxtup},X),(\texttt{inner},Z)\}\posep \ls(Z,B) \posep\nll(X,F,B)) \nonumber
 \\[1mm]
 %  
 \lefteqn{\textit{doubly linked lists}} \nonumber \\ 
 \dll(E, L, P, F) & \triangleq & (E=F\land L=P\land \mathit{emp}) \lor \big( E\neq F \land L\neq P \land \\
-&& \exists X\sep E\points \{(n,X),(p,P)\} \posep\ \dll(X,L,E,F)\ \big)\nonumber
+&& \exists X\sep E\points \{(\texttt{nxt},X),(\texttt{prv},P)\} \posep\ \dll(X,L,E,F)\ \big)\nonumber
 \\[1mm]
 %  
 \lefteqn{\textit{binary tree}} \nonumber \\ 
 \mathtt{btree}(E) & \triangleq & (E=\nil\land \mathit{emp}) \lor \big( E\neq \nil \land 
 \\
-&& \exists X,Y\sep E\points \{(r,X),(l,Y)\} \posep \mathtt{btree}(X) \posep \mathtt{btree}(Y)\big)
+&& \exists X,Y\sep E\points \{(\texttt{lson},X),(\texttt{rson},Y)\} \posep \mathtt{btree}(X) \posep \mathtt{btree}(Y)\big)
 \nonumber 
 \\[1mm]
 %  
 \lefteqn{\textit{tree with linked leaves}} \nonumber \\ 
-\mathtt{tll}(R,P,E,F) & \triangleq & (R=E \land R\points \{(l,\nil),(r,\nil),(p,P),(n,F)\}) \\
-&& \lor~\big( R\neq E \land \exists X,Y,Z\sep 
+\mathtt{tll}(R,P,E,F) & \triangleq & (R=E \land R\points \{(\texttt{lson},\nil),(\texttt{rson},\nil),(\texttt{parent},P),(\texttt{nxt},F)\}) ~\lor~ \\
+&&\big( R\neq E \land \exists X,Y,Z\sep 
 \begin{array}[t]{l}
-R\points \{(l,X),(r,Y),(p,P),(n,Z)\} \ \posep \\
+R\points \{(\texttt{lson},X),(\texttt{rson},Y),(\texttt{parent},P),(\texttt{nxt},Z)\} \ \posep \\
 \mathtt{tll}(X,R,E,Z) \posep \mathtt{tll}(Y,R,Z,F)\big)
 \end{array} \nonumber  
 \end{eqnarray}

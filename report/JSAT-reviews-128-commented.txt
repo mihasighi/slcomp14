@@ -17,9 +17,9 @@ changes done to the paper in order to improve it.
 > At least it should be better related to the given examples, but
 > I have the impression that the informal introduction is sufficient.
 
-[MS: The Reviewer 3 is also complaining about this presentations of the SL fragment.]
-[TODO: remove the semantics and add reference to papers presenting it in details.]
-[TODO: comment the examples given for inductive predicates. ]
+We have changed the presentation of the logic by keeping only
+an informal introduction and by adding more explanations on the
+inductive definitions.
  
 > The results of the competition are not very carefully analysed.
 > Only some accumulated values are given. It would be interesting
@@ -27,40 +27,40 @@ changes done to the paper in order to improve it.
 > get a better comparison of the solver’s behavior. For example, cactus
 > plots as in common in the SAT competition could be used.
 
-[TODO: David?]
+Thanks for these suggestions. We have updated Section 4 (Results) with
+more comments on the insights on benchmarks provided by the results 
+obtained.
+
+[TODO: something about cactus plots, David?]
 
 > Details:
 
 > The abstract emphasizes that 3 solvers are using SAT/SMT. Why is
 > this so important to mention that in the abstract?
 
-We removed this phrase for the abstract.
-
-Comment:
 We wanted to emphasize the relation between this competition and 
-the SAT & SMT competitions. Notice that some solvers are based on techniques 
-that are not classic for SAT/SMT, e.g., tree automata.
-
+the SAT & SMT competitions. Notice that some solvers are also based 
+on techniques that are not classic for SAT/SMT, e.g., tree automata.
+Finally, we removed this phrase for the abstract because the interest of
+this competition has been approved by these reviews.
 
 > It is good that concrete examples are give (Table 1). But they should
 > be better integrated in the text.
 
-[MS: TODO]
+We have provided explanations for each example in the presentation of
+the logic.
 
 > For the syntax, it would be helpful to have the alphabets introduced.
 
 The presentation of the logic fragment has been changed as suggested reviewers. 
-The alphabets have been introduced before the syntax.
+The alphabets are introduced informally.
 
 > There is a sentence „We solicited the support of D. Cock“ As he is
 > one of the co-authors of this paper this reads a little odd, please
 > rephrase this.
 
-[MS: David, do you have any idea about rephrasing this? Maybe remove it?
-     Or: "We solicited the officers of the SMTCOMP 2014 for support in
-          organizing this competition."
-]
-          
+Done.
+
 
 > Reviewer 2
 > ++++++++++
@@ -101,35 +101,22 @@ The presentation of results has been improved as suggested by the reviewers
 
 > - On page 1: Please use "has motivated the development" instead of "motivated the development", 
 > as the development of tools is still ongoing and is not a thing of the past.
-
-Done.
-
 > - On page 2: "using recursive definition" should be "using recursive definitions", 
 > as there are several recursive definitions in place.
-
-Done.
-
 > - Page 3 is a bit empty with lost of free space above and below Table 1, 
-> see if you could fit some more content on that page somehow.
+> see if you could fit some more content on that page somehow.     
+> - The bullet point list in the middle of page 7 should have an ", and" 
+> at the end of the second to last bullet.
+> - Page 9 and elsewhere in the paper: There are very short (less than a line) long paragraphs, 
+> please make the paragraphs a couple of lines long at least.
 
-Done.
+All these suggestions have been implemented in the current version.
 
 > - On page 5 there are several list, some of which use a ":" before the first "(i)" item, 
 > while others do not. Please make the punctuations of lists consistent within the paper. 
 > Also on other pages, like page 7, go through the whole paper.
 
-[MS: Well, I don't see any problem on page 7. 
-     TODO: see all the punctuation problems.]
-     
-> - The bullet point list in the middle of page 7 should have an ", and" 
-> at the end of the second to last bullet.
-
-Done.
-
-> - Page 9 and elsewhere in the paper: There are very short (less than a line) long paragraphs, 
-> please make the paragraphs a couple of lines long at least.
-
-Done.
+We changed some punctuations in the paper in order to obtain uniformity.
 
 > - Page 9 discusses the competition scoring, including counting the number of incorrect results. 
 > However, I could not find any discussion of incorrect results elsewhere in the paper. 
@@ -138,21 +125,23 @@ Done.
 > I guess so, as otherwise I can not interpret the results. 
 > This is my main complaint, all of the (a)-(c) data is not provided to the readers in Table 4, 
 > just (b) and (c)!
-
-[MS: Add this information and a note on incorrect answers, including problem in FDB on dll.]
-
 > - Were any "training runs" run to weed out buggy solvers? How was the final set of benchmarks selected?
 
-[TODO]
+We added in Section 4 more information about the incorrect results obtained during 
+the competition. Also, we indicated the number of training runs. Because these runs were 
+unofficial, we did not have any data about the number of bugs fixed.
+
+The selection of the final set of benchmarks is commented in a paragraph of Section 3.3.
+We have added more explanations concerning the computation of the status (expected result) 
+of each problem.
+ 
+[MS: Add this information and a note on incorrect answers, including problem in FDB on dll.]
 
 > - Page 10: The sentence: "We make a special mention..." could be reworded, it sounds a bit clumsy to my ear.
 
 [TODO]
 
 > - Please make the SMT-LIB spelling consistent, both "SMTLIB" and "SMT-LIB" are used.
-
-Done.
-
 > - Page 12: "with smallest size" -> "with the smallest number of benchmarks"
 
 Done.
@@ -241,7 +230,7 @@ comment in the 'Future work' paragraph of the Conclusion.
 > and the two decision problems considered), only five were opened
 > because...").
 
-Done.
+We rephrased the sentence like suggested.
 
 > The limits (2400 s and 100GB) imposed to a solver are unclear to
 > me. Is it 2400 s CPU time or wall-clock time (BTW, is there any

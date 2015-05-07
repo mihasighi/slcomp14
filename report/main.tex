@@ -1,38 +1,29 @@
-%\documentclass{llncs}
 \documentclass[twoside,11pt]{article}
 
+%% Packages required by JSATsample
 \usepackage{jsat}
+\usepackage{amsmath,amsthm,amssymb}
 \usepackage{pstricks}
 \usepackage{pst-tree}
 
 \input epsf
 \special{papersize=8.5in,11in}
 
-%\frontmatter          % for the preliminaries
-%\pagestyle{headings}  % switches on printing of running heads
-
-%% Macros standard
-\usepackage{amsmath,amssymb,amsfonts}
+%% Other standard macros
+\usepackage{amsfonts}
 \usepackage{stmaryrd}
 \usepackage{enumerate}
 
 %% Figures
-\usepackage{graphicx}
-\usepackage{tikz}
-\usetikzlibrary{positioning,shapes,shadows,arrows}
-\usetikzlibrary{decorations.pathmorphing,snakes}
-\usepackage{tkz-graph}
-\usepackage{wrapfig}
+%\usepackage{graphicx}
+%\usepackage{tikz}
+%\usetikzlibrary{positioning,shapes,shadows,arrows}
+%\usetikzlibrary{decorations.pathmorphing,snakes}
+%\usepackage{tkz-graph}
+%\usepackage{wrapfig}
 
 %% Hyperlinked references
 \usepackage{hyperref}
-
-%% Short/long versions
-\usepackage{ifthen}
-\provideboolean{sversion} 
-\setboolean{sversion}{false}
-\provideboolean{lversion} 
-\setboolean{lversion}{true}
 
 %% Local macros
 \newcommand{\sep}{.\,}
@@ -76,16 +67,16 @@
 \newcommand{\SLSAT}{\textsc{SlSat}}
 \newcommand{\SPEN}{\textsc{Spen}}
 
-\newcommand{\smtlib}{\textsc{SMTlib}}
-\newcommand{\smtcomp}{\textsc{SMTcomp}}
-\newcommand{\slcomp}{\textsc{SLcomp}}
-\newcommand{\starexec}{\textsc{StarExec}}
+\newcommand{\smtlib}{\textsf{SMT-LIB}}
+\newcommand{\smtcomp}{\textsf{SMT-COMP}}
+\newcommand{\slcomp}{\textsf{SL-COMP}}
+\newcommand{\starexec}{\textsf{StarExec}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Header
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \jsatheading{1}{2014}{XX-YY}
-\ShortHeadings{Report on SLCOMP 2014}
+\ShortHeadings{Report on SL-COMP 2014}
 {M. Sighireanu and D.R. Cok}
 \firstpageno{1}
 
@@ -130,11 +121,10 @@ as an unofficial satellite event of the FLoC Olympic Games.
 Six solvers participated in the competition; the success and performance
 of each solver was measured over an appropriate subset of a library of benchmarks
 accumulated for the purpose.
-%Three of these solvers are calling external SAT or SMT solvers to fulfill  their job.
 The benchmarks consisted of satisfiability and entailment problems
 over formulas in the fragment of symbolic heaps with inductive definitions, 
 which is the fragment of Separation Logic that is most used in program analysis and verification tools.
-% collected from the participants' benchmarks.
+% These benchmarks are mainly crafted and come from the testing suits of the participating solvers.
 We report in this paper on 
 the competition rules, the participants, the results, the findings, and  
 the future of this event.
@@ -178,6 +168,7 @@ associated with the \smtcomp\ 2014 competition~\cite{SMTCOMPsite}, at the FLoC O
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Input Theory}
+\label{sec:SL}
 
 The competition focused on a fragment of SL that has been found to be the kernel of most tools, known 
 as
@@ -438,11 +429,13 @@ to several research groups
 %%
 that are actively developing solvers for SL.
 The researchers that positively replied and some other researchers known for their work on tools for SL were invited to discuss the organization details on a public mailing list \url{smtcomp14-sl@googlegroups.com}.
-We solicited the support of the chair of the \smtcomp\ 2014 organizing committee, David Cok, to benefit from his experience in the organization of such competitions.
+%We solicited the support of the chair of the \smtcomp\ 2014 organizing committee, David Cok, to benefit from his experience in the organization of such competitions.
+The support of the officers of the \smtcomp\ 2014 organizing committee has been solicited to benefit from their experience in the organization of such competitions.
 A message describing the competition was sent on the \smtcomp\ and \smtlib\ discussion lists. Following this message, some members of the \smtcomp\ steering committee were added to the \slcomp\ discussion list. 
 This inaugural edition of the competition was jointly organized by Mihaela Sighireanu and David Cok:
 Mihaela Sighireanu enlisted participation, moderated the discussion on competition rules, and organized the 
-collection and categorization of benchmarks; David Cok advised on the competition organization and rules based on experience with other competitions, and he executed and reported the results of the competition using the \starexec\ framework.
+collection and categorization of benchmarks; 
+David Cok advised on the competition organization and rules based on experience with other competitions, and he executed and reported the results of the competition using the \starexec\ framework.
 
 
 %%%%%%%%%%
@@ -455,7 +448,7 @@ These teams provided:
 \item a reference to a technical paper describing the principles used by the solver, 
 %usually, it is not DPLL
 \item a web site, and
-\item a statically linked Linux binary which could be executed on the StarExec platform.
+\item a statically linked Linux binary which could be executed on the \starexec\ platform.
 \end{itemize}
 Because the time given for preparing the binary was very short (2 weeks), one solver~\cite{HasseIOP13}
 %give details
@@ -530,33 +523,33 @@ and (ii) the right-hand side of the entailment problem does not have existential
 %The class of inductive definitions allowed is included in the decidable fragment defined by~\cite{IosifRS13}, but is restricted to list segments in order to obtain an efficient decision procedure.
 The decision procedures calls the MiniSAT solver on a boolean abstraction of the SL formulas to check their satisfiability and to ``normalize'' the formulas by inferring its implicit (dis)equalities. % implicit from the semantics of SL.
 The core of the algorithm checking if $\varphi\limp\psi$ is valid searches a mapping from the atoms of $\psi$ to sub-formulas of $\varphi$.
-This search uses the membership test in tree automata to recognize in sub-formulas of $\varphi$ unfoldings of inductive definitions used in $\psi$.
+This search uses the membership test in tree automata to recognize in sub-formulas of $\varphi$ some unfolding of the inductive definitions used in $\psi$.
 
 \end{itemize}
 
 A notable fact about this set of participants is the diversity of techniques used by each solver:
-\begin{itemize}
-\item reduction to SAT or SMT problems (\ASTERIX, \SLSAT, \SPEN),
-\item resolution based (\CYCLIST, \SLEEK),
-\item reduction to finding graph homomorphism (\SPEN), and
-\item reduction to tree automata membership test (\SPEN) or to tree automata inclusion test (\SLIDE).
-\end{itemize}
-
+reduction to SAT or SMT problems (\ASTERIX, \SLSAT, \SPEN),
+resolution based (\CYCLIST, \SLEEK),
+reduction to finding graph homomorphism (\SPEN), and
+reduction to tree automata membership test (\SPEN) or to tree automata inclusion test (\SLIDE).
+%
 Some of the above solvers deal with other problems than the ones considered for this competition, e.g., the computation of an unsatisfiability core or abduction.
 
 
 %%%%%%%%%%
 \subsection{Benchmarks and their input format}
+
 The benchmarks were collected in the input format submitted by the participants.
-This set of problems was translated into a common format designed like a theory of the \smtlib\ format\footnote{\url{www.smtlib.org}}. That is, they used the syntax of \smtlib v2, although the SL theory underlying the syntax is not an official \smtlib\ theory or, at this point, even compatible with the theory underlying \smtlib.
+This set of problems was translated into a common format designed like a theory of the \smtlib\ format~\cite{BarST-SMTLIB}.
+That is, they used the syntax of \smtlib v2, although the SL theory underlying the syntax is not an official \smtlib\ theory or, at this point, even compatible with the theory underlying \smtlib.
 The rationale for this choice of common input format is 
 that SL is combined with or translated into first-order theories that are or will be supported by the \smtlib\ format.
 Also, we needed a typed input format and some support for processing this format\footnote{In particular, we used the parser for the \smtlib v2 available at \url{www.smtlib.org/utilities.html}.}.
  
-More precisely, each benchmark file is organized as follows:
+\paragraph{Input format:} Each benchmark file is organized as follows:
 \begin{itemize}
 \item Preamble information required by the \smtlib\ format: the theory, the source, the kind (crafted, application, etc) and status of the problem.  Here the theory was designated as \textbf{SL}, even though that is not at this point an official \smtlib\ theory. %% TODO - correct the name of the theory
-\item The set of sorts, fields, and inductive definitions used in the problem. Notice that the input format is strongly typed, i.e., each program variable has a unique type (reference to some sort) and 
+\item The set of sorts (records), fields, and inductive definitions used in the problem. Notice that the input format is strongly typed, i.e., each program variable has a unique type (reference to some sort) and 
 fields are typed as function symbols from their declaration type to their definition type. 
 \item One resp. two assertions for each satisfiability resp. entailment problem. 
 \item The file ends with a checking satisfiability command\footnote{Checking the validity of the entailment $A\limp B$ is encoded by checking the satisfiability of its negation $A \land \lnot B$.}.
@@ -564,16 +557,22 @@ fields are typed as function symbols from their declaration type to their defini
 
 The syntax and semantics of this format were discussed and agreed in the public mailing group. 
 The exact definition of the theory used and the full set of benchmarks is available on-line as a GITHUB archive\footnote{\url{github.com/mihasighi/smtcomp14-sl}}.
-The existing version of these benchmarks is the result of several iterations on the initial set of problems:
+
+\paragraph{Selection process:} The final version of benchmarks is the result of several iterations of the following actions on the initial set of problems:
 \begin{itemize}
 \item We ensured that the semantics used in the input format of solvers matched the one used in the common format. 
-%%For example, \SLEEK\ consider that variables with different types are distinct, and moreover it does not allow $\ne$ operator to be applied on variables of different types.
-\item The status (expected result), the source, and the kind of each problem were supplied as \smtlib\ meta-information. ``Kind'' is an \smtlib\ characterization: a \textit{crafted} problem demonstrates a particular aspect of a solver or problem domain, a \textit{random} problem in an instance of a problem template parameterized on some dimension (e.g., a size), a \textit{check} problem is a simple problem used to check that a solver is configured correctly, and an \textit{industrial} problem is one that represents a problem produced in an actual application domain.
+For example, some solvers rejected problems with non-aliasing constraints ($x\neq y$) between variables typed using different records. The final input format required to deal with such constraints and to interpret them as valid.
+
+\item The status (expected result), the source, and the kind of each problem were supplied as \smtlib\ meta-information.
+\slcomp\ benchmarks are only crafted (i.e., demonstrates a particular aspect of a solver or problem domain) or
+random (instance of a problem template parameterized on some dimension, e.g., a size).
+
 \item The benchmark curation process identified some problems that had an incorrect expected result computed by their source solver, which required fixing the problem in the solver and in the benchmark.
+The status of each problem was checked before the competition using at least two solvers. 
 \end{itemize}
 
-The final benchmarks have the characteristics presented in Table~\ref{tab:bench}.
-The benchmark set was split into five divisions, using the kind of problems solved and the kind of inductive definitions used, as follows:
+\paragraph{Divisions:} The final benchmarks have the characteristics presented in Table~\ref{tab:bench}.
+The benchmark set was split into five divisions, using the kind of problems solved and the kind of inductive definitions used (commented in Section~\ref{sec:SL}), as follows:
 \begin{description}
 \item[\sllsat:] includes satisfiability problems for the \SLL\ fragment.
 % defining possibly empty, acyclic singly liked lists. 
@@ -645,7 +644,7 @@ The competition did not use the scrambling of benchmarks because the names used 
 Each benchmark file included only one problem. 
 The incremental feature was not used and is not supported by most of the competing solvers.
 %
-StarExec imposes a time and space limit on each attempt of a solver to solve a given benchmark. For this competition, the limits were 2400 seconds and 100GB. However, no benchmark problem was complex enough to even approach these limits.
+\starexec\ imposes a time and space limit on each attempt of a solver to solve a given benchmark. For this competition, the limits were 2400 seconds and 100GB. However, no benchmark problem was complex enough to even approach these limits.
 
 The computation of the scores obtained for each division followed the rules fixed for \smtcomp'14.
 The best score is the one with, in order, (a) the least number of incorrect answers, (b) the largest number of correctly solved problems, and (c) the smallest time taken in solving the correctly solved problems.
@@ -665,7 +664,7 @@ Aside from its use in the competition, the current set provides a reference of t
 Moreover, researchers can use the collected benchmarks for the evaluation of competing solvers and for the testing of their own solver quite apart from any competition. 
 In particular, it was important to obtain benchmarks relevant to the actual application area, i.e., software verification.
 
-\paragraph{Publicly available solvers:} StarExec requires that a public version of a solver be made available on StarExec as a condition of participating in a competition. This allows users of StarExec to rerun a competition if so desired. More importantly, it allows users to upload a new set of benchmarks of interest in their application domain and to try the various solvers against those benchmarks.
+\paragraph{Publicly available solvers:} \starexec\ requires that a public version of a solver be made available on \starexec\ as a condition of participating in a competition. This allows users of \starexec\ to rerun a competition if so desired. More importantly, it allows users to upload a new set of benchmarks of interest in their application domain and to try the various solvers against those benchmarks.
 
 \paragraph{Overall results:}
 Table~\ref{tab:overall} provides an overall view of the competition dashboard for all divisions. This information was presented in a live web-site that was updated every minute throughout the course of the competition. This first competition only took several hours to run (as compared, for example, to \smtcomp, which consumed a week of computation over 150 nodes of the \starexec\ cluster).
@@ -761,16 +760,16 @@ The following additional goals were also reached:
 \item We achieved a first step in establishing a common format for the SL. 
 This format, although not final and needing some readjustments, revealed the features required by the existing solvers, e.g., the strong typing of formulas, the kind of inductive definitions handled, etc.
 
-\item Some of the competing solvers have been improved (extensions, bugs fixed) during the preparation of this competition. They also gained experience with the preparation of a distribution for the StarExec platform. Note that the preparation of an version of a solver for StarExec was non-trivial. To avoid system-dependencies and to treat every participant in a competition equally, StarExec requires a 
-statically-linked instance of a solver runnable in StarExec's Linux environment. Preparing such a version
+\item Some of the competing solvers have been improved (extensions, bugs fixed) during the preparation of this competition. They also gained experience with the preparation of a distribution for the \starexec\ platform. Note that the preparation of an version of a solver for \starexec\ was non-trivial. To avoid system-dependencies and to treat every participant in a competition equally, \starexec\ requires a 
+statically-linked instance of a solver runnable in \starexec's Linux environment. Preparing such a version
 of a solver was time-consuming and resulted in one intended participant's withdrawal. This problem
-exists for first-time competitors in other StarExec-hosted competitions as well.
+exists for first-time competitors in other \starexec-hosted competitions as well.
 
 \item A community interested in such tools has been identified and informed about the status of the existing solvers. This community could benefit from improving the tools built on the top of decision procedures for SL.
 
 \item The \smtlib\ community discovered the status of the solvers for SL and became interested in this theory.
 
-\item A interesting problem has been submitted to the StarExec platform by one solver, \textsc{SeLoger}~\cite{HasseIOP13}, initially submitted to \slcomp. This solver needs to have a batch execution in order to avoid the loading of the interpreter executing its binary (the solver needs a Windows platform).
+\item A interesting problem has been submitted to the \starexec\ platform by one solver, \textsc{SeLoger}~\cite{HasseIOP13}, initially submitted to \slcomp. This solver needs to have a batch execution in order to avoid the loading of the interpreter executing its binary (the solver needs a Windows platform).
 This feature is different from the incremental mode provided by the \starexec\ platform. It may measure only the score obtained on a bunch of problems, without measuring the details on each problem. 
  
 \end{itemize}

@@ -12,8 +12,7 @@
 %% Other standard macros
 \usepackage{amsfonts}
 \usepackage{stmaryrd}
-%\usepackage{enumerate}
-\usepackage[T1]{fontenc}
+\usepackage[T1]{fontenc} %% needed to combine textsc with textbf
 
 %% Figures
 %\usepackage{graphicx}
@@ -161,11 +160,10 @@ to collect the existing benchmarks and
 to make available the binaries of these tools on a common platform, i.e., \starexec~\cite{StarExecsite}.
 The \slcomp\ 2014 has been possible due to the support of the \smtcomp\ organizing committee, 
 although SL is not a theory of the \smtlib\ format.
-The competition has been held as an ``off'' (unofficial) event \footnote{That is, the competition was executed in conjunction with the games by the \smtcomp\ organizing committee, \smtcomp\ being an official participant in the games; the results of \slcomp\ 2014 were reported at the SMT-2014 workshop at FLoC; however, \slcomp\ 2014 was organized too late and was too experimental to be an official part of the FLoC Olympic Games.}
-%% trial section?
+The competition has been held as an ``off'' (unofficial) event\footnote{That is, the competition was executed in conjunction with the games by the \smtcomp\ organizing committee, \smtcomp\ being an official participant in the games; the results of \slcomp\ 2014 were reported at the SMT-2014 workshop at FLoC; however, \slcomp\ 2014 was organized too late and was too experimental to be an official part of the FLoC Olympic Games.}
 associated with the \smtcomp\ 2014 competition~\cite{SMTCOMPsite}, at the FLoC Olympic Games.
 %% The results of the competition have been presented in the SMT workshop.
-%%Informations about the participants and the final results are also available online at \url{www.liafa.univ-paris-diderot.fr/~sighirea/slcomp14/}.
+%%Informations about the participants and the final results are also available online at \url{www.liafa.univ-paris-diderot.fr/slcomp14/}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -231,6 +229,44 @@ Notice that the existential quantification and disjunction are allowed only on i
 Also, the semantics chosen in the competition is the \emph{precise} semantics.
 
 
+\begin{table}
+\begin{eqnarray}
+%
+\lefteqn{\textit{singly linked lists}} \nonumber \\
+\ls(E,F) & \triangleq & (E=F\land\mathit{emp}) \lor (E\neq F \land 
+\exists X\sep E\points\{(\texttt{nxt},X)\}\posep \ls(X,F)) 
+\\[1mm]
+%  
+\lefteqn{\textit{nested linked lists}} \nonumber \\ 
+\nll(E,F,B) & \triangleq & (E=F\land\mathit{emp}) \lor (E\neq F \land E\neq B \land \\
+&& \exists X,Z\sep E\points\{(\texttt{nxtup},X),(\texttt{inner},Z)\}\posep \ls(Z,B) \posep\nll(X,F,B)) \nonumber
+\\[1mm]
+%  
+\lefteqn{\textit{doubly linked lists}} \nonumber \\ 
+\dll(E, L, P, F) & \triangleq & (E=F\land L=P\land \mathit{emp}) \lor \big( E\neq F \land L\neq P \land \\
+&& \exists X\sep E\points \{(\texttt{nxt},X),(\texttt{prv},P)\} \posep\ \dll(X,L,E,F)\ \big)\nonumber
+\\[1mm]
+%  
+\lefteqn{\textit{binary tree}} \nonumber \\ 
+\mathtt{btree}(E) & \triangleq & (E=\nil\land \mathit{emp}) \lor \big( E\neq \nil \land 
+\\
+&& \exists X,Y\sep E\points \{(\texttt{lson},X),(\texttt{rson},Y)\} \posep \mathtt{btree}(X) \posep \mathtt{btree}(Y)\big)
+\nonumber 
+\\[1mm]
+%  
+\lefteqn{\textit{tree with linked leaves}} \nonumber \\ 
+\mathtt{tll}(R,P,E,F) & \triangleq & (R=E \land R\points \{(\texttt{lson},\nil),(\texttt{rson},\nil),(\texttt{parent},P),(\texttt{nxt},F)\}) ~\lor~ \\
+&&\big( R\neq E \land \exists X,Y,Z\sep 
+\begin{array}[t]{l}
+R\points \{(\texttt{lson},X),(\texttt{rson},Y),(\texttt{parent},P),(\texttt{nxt},Z)\} \ \posep \\
+\mathtt{tll}(X,R,E,Z) \posep \mathtt{tll}(Y,R,Z,F)\big)
+\end{array} \nonumber  
+\end{eqnarray}
+\caption{Examples of inductive definitions used in the benchmark}
+\label{tab:RD}
+\vspace{-3eX}
+\end{table}
+
 %%%%%%%%%%%
 %\paragraph{Syntax:}
 %Let $\pfields$ be a finite set of \emph{field names} used in the definition of records.
@@ -275,48 +311,6 @@ Also, the semantics chosen in the competition is the \emph{precise} semantics.
 %\end{array}
 %$$
 
-\begin{table}
-\begin{eqnarray}
-%
-\lefteqn{\textit{singly linked lists}} \nonumber \\
-\ls(E,F) & \triangleq & (E=F\land\mathit{emp}) \lor (E\neq F \land 
-\exists X\sep E\points\{(\texttt{nxt},X)\}\posep \ls(X,F)) 
-\\[1mm]
-%  
-\lefteqn{\textit{nested linked lists}} \nonumber \\ 
-\nll(E,F,B) & \triangleq & (E=F\land\mathit{emp}) \lor (E\neq F \land E\neq B \land \\
-&& \exists X,Z\sep E\points\{(\texttt{nxtup},X),(\texttt{inner},Z)\}\posep \ls(Z,B) \posep\nll(X,F,B)) \nonumber
-\\[1mm]
-%  
-\lefteqn{\textit{doubly linked lists}} \nonumber \\ 
-\dll(E, L, P, F) & \triangleq & (E=F\land L=P\land \mathit{emp}) \lor \big( E\neq F \land L\neq P \land \\
-&& \exists X\sep E\points \{(\texttt{nxt},X),(\texttt{prv},P)\} \posep\ \dll(X,L,E,F)\ \big)\nonumber
-\\[1mm]
-%  
-\lefteqn{\textit{binary tree}} \nonumber \\ 
-\mathtt{btree}(E) & \triangleq & (E=\nil\land \mathit{emp}) \lor \big( E\neq \nil \land 
-\\
-&& \exists X,Y\sep E\points \{(\texttt{lson},X),(\texttt{rson},Y)\} \posep \mathtt{btree}(X) \posep \mathtt{btree}(Y)\big)
-\nonumber 
-\\[1mm]
-%  
-\lefteqn{\textit{tree with linked leaves}} \nonumber \\ 
-\mathtt{tll}(R,P,E,F) & \triangleq & (R=E \land R\points \{(\texttt{lson},\nil),(\texttt{rson},\nil),(\texttt{parent},P),(\texttt{nxt},F)\}) ~\lor~ \\
-&&\big( R\neq E \land \exists X,Y,Z\sep 
-\begin{array}[t]{l}
-R\points \{(\texttt{lson},X),(\texttt{rson},Y),(\texttt{parent},P),(\texttt{nxt},Z)\} \ \posep \\
-\mathtt{tll}(X,R,E,Z) \posep \mathtt{tll}(Y,R,Z,F)\big)
-\end{array} \nonumber  
-\end{eqnarray}
-\caption{Examples of inductive definitions used in the benchmark}
-\label{tab:RD}
-\vspace{-3eX}
-\end{table}
-
-%Notice that this semantics is a \emph{precise} semantics. It was chosen because it is the most used in tools and in the verification of concurrent programs.
-%%%give more details on difference between intuitionistic/precise, 
-%%%why precise? needed for concurrent program analysis
-
 %%%%%%%%%%%
 %\paragraph{Semantics:}
 %Let $\loc$ be a set of locations. 
@@ -340,6 +334,9 @@ R\points \{(\texttt{lson},X),(\texttt{rson},Y),(\texttt{parent},P),(\texttt{nxt}
 %$\varphi_2$, denoted by $\varphi_1\limp\varphi_2$, iff
 %$\model{\varphi_1}\subseteq \model{\varphi_2}$. 
 %%
+%Notice that this semantics is a \emph{precise} semantics. It was chosen because it is the most used in tools and in the verification of concurrent programs.
+%%%give more details on difference between intuitionistic/precise, 
+%%%why precise? needed for concurrent program analysis
 %
 %
 %
@@ -636,7 +633,7 @@ Randomly generated & 59\% \\
 \hline
 %
 \hline
-\multicolumn{2}{c}{Divisions} \\
+\multicolumn{2}{c}{Problems by division} \\
 \hline
 \sllsat & 110 \\ %& 59\% \\
 \sllent & 292 \\ %
@@ -648,6 +645,7 @@ Randomly generated & 59\% \\
 \end{center}
 \caption{Final benchmark set}
 \label{tab:bench}
+\vspace{-3eX}
 \end{table}
 
 
@@ -696,40 +694,12 @@ solved problems priority over the time taken to solve them is a more debatable c
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
 
-\paragraph{New benchmarks:}
-One of the goals of \slcomp\ was to build an interesting set of benchmark problems. 
-Aside from its use in the competition, the current set provides a reference of the kind of problems handled efficiently by the existing solvers and technique.
-Moreover, researchers can use the collected benchmarks for the evaluation of competing solvers and for the testing of their own solver quite apart from any competition. 
-In particular, it was important to obtain benchmarks relevant to the actual application area, i.e., software verification.
-
-
-\paragraph{Publicly available solvers:} \starexec\ requires that a public version of a solver be made available on \starexec\ as a condition of participating in a competition. This allows users of \starexec\ to rerun a competition if so desired. More importantly, it allows users to upload a new set of benchmarks of interest in their application domain and to try the various solvers against those benchmarks.
-
-\paragraph{Overall results:}
-Table~\ref{tab:overall} provides an overall view of the competition dashboard for all divisions. This information was presented in a live web-site that was updated every minute throughout the course of the competition. This first competition only took several hours to run (as compared, for example, to \smtcomp, which consumed a week of computation over 150 nodes of the \starexec\ cluster).
- 
-%We make a special mention of the \SLEEK\ solver for competing in all divisions.
-%% TODO: Especially analysis on which techniques worked for which benchmark categories could be insightful
-%[MS: TODO: add a note with the comment of at least sll0a and FDB divisions.
-%           For example, sll0a seems to work very well with Horn clauses.
-%           Still, the technique based on tree automata is not so bad and
-%           the overhead with tree construction not so big.
-%           Syntactic techniques are less efficient.
-%           For the FDB, knowing the the fragment is decidable helps the
-%           winner to solve quicker the problems. The proof techniques
-%           seems to search in a larger space.
-%           For the UDB fragment, the tree automata techniques does not
-%           show its power, maybe only a problem of implementation.]
-%[MS: TODO comment on the engineering work to be done in each solver.]
-
-
 \begin{table}
 \begin{center}
 %\begin{tabular}{p{2.5cm}p{2cm}p{2cm}p{2cm}p{2cm}p{2.5cm}}\hline
-\begin{tabular}{lccccc}\hline
-& \sllsat & \sllent & \FDBent
-& \UDBsat & \UDBent \\
-& 110 & 292 & 43 & 61 & 172 \\
+\begin{tabular}{l*{5}c}\hline
+\multicolumn{1}{r}{\emph{Division}} & \sllsat & \sllent & \FDBent & \UDBsat & \UDBent \\
+\multicolumn{1}{r}{\emph{size}} & 110 & 292 & 43 & 61 & 172 \\
 \hline
 \ASTERIX &
 \textbf{110/1.06} &  %1
@@ -775,12 +745,52 @@ Table~\ref{tab:overall} provides an overall view of the competition dashboard fo
 \\\hline
 \end{tabular}
 \end{center}
-\caption{Overall results of Number of solved problems/cumulated CPU time in seconds on solved instances;
-number of incorrect answers is given between brackets %
+\caption{%
+%% DONE: Reviewer 2: add the incorrect answers
+%% DONE: Reviewer 3: specify times
+Overall results $n/t~[f]$ where %
+$n$ is the number of solved problems,  %
+$t$ is the cumulated CPU time (sec) on solved instances, %
+$f$ is the number of incorrect answers, if any %
 %(1=first place, 2 = second place, etc.)
 }
 \label{tab:overall}
+\vspace{-3eX}
 \end{table}
+
+
+\paragraph{New benchmarks:}
+One of the goals of \slcomp\ was to build an interesting set of benchmark problems. 
+Aside from its use in the competition, the current set provides a reference of the kind of problems handled efficiently by the existing solvers and techniques.
+Moreover, researchers can use the collected benchmarks for the evaluation of competing solvers and for the testing of their own solver quite apart from any competition. 
+In particular, it was important to obtain benchmarks relevant to the actual application area, i.e., software verification.
+
+\paragraph{Publicly available solvers:} \starexec\ requires that a public version of a solver be made available on \starexec\ as a condition of participating in a competition. This allows users of \starexec\ to rerun a competition if so desired. More importantly, it allows users to upload a new set of benchmarks of interest in their application domain and to try the various solvers against those benchmarks.
+
+\paragraph{Overall results:}
+Table~\ref{tab:overall} provides an overall view of the competition dashboard for all divisions. This information was presented in a live web-site that was updated every minute throughout the course of the competition. This first competition only took several hours to run (as compared, for example, to \smtcomp, which consumed a week of computation over 150 nodes of the \starexec\ cluster).
+
+%% DONE: Reviewer 1: the differences between the different benchmark sets 
+The results corroborate the theoretical complexity analysis provided in Section~\ref{sec:SL}:
+the difficulty of divisions is increasing from \sllsat\ to \UDBent\ (from left to right in Table~\ref{tab:overall}) and this for any technique used. 
+The \UDBent\ division is the most challenging because none of the solvers competing on it could solve all the problems. However, each problem of this division can be solved by at least one solver. This fact reveals the complementarity of the techniques used (resolution techniques for \SLEEK\ and \CYCLIST, reduction to tree automata inclusion for \SLIDE).
+The results obtained on the easier divisions (\sllsat\ and \sllent) may interrogate the difficulty of problems included in these divisions. However, the size of formulas in these problems is bigger than the ones included in, e.g., the \UDBent\ division. The lack of difficulty comes from the form of the inductive definition used, i.e., $\ls$, which allows to obtain NPTIME decision procedures.
+
+%% DONE: Reviewer 2: Especially analysis on which techniques worked for which 
+%%                   benchmark categories could be insightful
+%% DONE: Reviewer 3: Can we tell from Table 4 if some techniques are more successful or
+%%                   promising than others?
+In general, the solvers based on resolution techniques (\SLEEK\ and \CYCLIST) solved the bigger number of problems.
+%% DONE: Reviewer 2: reword this sentence 
+%%       --> included in a paragraph about the range of application for each solver.
+%We make a special mention of the \SLEEK\ solver for competing in all divisions.
+For example, the \SLEEK\ solver competed in all divisions and solved 92\% of benchmarks. This is due to its big database of lemmas which helps to cut proof trees.
+%
+The techniques based on tree automata (\SLIDE\ and \SPEN) are more efficient on easier divisions but solved only 65\% of problems. In the \FDBent\ division, the tree automata technique proved its completeness for this class of problems, while the deduction based techniques failed to find adequate lemma for building the proof trees. 
+Since the techniques using tree automata are the youngest, these results encourage to improve them by a careful engineering of solvers.
+%% DONE: Reviewer 1: get a better comparison of the solver’s behavior
+For the polynomial divisions \sllsat\ and \sllent, the constraint programming techniques implemented in \ASTERIX\  is impressive. But the results obtained with the other techniques are also good: a problem is solved in less than tens of mili-seconds. 
+An interesting insight of the \sllent\ division by comparing the results of the two solvers based on the resolution techniques, i.e., \CYCLIST\ and \SLEEK. A particular choice for the resolution technique may improve 5 times the execution time.
 
 
 %\paragraph{Detailed results:}
@@ -802,6 +812,7 @@ number of incorrect answers is given between brackets %
 
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusions and Perspectives}
 
@@ -813,23 +824,29 @@ the maturity of solvers submitted for this competition has been proven.
 The following additional goals were also reached:
 \begin{itemize}
 \item We achieved a first step in establishing a common format for the SL. 
-This format, although not final and needing some readjustments, revealed the features required by the existing solvers, e.g., the strong typing of formulas, the kind of inductive definitions handled, etc.
-%% TODO: say parts needs adjustement
-%which parts of the format need some
-% readjustments (what are the expected evolutions ?).
+This work revealed the features required by the existing solvers, e.g., the strong typing of formulas, the kind of inductive definitions handled, etc.
+%% DONE: Reviewer 3: say which parts of the format need some readjustments (what are the expected evolutions ?).
+Also, the use of the current format shown that it needs some readjustments to decrease its verbosity and to obtain a better integration in the semantics of the \smtlib\ format. 
+The new features of the \smtlib 2 format, e.g., abstract data types and recursive function definitions, could facilitate the revision of the common format.
 
-\item Some of the competing solvers have been improved (extensions, bugs fixed) during the preparation of this competition. They also gained experience with the preparation of a distribution for the \starexec\ platform. Note that the preparation of an version of a solver for \starexec\ was non-trivial. To avoid system-dependencies and to treat every participant in a competition equally, \starexec\ requires a 
+\item Some of the competing solvers have been improved (extensions, bugs fixed) during the preparation of this competition. They also gained experience with the preparation of a distribution for the \starexec\ platform. 
+%
+Note that the preparation of an version of a solver for \starexec\ was non-trivial. 
+To avoid system-dependencies and to treat every participant in a competition equally, \starexec\ requires a 
 statically-linked instance of a solver runnable in \starexec's Linux environment. Preparing such a version
 of a solver was time-consuming and resulted in one intended participant's withdrawal. This problem
 exists for first-time competitors in other \starexec-hosted competitions as well.
 
-\item A community interested in such tools has been identified and informed about the status of the existing solvers. This community could benefit from improving the tools built on the top of decision procedures for SL.
+\item A community interested in such tools has been identified and informed about the status of the existing solvers.
+This community could benefit from improving the tools built on the top of decision procedures for SL.
 
 \item The \smtlib\ community discovered the status of the solvers for SL and became interested in this theory.
 
-\item A interesting problem has been submitted to the \starexec\ platform by one solver, \textsc{SeLoger}~\cite{HasseIOP13}, initially submitted to \slcomp. This solver needs to have a batch execution in order to avoid the loading of the interpreter executing its binary (the solver needs a Windows platform).
-This feature is different from the incremental mode provided by the \starexec\ platform. It may measure only the score obtained on a bunch of problems, without measuring the details on each problem. 
-%% TODO: rephrase (reviewer 3)
+\item A interesting problem has been submitted to the \starexec\ platform by one solver, \textsc{SeLoger}~\cite{HasseIOP13}, initially submitted to \slcomp. 
+%% DONE: Reviewer 3: rephrase 
+This solver needs to have a batch execution in order to avoid the loading of the interpreter executing its binary (the solver needs a Windows platform) at each job.
+This feature is different from the incremental mode provided by the \starexec\ platform. 
+It requires to measure only the score obtained on a bunch of problems, without measuring the details on each problem. 
 
 \end{itemize}
 
@@ -842,12 +859,13 @@ A good cadence may be, for example, alternating a competition year with a year o
 In the intervening time to the next edition of the competition, several tasks are intended to be accomplished.
 \begin{enumerate}
 %\item The input format has to be standardized, based on the experience of the inaugural. 
-%Several constructs are
 %\fbox{Is there a need for change?}
 
-\item The relationship of the SL theory to \smtlib\ must be understood. This may require alterations to
-the basic SL theory or designing an embedding of SL as an \smtlib\ theory.
-The discussion group \url{sl2smtlib@googlegroups.com} has been opened for working out this relationship. 
+\item The relationship of the SL theory to \smtlib\ must be understood. 
+This may require alterations to the basic SL theory or designing an embedding of SL as an \smtlib\ theory.
+The discussion group \url{sl2smtlib@googlegroups.com} has been opened for working out this relationship.
+%% DONE: Added
+The new features of the \smtlib 2 format, e.g., recursive function definitions, are very important for the SL theory.
 The use of the \smtlib\ format for \slcomp\ is convenient because some SL solvers already deal with a combination of SL with theories currently available in \smtlib\, e.g., 
 integer arithmetics theory~\cite{PerezR11}, array theory~\cite{BouajjaniDES12-vmcai}, set theory~\cite{PiskacWZ13}, etc.
 
@@ -855,22 +873,18 @@ integer arithmetics theory~\cite{PerezR11}, array theory~\cite{BouajjaniDES12-vm
 \item With the experience of the current competition, the set of benchmarks has to be improved in the following directions:
 \begin{itemize}
 \item More benchmarks must be added in the existing divisions, especially the ones with smallest number of benchmarks. 
-We are searching for benchmarks from software verification problems.
-%% TODO: industrial benchmarks
-%% TODO: We added a comment on "Future work" paragraph about including more difficult 
-%problems (in size of the problem) in this division.
+%% DONE: Reviewer 3: industrial benchmarks
+Moreover, we have to increase the number of benchmarks coming from the software verification tools developed in academia or industry.
+%% DONE: Reviewer 3: We added a comment on "Future work" paragraph about including more difficult problems (in size of the problem) in this division.
+The easy divisions, i.e., \sllsat\ to \FDBent, should include more difficult problems to push at their limits the existing solvers.
 
 \item Some new divisions will be introduced to take into account the needs of the software verification tools. For example, the combination of SL with integer arithmetics is used in tools that reason about the heap consumption.
 
-\item A measure of difficulty will be assigned to each benchmark problem to obtain a better evaluation of each solver.
-%
-%% TODO: For the divisions where the problems are decidable (SLL* and FDB), the
-%difficulty could be measured in the size of the formulas and the
-%inductive definitions used.
-%In addition to the size information, the difficulty for the UDB problems
-%could be computed from the features used in the inductive definitions, e.g.,
-%the number of fields in the data structures their ``regularity''.
-%For example, the btree definition is less difficult than the tll definition.
+\item The scoring system shall be improved by assigning a difficulty to each benchmark problem. This should lead to a better evaluation of each solver.
+%% DONE: Reviewer 3: How do you plan to assign a measure?
+A classic way to assign a difficulty level is to take into account the size of the formulas and of the inductive definitions used in the problem. 
+However, we think that for divisions like \UDBsat\ and \UDBent, an additional factor of difficulty is the number of fields of the data structure and the ``uniformity'' of its shape. 
+For example, it seems to be easier to solve problems using \texttt{btree} definition than the \texttt{tll} definition.
 \end{itemize}
 
 \item The use of solvers in software verification tools requires improving solver capabilities such as
@@ -881,7 +895,7 @@ and supporting abduction.
 \item An interesting task is to find a way to measure individual solver improvement (in the face of a changing benchmark set), because this should encourage teams to work on both the engineering and the theoretical foundations of their tools.
 % 
 
-\item Finally, we should ease the task of entrants in this competition by providing, well in advance, clear rules, guidelines for solver preparation, pre-processors for the their input language, etc. Many of these aspects were worked out in this first competition as participants were making their preparations.
+\item Finally, we should ease the task of entrants in this competition by providing, well in advance, clear rules, guidelines for solver preparation, pre-processors for their input language, etc. Many of these aspects were worked out in this first competition as participants were making their preparations.
 
 \end{enumerate}
 
@@ -898,11 +912,11 @@ Radu Iosif,
 Andrey Rybalchenko, and
 Constantin Enea.
 
-The authors thank the participants to the discussion list, especially 
+We thank the  participants to the discussion list, especially 
 Josh Berdine, John Brotherston, Christoph Hasse, and Thomas Wies, 
 for their interesting comments on the input theory and format used in the competition.
+We also thank reviewers of the paper for their interesting suggestions for improving its presentation.
 
-%\fbox{Acknowledgments for the support of each author.}
 %by institution
 %%Nikos Gorogiannis, Middlesex University London
 %%Juan Navarro Perez, University College London

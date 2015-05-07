@@ -2,8 +2,6 @@ We thank the reviewers for their careful reading and
 the thoughtful suggestions. We provide below a commented list of 
 changes done to the paper in order to improve it.
 
-[MS: Text like this correspond to my comments, not to be published.]
-
 
 > Reviewer 1
 >++++++++++
@@ -17,9 +15,9 @@ changes done to the paper in order to improve it.
 > At least it should be better related to the given examples, but
 > I have the impression that the informal introduction is sufficient.
 
-We have changed the presentation of the logic by keeping only
-an informal introduction and by adding more explanations on the
-inductive definitions.
+We have changed the presentation of the logic. We kept only
+the informal introduction and we added some examples and explanations 
+of the inductive definitions.
  
 > The results of the competition are not very carefully analysed.
 > Only some accumulated values are given. It would be interesting
@@ -28,8 +26,8 @@ inductive definitions.
 > plots as in common in the SAT competition could be used.
 
 Thanks for these suggestions. We have updated Section 4 (Results) with
-more comments on the insights on benchmarks provided by the results 
-obtained.
+more comments on the insights provided by the competition on
+the benchmarks and solvers.
 
 [TODO: something about cactus plots, David?]
 
@@ -41,19 +39,17 @@ obtained.
 We wanted to emphasize the relation between this competition and 
 the SAT & SMT competitions. Notice that some solvers are also based 
 on techniques that are not classic for SAT/SMT, e.g., tree automata.
-Finally, we removed this phrase for the abstract because the interest of
-this competition has been approved by these reviews.
+Finally, we removed this sentence from the abstract.
 
 > It is good that concrete examples are give (Table 1). But they should
 > be better integrated in the text.
 
-We have provided explanations for each example in the presentation of
-the logic.
+We have provided explanations for each example in the presentation of the logic.
 
 > For the syntax, it would be helpful to have the alphabets introduced.
 
-The presentation of the logic fragment has been changed as suggested reviewers. 
-The alphabets are introduced informally.
+Only the informal presentation of the logic has been kept.
+Some alphabets were introduced informally.
 
 > There is a sentence „We solicited the support of D. Cock“ As he is
 > one of the co-authors of this paper this reads a little odd, please
@@ -82,8 +78,7 @@ The presentation of results has been improved as suggested by the reviewers
 > Especially analysis on which techniques worked for which benchmark categories 
 > could be insightful. 
 
-We added an analysis of the results obtained with each technique in
-Section 4 (Results).
+We added an analysis of the results obtained with each technique in Section 4 (Results).
 
 > Still I think the paper is of interest to the separation logic community, 
 > and thus should be accepted.
@@ -119,15 +114,16 @@ We changed some punctuations in the paper in order to obtain uniformity.
 > just (b) and (c)!
 > - Were any "training runs" run to weed out buggy solvers? How was the final set of benchmarks selected?
 
-We added in Section 4 more information about the incorrect results obtained during 
-the competition. Also, we indicated the number of training runs (1). Because these runs were 
-unofficial, we did not have any data about the number of bugs fixed.
+We added in Section 3.4 more information about the dealing of discrepancies on obtained results.
+Also, we indicated the number of training runs (1). Because these runs were 
+unofficial, we did not have any data about the number of bugs fixed in solvers.
 
 The selection of the final set of benchmarks is commented in a paragraph of Section 3.3.
 We have added more explanations concerning the computation of the status (expected result) 
 of each problem. 
 
-The table presenting the overall results includes now the point (a).
+The table presenting the overall results includes now the point (a) and recalls
+the total number of problems for each division.
 
 > - Page 10: The sentence: "We make a special mention..." could be reworded, it sounds a bit clumsy to my ear.
 
@@ -145,8 +141,8 @@ No, we don't have an automatic way to handle discrepancies.
 When inconsistent results were signaled by one solver, we check it with the other 
 solvers. Notice that some solvers (CYCLIST, SLSAT) produce a proof tree,
 which can also be used to check the result when the problem could be checked by 
-these solvers.
-As discussed in the future works, a diagnosis output would be interesting for this task.
+these solvers. In the future works we mentioned that a diagnosis output would be 
+interesting for this task.
 
 
 Reviewer 3

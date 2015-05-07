@@ -12,7 +12,8 @@
 %% Other standard macros
 \usepackage{amsfonts}
 \usepackage{stmaryrd}
-\usepackage{enumerate}
+%\usepackage{enumerate}
+\usepackage[T1]{fontenc}
 
 %% Figures
 %\usepackage{graphicx}
@@ -125,6 +126,7 @@ The benchmarks consisted of satisfiability and entailment problems
 over formulas in the fragment of symbolic heaps with inductive definitions, 
 which is the fragment of Separation Logic that is most used in program analysis and verification tools.
 % These benchmarks are mainly crafted and come from the testing suits of the participating solvers.
+%% DONE: Reviewer 2: remove comment on the use of SAT/SMT solvers by the SL solvers.
 We report in this paper on 
 the competition rules, the participants, the results, the findings, and  
 the future of this event.
@@ -177,11 +179,13 @@ or Separation Logic with Inductive Definitions (\SLRD)~\cite{IosifRS13} or
 the positive flat SL fragment~\cite{AntonopoulosGHKO14}. 
 We provide here only an informal description of this fragment, its detailed presentation could be found in, e.g., \cite{Reynolds02,IosifRS13,AntonopoulosGHKO14}.  
 
+%% DONE: Reviewers 1-3: provide informal description of the logic and references for the detailed description.
 This fragment specifies the configurations of programs manipulating variables that are references to some record types; the records are defined by the user as a set of reference fields.
 Such configurations are modeled by
 (i) a heap that is a set of records and
 (ii) a stack that maps program variables into locations that are record addresses.
 %
+%% DONE: Reviewer 1: introduce alphabets
 In the following, we denote by lower case letters $x,y,z$ the program variables and by upper case letters $X,Y,Z$ logical variables. The program variable $\nil$ has a fixed meaning representing an undefined (not allocated) location.
 %
 Variables and formulas are typed based on the user-defined records. Record values are denoted by mappings of record fields to values stored in variables. For example, $\{(\texttt{lson},y), (\texttt{rson},z)\}$ denotes a value for a record defining a binary tree node.
@@ -204,6 +208,9 @@ x \points \{(\texttt{nxt},y)\} \ \posep\ y \points \{(\texttt{nxt},\nil)\} \ \po
 The definition of $\ls$ on Table~\ref{tab:RD} specifies acyclic and possibly empty singly linked list segments starting in $E$ and with last element pointing to $F$.
 The list is acyclic due to the non-aliasing pure constraint $E\neq F$ which prevents $F$ to be one of the cells inside the list segment.
 %
+%% DONE: Reviewer 1: better integration of examples in the text 
+%% DONE: Reviewer 2: fill the space around Table 1
+%% DONE: Reviewer 3: explain at least one of the ID in Table 1
 Table~\ref{tab:RD} provides other examples for inductive definitions.
 %
 The atom $\nll(E,F,B)$ specifies a list segment (of successor field \texttt{nxtup}) starting from $E$ where each cell has a reference (in field \texttt{inner}) to a list segment ending to some common border location $B$. 
@@ -301,9 +308,9 @@ R\points \{(\texttt{lson},X),(\texttt{rson},Y),(\texttt{parent},P),(\texttt{nxt}
 \mathtt{tll}(X,R,E,Z) \posep \mathtt{tll}(Y,R,Z,F)\big)
 \end{array} \nonumber  
 \end{eqnarray}
-
 \caption{Examples of inductive definitions used in the benchmark}
 \label{tab:RD}
+\vspace{-3eX}
 \end{table}
 
 %Notice that this semantics is a \emph{precise} semantics. It was chosen because it is the most used in tools and in the verification of concurrent programs.
@@ -376,9 +383,9 @@ R\points \{(\texttt{lson},X),(\texttt{rson},Y),(\texttt{parent},P),(\texttt{nxt}
 The main difficulty that faces automatic reasoning using the symbolic heaps fragment is that the logic, 
 due to its expressiveness, does not have very nice decidability properties~\cite{AntonopoulosGHKO14}.
 For this reason, most program verification tools use incomplete heuristics to solve the satisfiability and entailment problems.
-
-We summarize below the theoretical results obtained on the decidability of this fragment.
-The various benchmark and competition divisions introduced in \slcomp\ stem from these results.
+%
+We summarize below the results obtained on the decidability of this fragment.
+The various benchmarks and competition divisions introduced in \slcomp\ stem from these results.
 \begin{description}
 \item[\SLRD+:]
 This fragment considers inductive definitions of the general form given in equation (\ref{eq:RD}).
@@ -406,12 +413,9 @@ This is a sub-fragment of \SLL+ obtained by requiring that
 This sub-fragment has a PTIME decision procedure for the entailment problem~\cite{CookHOPW11}.
 \end{description}
 
-%% MS: changed as suggested by the Reviewer 3:
-%The benchmark problems used in the competition were split into five divisions that correspond to the three classes of problems above and the two decision problems considered.
-%Because very few tools were tuned for satisfiability in the \SLL+ fragment, this division was not opened.
-
+%% DONE: Reviewer 3: rephrase the comment on the divisions issued from the problems and results
 Out of the 6 possible divisions (three classes of problems above and the two decision problems considered), 
-only five were opened because very few tools were tuned for satisfiability in the \SLL+ fragment.
+only five were opened because very only one tool was tuned for satisfiability in the \SLL+ fragment.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -429,12 +433,14 @@ to several research groups
 %%
 that are actively developing solvers for SL.
 The researchers that positively replied and some other researchers known for their work on tools for SL were invited to discuss the organization details on a public mailing list \url{smtcomp14-sl@googlegroups.com}.
+%% DONE: Reviewer 1: odd sentence, please rephrase.
 %We solicited the support of the chair of the \smtcomp\ 2014 organizing committee, David Cok, to benefit from his experience in the organization of such competitions.
 The support of the officers of the \smtcomp\ 2014 organizing committee has been solicited to benefit from their experience in the organization of such competitions.
+%
 A message describing the competition was sent on the \smtcomp\ and \smtlib\ discussion lists. Following this message, some members of the \smtcomp\ steering committee were added to the \slcomp\ discussion list. 
 This inaugural edition of the competition was jointly organized by Mihaela Sighireanu and David Cok:
 Mihaela Sighireanu enlisted participation, moderated the discussion on competition rules, and organized the 
-collection and categorization of benchmarks; 
+collection, translation, and categorization of benchmarks; 
 David Cok advised on the competition organization and rules based on experience with other competitions, and he executed and reported the results of the competition using the \starexec\ framework.
 
 
@@ -442,31 +448,30 @@ David Cok advised on the competition organization and rules based on experience 
 \subsection{Participants}
 Seven teams representing seven different solvers replied to the call for participation.
 These teams provided:
-\begin{itemize}
-\item benchmarks, 
-\item a description of the input format of their solver, 
-\item a reference to a technical paper describing the principles used by the solver, 
+(1) benchmarks, 
+(2) a description of the input format of their solver, 
+(3) a reference to a technical paper describing the principles used by the solver, 
 %usually, it is not DPLL
-\item a web site, and
-\item a statically linked Linux binary which could be executed on the \starexec\ platform.
-\end{itemize}
+(4) a web site, and
+(5) a statically linked Linux binary which could be executed on the \starexec\ platform.
+%
 Because the time given for preparing the binary was very short (2 weeks), one solver~\cite{HasseIOP13}
 %give details
 retired from the competition. The problem faced by this solver will be discussed further in the concluding remarks.
 %
 Note that although one person is listed as ``submitter'' for a solver on the web site,
-%give here generic web site or \url{www.smtcomp.org}, 
+%give here generic web site or \url{www.smt-comp.org}, 
 there is generally a team of contributors behind each tool; the identified person is simply the communication contact.
 %
-The participants in this first edition were the following:
+The participants in this first edition are described below.
 
-%\fbox{Check the details for your solver.}
-
-%%You could propose/use a different format than the one proposed, but
-%%The formats shall be aligned in the final version
-\begin{itemize}
-\item \ASTERIX~\cite{PerezR13} 
-solver has been submitted by 
+%% TODO: Reviewer 2: the tool internal techniques is a bit short and could be extended
+%\begin{itemize}
+%\item \ASTERIX~\cite{PerezR13} solver 
+\smallskip
+\noindent
+\textbf{\ASTERIX}~\cite{PerezR13}: 
+has been submitted by 
 Juan Navarro Perez (UCL, UK) and 
 Andrey Rybalchenko (Microsoft Research Cambridge, UK).
 The solver deals with the satisfiability and entailment checking in the \SLL\ fragment.
@@ -475,46 +480,59 @@ The procedure relies on SMT solving technology (Z3 solver is used) to untangle p
 It has at its core a matching function that checks whether a concrete valuation is a model of the input formula and, if so, generalizes it to a larger class of models where the formula is also valid.  
 
 
-\item \CYCLIST~\cite{BrotherstonGP12,CYCLISTsite}
-solver has been submitted by 
+%\item \CYCLIST~\cite{BrotherstonGP12,CYCLISTsite} solver 
+\medskip
+\noindent
+\textbf{\CYCLIST}~\cite{BrotherstonGP12,CYCLISTsite}:
+has been submitted by 
 Nikos Gorogiannis (Middlesex University London, UK).
 %J. Brotherston, N. Gorogiannis, and R. L. Petersen 
 The solver deals with the entailment checking for the \SLRD+ fragment.
 It is an instantiation of the theorem prover \textsc{Cyclist} for the case of Separation Logic with inductive definitions. 
-The theorem prover builds derivation trees with ``back-links'' from leaves to nodes of the tree that obey some soundness condition. 
-For the Separation Logic, the \CYCLIST\ prover replaces the rule of weakening used in first-order theorem provers with the frame rule of SL.
+The solver builds derivation trees and uses induction to cut infinite paths in these trees
+% with ``back-links'' from leaves to nodes of the tree 
+that satisfy some soundness condition. 
+For the Separation Logic, \CYCLIST\ replaces the rule of weakening used in first-order theorem provers with the frame rule of SL.
 
 
-\item \SLEEK~\cite{ChinDNQ12,SLEEKsite} 
-solver has been submitted by 
+%\item \SLEEK~\cite{ChinDNQ12,SLEEKsite} solver 
+\medskip
+\noindent
+\textbf{\SLEEK}~\cite{ChinDNQ12,SLEEKsite}:
+has been submitted by 
 Quang Loc Le and Wei Ngan Chin (NUS, Singapore).
 The solver deals with the satisfiability and entailment checking for \SLRD+ formulas.
-It is an (incomplete but) automatic prover, that builds a proof tree for the input formulas by using the classical inference rules and the frame rule of SL.
+It is an (incomplete but) automatic prover, that builds a proof tree for the input problem by using the classical inference rules and the frame rule of SL. It also uses a database of lemmas for the inductive definitions in order to discharge the proof obligations on the spatial formulas.
 %
-\SLEEK\ discharges the spatial proof obligations, the remaining pure obligations are discharged by external provers like CVC4, Mona, or Z3.
+The proof obligations on he pure formulas are discharged by external provers like CVC4, Mona, or Z3.
 
-
-\item \SLIDE~\cite{IosifRV14,SLIDEsite} 
-solver has been submitted by 
+%\item \SLIDE~\cite{IosifRV14,SLIDEsite}  solver 
+\medskip
+\noindent
+\textbf{\SLIDE}~\cite{IosifRV14,SLIDEsite}: 
+has been submitted by 
 Adam Rogalewicz and Tomas Vojnar (VeriFIT, Czech Rep) and
 Radu Iosif (Verimag, France).
 The solver deals with the entailment problem in the decidable sub-fragment of \SLRD+ defined in~\cite{IosifRS13}.
 The proof method for checking $\varphi\limp\psi$ relies on converting $\varphi$ and $\psi$ into two tree automata $A_\varphi$ resp. $A_\psi$, and checking
 the tree language inclusion of the automaton $A_\varphi$ in the automaton $A_\psi$.
 
-
-\item \SLSAT~\cite{BrotherstonFPG14} 
-solver has been submitted by 
+%\item \SLSAT~\cite{BrotherstonFPG14} solver 
+\medskip
+\noindent
+\textbf{\SLSAT}~\cite{BrotherstonFPG14}:
+has been submitted by 
 Nikos Gorogiannis (Middlesex University London, UK) 
 and  Juan Navarro Perez (UCL, UK).
 %J. Brotherston, C. Fuhs, N. Gorogiannis, and J. Navarro Perez
 The solver deals with the satisfiability problem for the \SLRD+ fragment with general inductively defined predicates.
 The decision procedure is based on a fixed point computation of a constraint, called the ``base'' of an inductive predicate definition. This constraint is a conjunction of equalities and dis-equalities between a set of free variables built also by the fixed point computation from the set of inductive definitions.
 
-
-
-\item \SPEN~\cite{EneaLSV14,SPENsite} 
-solver has been submitted by 
+%\item \SPEN~\cite{EneaLSV14,SPENsite} solver 
+\medskip
+\noindent
+\textbf{\SPEN}~\cite{EneaLSV14,SPENsite}:
+has been submitted by 
 Mihaela Sighireanu (UPD \& CNRS, France).
 %C. Enea, O. Lengal, M. Sighireanu, and T. Vojnar
 The solver deals with satisfiability and entailment problems for the fragment \SLRD+ where 
@@ -525,8 +543,9 @@ The decision procedures calls the MiniSAT solver on a boolean abstraction of the
 The core of the algorithm checking if $\varphi\limp\psi$ is valid searches a mapping from the atoms of $\psi$ to sub-formulas of $\varphi$.
 This search uses the membership test in tree automata to recognize in sub-formulas of $\varphi$ some unfolding of the inductive definitions used in $\psi$.
 
-\end{itemize}
+%\end{itemize}
 
+\medskip
 A notable fact about this set of participants is the diversity of techniques used by each solver:
 reduction to SAT or SMT problems (\ASTERIX, \SLSAT, \SPEN),
 resolution based (\CYCLIST, \SLEEK),
@@ -539,8 +558,11 @@ Some of the above solvers deal with other problems than the ones considered for 
 %%%%%%%%%%
 \subsection{Benchmarks and their input format}
 
-The main source for the benchmarks were the test suits of participants.
-No industrial benchmark was included because we don't receive such a were not aware about any industrial tool using an SL solver. 
+%% DONE: Reviewer 3: comment the lack of industrial benchmarks
+The set of benchmarks has been built based on contributions from each participant. 
+Some of these problems come from academic software analysis or verification tools based on SL 
+(e.g., \textsc{SmallFoot}~\cite{SmallFootsite}, \textsf{Hip}~\cite{ChinDNQ12}).
+But no problem issued from industrial tools was included in the benchmarks because we don't receive such input.
 The benchmarks were collected in the input format submitted by the participants. 
 This set of problems was translated into a common format designed like a theory of the \smtlib\ format~\cite{BarST-SMTLIB}.
 That is, they used the syntax of \smtlib v2, although the SL theory underlying the syntax is not an official \smtlib\ theory or, at this point, even compatible with the theory underlying \smtlib.
@@ -568,16 +590,17 @@ For example, some solvers rejected problems with non-aliasing constraints ($x\ne
 \item The status (expected result), the source, and the kind of each problem were supplied as \smtlib\ meta-information.
 \slcomp\ benchmarks are only crafted (i.e., demonstrates a particular aspect of a solver or problem domain) or
 random (instance of a problem template parameterized on some dimension, e.g., a size).
+%% DONE: removed the other kinds because not used.
 
 \item The benchmark curation process identified some problems that had an incorrect expected result computed by their source solver, which required fixing the problem in the solver and in the benchmark.
-The status of each problem was checked before the competition using at least two solvers. 
+%% DONE: Reviewer 2: Were any discrepancies found? What was the procedure to handle those?
+The status of each problem was checked before the competition using at least two solvers and it did not changed during the competition. 
 \end{itemize}
 
 \paragraph{Divisions:} The final benchmarks have the characteristics presented in Table~\ref{tab:bench}.
 The benchmark set was split into five divisions, using the kind of problems solved and the kind of inductive definitions used (commented in Section~\ref{sec:SL}), as follows:
 \begin{description}
 \item[\sllsat:] includes satisfiability problems for the \SLL\ fragment.
-% defining possibly empty, acyclic singly liked lists. 
 %%As mentioned before, this fragment has been identified to have a polynomial complexity for the satisfiability problem.
 Most of problems in this division were provided by the team of the \ASTERIX\ solver in~\cite{PerezR11}.
 
@@ -627,13 +650,11 @@ Randomly generated & 59\% \\
 \label{tab:bench}
 \end{table}
 
-%\fbox{Give a table of actual numbers of benchmarks in each division. }
-
 
 %%%%%%%%%%
 \subsection{Competition infrastructure}
 
-%% MS: I've put together the paragraphs below, as suggested by Reviewer 2; 
+%% DONE: Reviewer 2 suggestion to group small paragraphs.
 %%     the main idea being "details on competition parameters".
 \slcomp\ used the \starexec\ platform~\cite{StarExecsite} under the control of David Cok 
 %% more on the benefits of this platform
@@ -648,8 +669,12 @@ The incremental feature was not used and is not supported by most of the competi
 %
 \starexec\ imposes a time and space limit on each attempt of a solver to solve a given benchmark. For this competition, the CPU time\footnote{None of the participating solvers was parallel.} was limited to 2400 seconds and
 the memory (RAM) limit was 100GB. 
+%% DONE: Reviewer 3: comment the limits and specify if parallel solvers involved.
 Some jobs did have CPU timeout or reached the memory limit.
-%However, no benchmark problem was complex enough to even approach these limits.
+%% TODO: see why David changed this?
+%%       However, no benchmark problem was complex enough to even approach these limits.
+%
+%% DONE: Reviewer 2: comment on training runs and how discrepancies have been fixed
 The participants trained their solvers on the platform and provide feedback where the expected result of a problem did not match their result. Several benchmarks and solvers were fixed during this period.
 One training run were executed before the official run to provide insights about the global results and to do a final check of the benchmark.
 
@@ -751,7 +776,7 @@ Table~\ref{tab:overall} provides an overall view of the competition dashboard fo
 \end{tabular}
 \end{center}
 \caption{Overall results of Number of solved problems/cumulated CPU time in seconds on solved instances;
-incorrect answers in brackets %
+number of incorrect answers is given between brackets %
 %(1=first place, 2 = second place, etc.)
 }
 \label{tab:overall}

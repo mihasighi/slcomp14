@@ -15,7 +15,7 @@
 \usepackage[T1]{fontenc} %% needed to combine textsc with textbf
 
 %% Figures
-%\usepackage{graphicx}
+\usepackage{graphicx}
 %\usepackage{tikz}
 %\usetikzlibrary{positioning,shapes,shadows,arrows}
 %\usetikzlibrary{decorations.pathmorphing,snakes}
@@ -155,7 +155,7 @@ They intensively use (semi-)decision procedures for checking satisfiability and 
 % in order to check Hoare's triples or to help the termination of a static analysis.
 In the last five years, several papers reported on the design and implementation of such (semi-)decision procedures and compared publicly available tools~\cite{HasseIOP13}.
 
-The organization of a public competition of SL solvers has been an opportunity 
+The organization of a public competition of SL solvers was an opportunity 
 to collect the existing benchmarks and  
 to make available the binaries of these tools on a common platform, i.e., \starexec~\cite{StarExecsite}.
 The \slcomp\ 2014 has been possible due to the support of the \smtcomp\ organizing committee, 
@@ -175,7 +175,7 @@ as
 the \emph{symbolic heaps} fragment
 or Separation Logic with Inductive Definitions (\SLRD)~\cite{IosifRS13} or
 the positive flat SL fragment~\cite{AntonopoulosGHKO14}. 
-We provide here only an informal description of this fragment, its detailed presentation could be found in, e.g., \cite{Reynolds02,IosifRS13,AntonopoulosGHKO14}.  
+We provide here only an informal description of this fragment, its detailed description could be found in, e.g., \cite{Reynolds02,IosifRS13,AntonopoulosGHKO14}.  
 
 %% DONE: Reviewers 1-3: provide informal description of the logic and references for the detailed description.
 This fragment specifies the configurations of programs manipulating variables that are references to some record types; the records are defined by the user as a set of reference fields.
@@ -203,15 +203,15 @@ For example, the following formula specifies a heap built from two cells of a si
 \begin{align}
 x \points \{(\texttt{nxt},y)\} \ \posep\ y \points \{(\texttt{nxt},\nil)\} \ \posep\ \ls(z,y)
 \end{align}
-The definition of $\ls$ on Table~\ref{tab:RD} specifies acyclic and possibly empty singly linked list segments starting in $E$ and with last element pointing to $F$.
+The definition of $\ls$ in Table~\ref{tab:RD} specifies acyclic and possibly empty singly linked list segments starting in $E$ and with last element pointing to $F$.
 The list is acyclic due to the non-aliasing pure constraint $E\neq F$ which prevents $F$ to be one of the cells inside the list segment.
 %
 %% DONE: Reviewer 1: better integration of examples in the text 
 %% DONE: Reviewer 2: fill the space around Table 1
 %% DONE: Reviewer 3: explain at least one of the ID in Table 1
-Table~\ref{tab:RD} provides other examples for inductive definitions.
+Table~\ref{tab:RD} provides other examples of inductive definitions.
 %
-The atom $\nll(E,F,B)$ specifies a list segment (of successor field \texttt{nxtup}) starting from $E$ where each cell has a reference (in field \texttt{inner}) to a list segment ending to some common border location $B$. 
+The atom $\nll(E,F,B)$ specifies a list segment (of successor field \texttt{nxtup}) starting from $E$ where each cell has a reference (in field \texttt{inner}) to a list segment ending in some common border location $B$. 
 %
 The definition $\dll(E,L,P,F)$ specifies a doubly linked list segment rooted at $E$ and ending in $L$; $P$ denotes the previous location of $E$ (stored in field \texttt{prv}) and $F$ denotes the next location of $L$  (stored in field \texttt{nxt}).
 %
@@ -411,8 +411,9 @@ This sub-fragment has a PTIME decision procedure for the entailment problem~\cit
 \end{description}
 
 %% DONE: Reviewer 3: rephrase the comment on the divisions issued from the problems and results
+\noindent
 Out of the 6 possible divisions (three classes of problems above and the two decision problems considered), 
-only five were opened because very only one tool was tuned for satisfiability in the \SLL+ fragment.
+only five were opened because only one solver was available for checking satisfiability in the \SLL+ fragment.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -432,7 +433,7 @@ that are actively developing solvers for SL.
 The researchers that positively replied and some other researchers known for their work on tools for SL were invited to discuss the organization details on a public mailing list \url{smtcomp14-sl@googlegroups.com}.
 %% DONE: Reviewer 1: odd sentence, please rephrase.
 %We solicited the support of the chair of the \smtcomp\ 2014 organizing committee, David Cok, to benefit from his experience in the organization of such competitions.
-The support of the officers of the \smtcomp\ 2014 organizing committee has been solicited to benefit from their experience in the organization of such competitions.
+The support of the officers of the \smtcomp\ 2014 organizing committee was solicited to benefit from their experience in the organization of such competitions.
 %
 A message describing the competition was sent on the \smtcomp\ and \smtlib\ discussion lists. Following this message, some members of the \smtcomp\ steering committee were added to the \slcomp\ discussion list. 
 This inaugural edition of the competition was jointly organized by Mihaela Sighireanu and David Cok:
@@ -468,7 +469,7 @@ The participants in this first edition are described below.
 \smallskip
 \noindent
 \textbf{\ASTERIX}~\cite{PerezR13}: 
-has been submitted by 
+was submitted by 
 Juan Navarro Perez (UCL, UK) and 
 Andrey Rybalchenko (Microsoft Research Cambridge, UK).
 The solver deals with the satisfiability and entailment checking in the \SLL\ fragment.
@@ -481,7 +482,7 @@ It has at its core a matching function that checks whether a concrete valuation 
 \medskip
 \noindent
 \textbf{\CYCLIST}~\cite{BrotherstonGP12,CYCLISTsite}:
-has been submitted by 
+was submitted by 
 Nikos Gorogiannis (Middlesex University London, UK).
 %J. Brotherston, N. Gorogiannis, and R. L. Petersen 
 The solver deals with the entailment checking for the \SLRD+ fragment.
@@ -496,18 +497,18 @@ For the Separation Logic, \CYCLIST\ replaces the rule of weakening used in first
 \medskip
 \noindent
 \textbf{\SLEEK}~\cite{ChinDNQ12,SLEEKsite}:
-has been submitted by 
+was submitted by 
 Quang Loc Le and Wei Ngan Chin (NUS, Singapore).
 The solver deals with the satisfiability and entailment checking for \SLRD+ formulas.
 It is an (incomplete but) automatic prover, that builds a proof tree for the input problem by using the classical inference rules and the frame rule of SL. It also uses a database of lemmas for the inductive definitions in order to discharge the proof obligations on the spatial formulas.
 %
-The proof obligations on he pure formulas are discharged by external provers like CVC4, Mona, or Z3.
+The proof obligations on pure formulas are discharged by external provers like CVC4, Mona, or Z3.
 
 %\item \SLIDE~\cite{IosifRV14,SLIDEsite}  solver 
 \medskip
 \noindent
 \textbf{\SLIDE}~\cite{IosifRV14,SLIDEsite}: 
-has been submitted by 
+was submitted by 
 Adam Rogalewicz and Tomas Vojnar (VeriFIT, Czech Rep) and
 Radu Iosif (Verimag, France).
 The solver deals with the entailment problem in the decidable sub-fragment of \SLRD+ defined in~\cite{IosifRS13}.
@@ -518,7 +519,7 @@ the tree language inclusion of the automaton $A_\varphi$ in the automaton $A_\ps
 \medskip
 \noindent
 \textbf{\SLSAT}~\cite{BrotherstonFPG14}:
-has been submitted by 
+was submitted by 
 Nikos Gorogiannis (Middlesex University London, UK) 
 and  Juan Navarro Perez (UCL, UK).
 %J. Brotherston, C. Fuhs, N. Gorogiannis, and J. Navarro Perez
@@ -529,7 +530,7 @@ The decision procedure is based on a fixed point computation of a constraint, ca
 \medskip
 \noindent
 \textbf{\SPEN}~\cite{EneaLSV14,SPENsite}:
-has been submitted by 
+was submitted by 
 Mihaela Sighireanu (UPD \& CNRS, France).
 %C. Enea, O. Lengal, M. Sighireanu, and T. Vojnar
 The solver deals with satisfiability and entailment problems for the fragment \SLRD+ where 
@@ -556,20 +557,20 @@ Some of the above solvers deal with other problems than the ones considered for 
 \subsection{Benchmarks and their input format}
 
 %% DONE: Reviewer 3: comment the lack of industrial benchmarks
-The set of benchmarks has been built based on contributions from each participant. 
+The set of benchmarks was built based on contributions from each participant. 
 Some of these problems come from academic software analysis or verification tools based on SL 
 (e.g., \textsc{SmallFoot}~\cite{SmallFootsite}, \textsf{Hip}~\cite{ChinDNQ12}).
-But no problem issued from industrial tools was included in the benchmarks because we don't receive such input.
+But no problem issued from industrial tools was included in the benchmarks because we didn't receive such input.
 The benchmarks were collected in the input format submitted by the participants. 
-This set of problems was translated into a common format designed like a theory of the \smtlib\ format~\cite{BarST-SMTLIB}.
-That is, they used the syntax of \smtlib v2, although the SL theory underlying the syntax is not an official \smtlib\ theory or, at this point, even compatible with the theory underlying \smtlib.
+This set of problems was translated into a common format designed like a logic of the \smtlib\ format~\cite{BarST-SMTLIB}.
+That is, they used the syntax of \smtlib v2, although the SL theory underlying the syntax is not an official \smtlib\ theory or, at this point, even compatible with the logic underlying \smtlib.
 The rationale for this choice of common input format is 
 that SL is combined with or translated into first-order theories that are or will be supported by the \smtlib\ format.
 Also, we needed a typed input format and some support for processing this format\footnote{In particular, we used the parser for the \smtlib v2 available at \url{www.smtlib.org/utilities.html}.}.
  
 \paragraph{Input format:} Each benchmark file is organized as follows:
 \begin{itemize}
-\item Preamble information required by the \smtlib\ format: the theory, the source, the kind (crafted, application, etc) and status of the problem.  Here the theory was designated as \textbf{QF\_S}, even though that is not at this point an official \smtlib\ theory. 
+\item Preamble information required by the \smtlib\ format: the theory, the source, the kind (crafted, application, etc) and status of the problem.  Here the logic was designated as \textbf{QF\_S}, even though that is not at this point an official \smtlib\ logic. 
 \item The set of sorts (records), fields, and inductive definitions used in the problem. Notice that the input format is strongly typed, i.e., each program variable has a unique type (reference to some sort) and 
 fields are typed as function symbols from their declaration type to their definition type. 
 \item One resp. two assertions for each satisfiability resp. entailment problem. 
@@ -579,7 +580,7 @@ fields are typed as function symbols from their declaration type to their defini
 The syntax and semantics of this format were discussed and agreed in the public mailing group. 
 The exact definition of the theory used and the full set of benchmarks is available on-line as a GITHUB archive\footnote{\url{github.com/mihasighi/smtcomp14-sl}}.
 
-\paragraph{Selection process:} The final version of benchmarks is the result of several iterations of the following actions on the initial set of problems:
+\paragraph{Selection process:} The final version of benchmarks was the result of several iterations of the following actions on the initial set of problems:
 \begin{itemize}
 \item We ensured that the semantics used in the input format of solvers matched the one used in the common format. 
 For example, some solvers rejected problems with non-aliasing constraints ($x\neq y$) between variables typed using different records. The final input format required to deal with such constraints and to interpret them as valid.
@@ -591,11 +592,11 @@ random (instance of a problem template parameterized on some dimension, e.g., a 
 
 \item The benchmark curation process identified some problems that had an incorrect expected result computed by their source solver, which required fixing the problem in the solver and in the benchmark.
 %% DONE: Reviewer 2: Were any discrepancies found? What was the procedure to handle those?
-The status of each problem was checked before the competition using at least two solvers and it did not changed during the competition. 
+The status of each problem was checked before the competition using at least two solvers and it did not change during the competition. 
 \end{itemize}
 
 \paragraph{Divisions:} The final benchmarks have the characteristics presented in Table~\ref{tab:bench}.
-The benchmark set was split into five divisions, using the kind of problems solved and the kind of inductive definitions used (commented in Section~\ref{sec:SL}), as follows:
+The benchmark set was split into five divisions, using the kind of problems solved and the kind of inductive definitions used (described in Section~\ref{sec:SL}), as follows:
 \begin{description}
 \item[\sllsat:] includes satisfiability problems for the \SLL\ fragment.
 %%As mentioned before, this fragment has been identified to have a polynomial complexity for the satisfiability problem.
@@ -673,8 +674,8 @@ Some jobs did have CPU timeout or reached the memory limit.
 %%       However, no benchmark problem was complex enough to even approach these limits.
 %
 %% DONE: Reviewer 2: comment on training runs and how discrepancies have been fixed
-The participants trained their solvers on the platform and provide feedback where the expected result of a problem did not match their result. Several benchmarks and solvers were fixed during this period.
-One training run were executed before the official run to provide insights about the global results and to do a final check of the benchmark.
+The participants trained their solvers on the platform and provided feedback where the expected result of a problem did not match their result. Several benchmarks and solvers were fixed during this period.
+One training run was executed before the official run to provide insights about the global results and to do a final check of the benchmarks.
 
 The computation of the scores obtained for each division followed the rules fixed for \smtcomp'14.
 The best score is the one with, in order:
@@ -768,7 +769,7 @@ In particular, it was important to obtain benchmarks relevant to the actual appl
 \paragraph{Publicly available solvers:} \starexec\ requires that a public version of a solver be made available on \starexec\ as a condition of participating in a competition. This allows users of \starexec\ to rerun a competition if so desired. More importantly, it allows users to upload a new set of benchmarks of interest in their application domain and to try the various solvers against those benchmarks.
 
 \paragraph{Overall results:}
-Table~\ref{tab:overall} provides an overall view of the competition dashboard for all divisions. This information was presented in a live web-site that was updated every minute throughout the course of the competition. This first competition only took several hours to run (as compared, for example, to \smtcomp, which consumed a week of computation over 150 nodes of the \starexec\ cluster).
+Table~\ref{tab:overall} and Figure~\ref{fig:charts} provide an overall view of the competition dashboard for all divisions. This information was presented in a live web-site that was updated every minute throughout the course of the competition. This first competition only took several hours to run (as compared, for example, to \smtcomp, which consumed a week of computation over 150 nodes of the \starexec\ cluster).
 
 %% DONE: Reviewer 1: the differences between the different benchmark sets 
 The results corroborate the theoretical complexity analysis provided in Section~\ref{sec:SL}:
@@ -790,7 +791,7 @@ The techniques based on tree automata (\SLIDE\ and \SPEN) are more efficient on 
 Since the techniques using tree automata are the youngest, these results encourage to improve them by a careful engineering of solvers.
 %% DONE: Reviewer 1: get a better comparison of the solver’s behavior
 For the polynomial divisions \sllsat\ and \sllent, the constraint programming techniques implemented in \ASTERIX\  is impressive. But the results obtained with the other techniques are also good: a problem is solved in less than tens of mili-seconds. 
-An interesting insight of the \sllent\ division by comparing the results of the two solvers based on the resolution techniques, i.e., \CYCLIST\ and \SLEEK. A particular choice for the resolution technique may improve 5 times the execution time.
+An interesting insight of the \sllent\ division results from comparing the results of the two solvers based on the resolution techniques, i.e., \CYCLIST\ and \SLEEK. A particular choice for the resolution technique may improve 5 times the execution time.
 
 
 %\paragraph{Detailed results:}
@@ -810,7 +811,17 @@ An interesting insight of the \sllent\ division by comparing the results of the 
 %\item ...
 %\end{itemize}
 
-
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.46\textwidth]{sll0a_sat.png}
+\includegraphics[width=0.46\textwidth]{UDB_sat.png}
+\includegraphics[width=0.46\textwidth]{sll0a_entl.png}
+\includegraphics[width=0.46\textwidth]{FDB_entl.png}
+\includegraphics[width=0.6\textwidth]{UDB_entl.png}
+\end{center}
+\caption{Charts for the execution times in each division (vertical axis is log of time in sec.)}
+\label{fig:charts}
+\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -826,7 +837,7 @@ The following additional goals were also reached:
 \item We achieved a first step in establishing a common format for the SL. 
 This work revealed the features required by the existing solvers, e.g., the strong typing of formulas, the kind of inductive definitions handled, etc.
 %% DONE: Reviewer 3: say which parts of the format need some readjustments (what are the expected evolutions ?).
-Also, the use of the current format shown that it needs some readjustments to decrease its verbosity and to obtain a better integration in the semantics of the \smtlib\ format. 
+Also, the use of the current format shows that it needs some readjustments to decrease its verbosity and to obtain a better integration in the semantics of the \smtlib\ format. 
 The new features of the \smtlib 2 format, e.g., abstract data types and recursive function definitions, could facilitate the revision of the common format.
 
 \item Some of the competing solvers have been improved (extensions, bugs fixed) during the preparation of this competition. They also gained experience with the preparation of a distribution for the \starexec\ platform. 
@@ -852,7 +863,7 @@ It requires to measure only the score obtained on a bunch of problems, without m
 
 
 \paragraph{Future work:}
-First of all, we are trying to reach a consensus for the good cadence of this competition. Yearly competitions could be very exciting for the first years, but may focus on engineering improvements rather than fundamental work. 
+First of all, we are trying to reach a consensus for a good cadence of this competition. Yearly competitions could be very exciting for the first years, but may focus on engineering improvements rather than fundamental work. 
 A good cadence may be, for example, alternating a competition year with a year of benchmark evaluation and improvement.
 %% when solvers may be tested on the collected benchmarks and benchmarks may be fixed/annotated/studied.
 
@@ -880,7 +891,7 @@ The easy divisions, i.e., \sllsat\ to \FDBent, should include more difficult pro
 
 \item Some new divisions will be introduced to take into account the needs of the software verification tools. For example, the combination of SL with integer arithmetics is used in tools that reason about the heap consumption.
 
-\item The scoring system shall be improved by assigning a difficulty to each benchmark problem. This should lead to a better evaluation of each solver.
+\item The scoring system will be improved by assigning a difficulty to each benchmark problem. This should lead to a better evaluation of each solver.
 %% DONE: Reviewer 3: How do you plan to assign a measure?
 A classic way to assign a difficulty level is to take into account the size of the formulas and of the inductive definitions used in the problem. 
 However, we think that for divisions like \UDBsat\ and \UDBent, an additional factor of difficulty is the number of fields of the data structure and the ``uniformity'' of its shape. 

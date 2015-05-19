@@ -174,7 +174,7 @@ associated with the \smtcomp\ 2014 competition~\cite{SMTCOMPsite}, at the FLoC O
 The competition focused on a fragment of SL that has been found to be the kernel of most tools, known 
 as
 the \emph{symbolic heaps} fragment
-or Separation Logic with Inductive Definitions (\SLRD)~\cite{IosifRS13} or
+of Separation Logic with Inductive Definitions (\SLRD)~\cite{IosifRS13} or
 the positive flat SL fragment~\cite{AntonopoulosGHKO14}. 
 We provide here only an informal description of this fragment, its detailed description could be found in, e.g., \cite{Reynolds02,IosifRS13,AntonopoulosGHKO14}.  
 
@@ -439,7 +439,7 @@ in May 2014 %, May 14th 2014
 to several research groups 
 %%
 that are actively developing solvers for SL.
-The researchers that positively replied and some other researchers known for their work on tools for SL were invited to discuss the organization details on a public mailing list \url{smtcomp14-sl@googlegroups.com}.
+The researchers that positively replied and some other researchers known for their work on tools for SL were invited to discuss the organization details on a public mailing list \url{sl-comp@googlegroups.com}.
 %% DONE: Reviewer 1: odd sentence, please rephrase.
 %We solicited the support of the chair of the \smtcomp\ 2014 organizing committee, David Cok, to benefit from his experience in the organization of such competitions.
 The support of the officers of the \smtcomp\ 2014 organizing committee was solicited to benefit from their experience in the organization of such competitions.
@@ -573,10 +573,10 @@ Some of these problems come from academic software analysis or verification tool
 But no problem issued from industrial tools was included in the benchmarks because we didn't receive such input.
 The benchmarks were collected in the input format submitted by the participants. 
 This set of problems was translated into a common format designed like a logic of the \smtlib\ format~\cite{BarST-SMTLIB}.
-That is, they used the syntax of \smtlib v2, although the SL theory underlying the syntax is not an official \smtlib\ theory or, at this point, even compatible with the logic underlying \smtlib.
+That is, they used the syntax of \smtlib, although the SL theory underlying the syntax is not an official \smtlib\ theory or, at this point, even compatible with the logic underlying \smtlib.
 The rationale for this choice of common input format is 
 that SL is combined with or translated into first-order theories that are or will be supported by the \smtlib\ format.
-Also, we needed a typed input format and some support for processing this format\footnote{In particular, we used the parser for the \smtlib v2 available at \url{www.smtlib.org/utilities.html}.}.
+Also, we needed a typed input format and some support for processing this format\footnote{In particular, we used the parser for \smtlib\ available at \url{www.smtlib.org/utilities.html}.}.
  
 \paragraph{Input format:} Each benchmark file is organized as follows:
 \begin{itemize}
@@ -850,7 +850,7 @@ The following additional goals were also reached:
 This work revealed the features required by the existing solvers, e.g., the strong typing of formulas, the kind of inductive definitions handled, etc.
 %% DONE: Reviewer 3: say which parts of the format need some readjustments (what are the expected evolutions ?).
 Also, the use of the current format shows that it needs some readjustments to decrease its verbosity and to obtain a better integration in the semantics of the \smtlib\ format. 
-The new features of the \smtlib 2 format, e.g., abstract data types and recursive function definitions, could facilitate the revision of the common format.
+The new features of the \smtlib\ format, e.g., abstract data types and recursive function definitions, could facilitate the revision of the common format.
 
 \item Some of the competing solvers have been improved (extensions, bugs fixed) during the preparation of this competition. They also gained experience with the preparation of a distribution for the \starexec\ platform. 
 %
@@ -888,7 +888,7 @@ In the intervening time to the next edition of the competition, several tasks ar
 This may require alterations to the basic SL theory or designing an embedding of SL as an \smtlib\ theory.
 The discussion group \url{sl2smtlib@googlegroups.com} has been opened for working out this relationship.
 %% DONE: Added
-The new features of the \smtlib 2 format, e.g., recursive function definitions, are very important for the SL theory.
+The new features of the \smtlib\ format, e.g., recursive function definitions, are very important for the SL theory.
 The use of the \smtlib\ format for \slcomp\ is convenient because some SL solvers already deal with a combination of SL with theories currently available in \smtlib\, e.g., 
 integer arithmetics theory~\cite{PerezR11}, array theory~\cite{BouajjaniDES12-vmcai}, set theory~\cite{PiskacWZ13}, etc.
 

@@ -76,7 +76,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Header
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\jsatheading{1}{2014}{XX-YY}
+\jsatheading{9}{2016}{173--186}
 \ShortHeadings{Report on SL-COMP 2014}
 {M. Sighireanu and D.R. Cok}
 \firstpageno{1}
@@ -86,10 +86,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{Report on \slcomp\ 2014}
 \author{\name Mihaela Sighireanu \email sighirea@liafa.univ-paris-diderot.fr \\
-        \addr LIAFA, University Paris Diderot \& CNRS \\
+        \addr LIAFA \\ University Paris Diderot \& CNRS \\ France 
         \AND
-        \name David R. Cok \email dcok@grammatech.com \\
-        \addr GrammaTech, Inc., }
+        \name David R. Cok \email dcok@grammatech.com \\ 
+        \addr GrammaTech, Inc. \\ Ithaca, New York \\ United States }
          %%
 %by institution
 %%Nikos Gorogiannis, Middlesex University London
@@ -135,7 +135,7 @@ the future of this event.
 
 \keywords{Separation Logic, \smtlib, SAT Modulo Theory}
 
-\published{December 12th, 2014}{\today}{}
+\published{December 2014}{December 2015}{January 2016}
 
 
 
@@ -232,6 +232,9 @@ Also, the semantics chosen in the competition is the \emph{precise} semantics.
 
 
 \begin{table}
+\caption{Examples of inductive definitions used in the benchmark}
+\label{tab:RD}
+%\vspace{-3eX}
 \begin{eqnarray}
 %
 \lefteqn{\textit{singly linked lists}} \nonumber \\
@@ -264,9 +267,6 @@ R\points \{(\texttt{lson},X),(\texttt{rson},Y),(\texttt{parent},P),(\texttt{nxt}
 \mathtt{tll}(X,R,E,Z)\ \posep\ \mathtt{tll}(Y,R,Z,F)\big)
 \end{array} \nonumber  
 \end{eqnarray}
-\caption{Examples of inductive definitions used in the benchmark}
-\label{tab:RD}
-\vspace{-3eX}
 \end{table}
 
 %%%%%%%%%%%
@@ -588,7 +588,7 @@ fields are typed as function symbols from their declaration type to their defini
 \end{itemize}
 
 The syntax and semantics of this format were discussed and agreed in the public mailing group. 
-The exact definition of the theory used and the full set of benchmarks is available on-line as a GITHUB archive\footnote{\url{github.com/mihasighi/smtcomp14-sl}}.
+The exact definition of the theory used and the full set of benchmarks is available on-line as a GitHub archive\footnote{\url{github.com/mihasighi/smtcomp14-sl}}.
 
 \paragraph{Selection process:} The final version of benchmarks was the result of several iterations of the following actions on the initial set of problems:
 \begin{itemize}
@@ -630,6 +630,9 @@ The problems were proposed by the team of \SPEN.
 \end{description} 
  
 \begin{table}
+\caption{Final benchmark set}
+\label{tab:bench}
+\vspace{-3eX}
 \begin{center}
 \begin{tabular}{p{6cm}r}\hline
 \multicolumn{2}{c}{Total number of problems: 678} \\
@@ -656,9 +659,6 @@ Randomly generated & 59\% \\
 \hline
 \end{tabular}
 \end{center}
-\caption{Final benchmark set}
-\label{tab:bench}
-\vspace{-3eX}
 \end{table}
 
 
@@ -708,6 +708,17 @@ solved problems priority over the time taken to solve them is a more debatable c
 \section{Results}
 
 \begin{table}
+\caption{%
+%% DONE: Reviewer 2: add the incorrect answers
+%% DONE: Reviewer 3: specify times
+Overall results $n/t~[f]$ where %
+$n$ is the number of solved problems,  %
+$t$ is the cumulated CPU time (sec) on solved instances, %
+$f$ is the number of incorrect answers, if any %
+%(1=first place, 2 = second place, etc.)
+}
+\label{tab:overall}
+\vspace{-3eX}
 \begin{center}
 %\begin{tabular}{p{2.5cm}p{2cm}p{2cm}p{2cm}p{2cm}p{2.5cm}}\hline
 \begin{tabular}{l*{5}c}\hline
@@ -758,17 +769,6 @@ solved problems priority over the time taken to solve them is a more debatable c
 \\\hline
 \end{tabular}
 \end{center}
-\caption{%
-%% DONE: Reviewer 2: add the incorrect answers
-%% DONE: Reviewer 3: specify times
-Overall results $n/t~[f]$ where %
-$n$ is the number of solved problems,  %
-$t$ is the cumulated CPU time (sec) on solved instances, %
-$f$ is the number of incorrect answers, if any %
-%(1=first place, 2 = second place, etc.)
-}
-\label{tab:overall}
-\vspace{-3eX}
 \end{table}
 
 
